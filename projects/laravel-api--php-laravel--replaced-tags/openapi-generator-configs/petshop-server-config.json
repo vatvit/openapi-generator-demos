@@ -1,0 +1,53 @@
+{
+  "invokerPackage": "PetStoreApiV2\\Server",
+  "modelPackage": "Models",
+  "apiPackage": "Api",
+  "packageName": "petstore-api-server-v2",
+  "packageVersion": "1.0.0",
+  "packageUrl": "",
+  "packageDescription": "Generated PetStore API server (Solution 2 - Single Controller)",
+  "packageKeywords": ["petstore", "api", "server", "openapi"],
+  "packageCompany": "",
+  "packageCompanyUrl": "",
+  "packageAuthors": [
+    {
+      "name": "OpenAPI Generator",
+      "homepage": "https://openapi-generator.tech"
+    }
+  ],
+  "composerVendorName": "your-company",
+  "composerPackageName": "petstore-server",
+  "artifactVersion": "1.0.0",
+  "artifactUrl": "https://github.com/your-company/petstore-server",
+  "licenseName": "MIT",
+  "licenseUrl": "https://opensource.org/licenses/MIT",
+  "developerName": "Your Company Name",
+  "developerEmail": "dev@yourcompany.com",
+  "developerOrganization": "Your Company",
+  "developerOrganizationUrl": "https://yourcompany.com",
+  "gitUserId": "",
+  "gitRepoId": "",
+  "srcBasePath": "lib",
+  "variableNamingConvention": "camelCase",
+  "hideGenerationTimestamp": true,
+  "withGeneratorVersionComment": false,
+  "appName": "PetStoreApiController",
+  "skipOperationExample": true,
+  "files": {
+    "api_response_interface.mustache": {
+      "folder": "lib/Http/Responses",
+      "destinationFilename": "ResponseInterface.php",
+      "templateType": "API"
+    },
+    "api_response_generic.mustache": {
+      "folder": "lib/Http/Responses",
+      "destinationFilename": "Response.php",
+      "templateType": "API"
+    },
+    "api_response_factory.mustache": {
+      "folder": "lib/Http/Responses",
+      "destinationFilename": "ResponseFactory.php",
+      "templateType": "API"
+    }
+  }
+}

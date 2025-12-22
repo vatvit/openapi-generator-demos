@@ -1,5 +1,7 @@
 .PHONY: help generate-server generate-petshop generate-tictactoe validate-spec clean test-complete
 .PHONY: setup-laravel start-laravel stop-laravel logs-laravel test-laravel test-laravel-phpunit dumpautoload
+.PHONY: generate-lumen-server generate-lumen-petshop generate-lumen-tictactoe
+.PHONY: setup-lumen start-lumen stop-lumen logs-lumen test-lumen test-lumen-phpunit dumpautoload-lumen
 .PHONY: extract-templates extract-laravel-templates check-version update-generator-version
 
 # OpenAPI Generator version (using latest to get 7.18.0-SNAPSHOT)
@@ -26,16 +28,26 @@ help: ## Show this help message
 	@echo "  \033[36mtest-laravel\033[0m             Test Laravel API endpoints (curl)"
 	@echo "  \033[36mtest-laravel-phpunit\033[0m     Run PHPUnit tests"
 	@echo ""
-	@echo "🐳 Laravel Commands:"
+	@echo "🐳 Laravel Commands (php-laravel + custom templates):"
 	@echo "  \033[36msetup-laravel\033[0m            Setup Laravel application"
 	@echo "  \033[36mstart-laravel\033[0m            Start Laravel development environment"
 	@echo "  \033[36mstop-laravel\033[0m             Stop Laravel development environment"
 	@echo "  \033[36mlogs-laravel\033[0m             Show Laravel application logs"
 	@echo "  \033[36mdumpautoload\033[0m             Refresh composer autoload files"
 	@echo ""
+	@echo "⚡ php-lumen Generator (Laravel packages):"
+	@echo "  \033[36mgenerate-lumen-laravel\033[0m          Generate Laravel packages (php-lumen generator, both specs)"
+	@echo "  \033[36mgenerate-lumen-laravel-petshop\033[0m  Generate PetStore package (php-lumen generator)"
+	@echo "  \033[36mgenerate-lumen-laravel-tictactoe\033[0m Generate TicTacToe package (php-lumen generator)"
+	@echo "  \033[36msetup-lumen-laravel\033[0m             Setup Laravel application (php-lumen generator project)"
+	@echo "  \033[36mstart-lumen-laravel\033[0m             Start Laravel application (php-lumen generator project)"
+	@echo "  \033[36mstop-lumen-laravel\033[0m              Stop Laravel application (php-lumen generator project)"
+	@echo "  \033[36mtest-lumen-laravel-phpunit\033[0m      Run PHPUnit tests (php-lumen generator project)"
+	@echo ""
 	@echo "🔧 OpenAPI Generator Utilities:"
 	@echo "  \033[36mextract-templates\033[0m        Extract default PHP templates"
 	@echo "  \033[36mextract-laravel-templates\033[0m Extract default php-laravel templates"
+	@echo "  \033[36mextract-lumen-templates\033[0m  Extract default php-lumen templates"
 	@echo "  \033[36mcheck-version\033[0m            Verify generator version matches expected"
 	@echo "  \033[36mupdate-generator-version\033[0m Update to new generator version"
 	@echo ""
@@ -69,6 +81,35 @@ generate-tictactoe: ## Generate TicTacToe API server
 	@echo "ℹ️  Security interfaces generated via templates (SecurityInterfaces.php, SecurityValidator.php)"
 	@echo "ℹ️  Per-operation interfaces generated (PSR-4 compliant: one interface per file)"
 
+# php-lumen Generator Commands (Laravel-compatible packages with custom templates)
+generate-lumen-laravel: generate-lumen-laravel-petshop generate-lumen-laravel-tictactoe ## Generate Laravel packages using php-lumen generator
+
+generate-lumen-laravel-petshop: ## Generate PetStore package (php-lumen generator, Laravel templates)
+	@$(MAKE) -C openapi-generator-generators/php-lumen generate \
+		SPEC_NAME=petshop \
+		SPEC_FILE=petshop-extended.yaml \
+		OUTPUT_NAME=petstore \
+		CONFIG_PATH=projects/laravel-api--php-lumen--laravel-templates/openapi-generator-configs/petshop-lumen-laravel-config.json \
+		TEMPLATE_PATH=openapi-generator-server-templates/openapi-generator-server-php-lumen-package \
+		PREPROCESS=yes
+	@echo "🧹 Cleaning up unnecessary Lumen app files..."
+	@rm -rf generated/php-lumen/petstore/lib/app generated/php-lumen/petstore/lib/bootstrap generated/php-lumen/petstore/lib/database generated/php-lumen/petstore/lib/public generated/php-lumen/petstore/lib/resources generated/php-lumen/petstore/lib/storage generated/php-lumen/petstore/lib/tests
+	@rm -f generated/php-lumen/petstore/lib/.env.example generated/php-lumen/petstore/lib/artisan generated/php-lumen/petstore/lib/phpunit.xml generated/php-lumen/petstore/lib/.editorconfig generated/php-lumen/petstore/lib/.styleci.yml
+	@echo "ℹ️  Generated Laravel-compatible package with php-lumen generator"
+
+generate-lumen-laravel-tictactoe: ## Generate TicTacToe package (php-lumen generator, Laravel templates)
+	@$(MAKE) -C openapi-generator-generators/php-lumen generate \
+		SPEC_NAME=tictactoe \
+		SPEC_FILE=tictactoe.json \
+		OUTPUT_NAME=tictactoe \
+		CONFIG_PATH=projects/laravel-api--php-lumen--laravel-templates/openapi-generator-configs/tictactoe-lumen-laravel-config.json \
+		TEMPLATE_PATH=openapi-generator-server-templates/openapi-generator-server-php-lumen-package \
+		PREPROCESS=yes
+	@echo "🧹 Cleaning up unnecessary Lumen app files..."
+	@rm -rf generated/php-lumen/tictactoe/lib/app generated/php-lumen/tictactoe/lib/bootstrap generated/php-lumen/tictactoe/lib/database generated/php-lumen/tictactoe/lib/public generated/php-lumen/tictactoe/lib/resources generated/php-lumen/tictactoe/lib/storage generated/php-lumen/tictactoe/lib/tests
+	@rm -f generated/php-lumen/tictactoe/lib/.env.example generated/php-lumen/tictactoe/lib/artisan generated/php-lumen/tictactoe/lib/phpunit.xml generated/php-lumen/tictactoe/lib/.editorconfig generated/php-lumen/tictactoe/lib/.styleci.yml
+	@echo "ℹ️  Generated Laravel-compatible package with php-lumen generator"
+
 validate-spec: ## Validate the OpenAPI specifications
 	@echo "📋 Validating PetStore OpenAPI specification..."
 	@docker run --rm -v $$(pwd):/local openapitools/openapi-generator-cli:$(OPENAPI_GENERATOR_VERSION) validate \
@@ -84,6 +125,8 @@ clean: ## Clean generated files
 	@echo "🧹 Cleaning generated files..."
 	@rm -rf generated/php-laravel/petstore
 	@rm -rf generated/php-laravel/tictactoe
+	@rm -rf generated/php-lumen/petstore
+	@rm -rf generated/php-lumen/tictactoe
 	@echo "✅ Generated files cleaned!"
 
 # Testing Orchestration
@@ -159,12 +202,37 @@ test-laravel: ## Test Laravel API endpoints (curl)
 test-laravel-phpunit: ## Run PHPUnit tests (Unit and Feature tests)
 	@$(MAKE) -C projects/laravel-api--php-laravel--replaced-tags test-phpunit
 
+# php-lumen Generator Laravel Project Commands (delegated to projects/laravel-api--php-lumen--laravel-templates/Makefile)
+setup-lumen-laravel: ## Setup Laravel application (php-lumen generator project)
+	@$(MAKE) -C projects/laravel-api--php-lumen--laravel-templates setup
+
+start-lumen-laravel: ## Start Laravel application (php-lumen generator project)
+	@$(MAKE) -C projects/laravel-api--php-lumen--laravel-templates start
+
+stop-lumen-laravel: ## Stop Laravel application (php-lumen generator project)
+	@$(MAKE) -C projects/laravel-api--php-lumen--laravel-templates stop
+
+logs-lumen-laravel: ## Show Laravel application logs (php-lumen generator project)
+	@$(MAKE) -C projects/laravel-api--php-lumen--laravel-templates logs
+
+dumpautoload-lumen-laravel: ## Refresh composer autoload (php-lumen generator project)
+	@$(MAKE) -C projects/laravel-api--php-lumen--laravel-templates dumpautoload
+
+test-lumen-laravel: ## Test API endpoints (php-lumen generator project)
+	@$(MAKE) -C projects/laravel-api--php-lumen--laravel-templates test-endpoints
+
+test-lumen-laravel-phpunit: ## Run PHPUnit tests (php-lumen generator project)
+	@$(MAKE) -C projects/laravel-api--php-lumen--laravel-templates test-phpunit
+
 # OpenAPI Generator Utilities (delegated to openapi-generator-generators/php-laravel/Makefile)
 extract-templates: ## Extract default PHP client templates for customization
 	@$(MAKE) -C openapi-generator-generators/php-laravel extract-templates
 
 extract-laravel-templates: ## Extract default php-laravel templates for customization
 	@$(MAKE) -C openapi-generator-generators/php-laravel extract-laravel-templates
+
+extract-lumen-templates: ## Extract default php-lumen templates for reference
+	@$(MAKE) -C openapi-generator-generators/php-lumen extract-lumen-templates
 
 check-version: ## Verify generator version matches expected
 	@$(MAKE) -C openapi-generator-generators/php-laravel check-version

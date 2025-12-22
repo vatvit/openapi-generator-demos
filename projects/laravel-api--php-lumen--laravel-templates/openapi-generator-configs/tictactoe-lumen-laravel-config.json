@@ -1,0 +1,12 @@
+{
+  "invokerPackage": "TicTacToeApiV2\\Server",
+  "modelPackage": "Models",
+  "apiPackage": "Api",
+  "variableNamingConvention": "camelCase",
+  "gitRepoId": "tictactoe-lumen-laravel",
+  "gitUserId": "vatvit",
+  "artifactVersion": "1.0.0",
+  "packageName": "TicTacToeApiV2LumenLaravel",
+  "composerVendorName": "vatvit",
+  "composerPackageName": "tictactoe-api-lumen-laravel"
+}

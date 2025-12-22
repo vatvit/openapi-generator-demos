@@ -1,0 +1,12 @@
+{
+  "invokerPackage": "PetStoreApiV2\\Server",
+  "modelPackage": "Models",
+  "apiPackage": "Api",
+  "variableNamingConvention": "camelCase",
+  "gitRepoId": "petstore-lumen-laravel",
+  "gitUserId": "vatvit",
+  "artifactVersion": "1.0.0",
+  "packageName": "PetStoreApiV2LumenLaravel",
+  "composerVendorName": "vatvit",
+  "composerPackageName": "petstore-api-lumen-laravel"
+}

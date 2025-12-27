@@ -1,0 +1,44 @@
+{
+  "invokerPackage": "TicTacToeApiV2\\Server",
+  "modelPackage": "Models",
+  "apiPackage": "Api",
+  "srcBasePath": "lib",
+  "variableNamingConvention": "camelCase",
+  "gitRepoId": "tictactoe-lumen-laravel",
+  "gitUserId": "vatvit",
+  "artifactVersion": "1.0.0",
+  "packageName": "TicTacToeApiV2LumenLaravel",
+  "composerVendorName": "vatvit",
+  "composerPackageName": "tictactoe-api-lumen-laravel",
+  "licenseName": "MIT",
+  "files": {
+    "model_dto.mustache": {
+      "folder": "lib/Models",
+      "destinationFilename": "{{classname}}.php",
+      "templateType": "Model"
+    },
+    "model_resource.mustache": {
+      "folder": "lib/Http/Resources",
+      "destinationFilename": "{{classname}}Resource.php",
+      "templateType": "Model"
+    },
+    "api_controller.mustache": {
+      "folder": "lib/Http/Controllers",
+      "destinationFilename": "{{classname}}Controller.php",
+      "templateType": "API"
+    },
+    "api_form_request.mustache": {
+      "folder": "lib/Http/Requests",
+      "destinationFilename": "{{classname}}Request.php",
+      "templateType": "API"
+    },
+    "api_response_factory.mustache": {
+      "folder": "lib/Http/Responses",
+      "destinationFilename": "{{classname}}Response.php",
+      "templateType": "API"
+    }
+  },
+  "additionalProperties": {
+    "composerPackageName": "tictactoe-api-lumen-laravel"
+  }
+}

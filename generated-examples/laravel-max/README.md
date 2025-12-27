@@ -1,12 +1,43 @@
-# Laravel API Reference Implementation
+# Laravel-Max - Reference Implementation (Etalon)
 
-**Status:** Reference Implementation (Hand-crafted, NOT generated)
+**📌 This is THE ETALON (Standard) - The Maximum Quality Target for Generators**
 
-This directory contains the **ideal structure** that OpenAPI generator templates should produce. It demonstrates contract-enforced API development with Laravel following all quality requirements.
+This directory contains the **ideal reference implementation** - a hand-crafted example showing exactly what we want OpenAPI generators to produce.
+
+**"max" = maximum** - The best possible quality we can achieve.
+
+---
+
+## Quick Navigation
+
+- **[`README.md`](README.md)** (this file) - Overview, purpose, and detailed component documentation
+- **[`ARCHITECTURE.md`](ARCHITECTURE.md)** - Complete architecture documentation including library/application separation
+
+**Related Project Documentation:**
+- [`../../GOAL.md`](../../GOAL.md) - Project goal and success criteria
+- [`../../GOAL_MAX.md`](../../GOAL_MAX.md) - Detailed Laravel solution specification
+- [`../../CLAUDE.md`](../../CLAUDE.md) - Repository structure and development guidelines
+
+---
 
 ## Purpose
 
-This reference implementation shows:
+**This is NOT production code.** This is a **reference/example** showing:
+
+✅ How generated libraries SHOULD look
+✅ What quality level generators SHOULD achieve
+✅ Which patterns SHOULD be used
+✅ How components SHOULD be organized
+
+**Use this as the benchmark when:**
+- Building custom OpenAPI generator templates
+- Evaluating existing generators
+- Understanding target architecture
+- Comparing generated code quality
+
+---
+
+## What laravel-max Demonstrates
 - ✅ **PSR-4 Compliance** - One class per file
 - ✅ **Contract Enforcement** - Type-safe interfaces and DTOs
 - ✅ **HTTP Code Validation** - Runtime enforcement via Resources

@@ -45,6 +45,23 @@ Generate a **complete PHP library** from the OpenAPI spec that:
 
 ---
 
+## Reference Implementation
+
+**📌 `generated-examples/laravel-max/`** - **THE ETALON (Standard)**
+
+This directory contains the **ideal reference implementation** - a hand-crafted example showing exactly what we want generators to produce:
+
+- ✅ All patterns from `GOAL_MAX.md` correctly implemented
+- ✅ Complete library/application separation
+- ✅ One controller per operation pattern
+- ✅ Authentication middleware (interface + stub + validator)
+- ✅ Comprehensive documentation and tests
+- ✅ **Use this as the benchmark when evaluating generators**
+
+See `generated-examples/laravel-max/README.md` for complete documentation.
+
+---
+
 ## Program Maximum
 
 For detailed specifications of the ideal Laravel-focused solution, including:

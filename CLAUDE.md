@@ -4,24 +4,57 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## 📚 Key Documentation
 
-**Before working on this project, read these files:**
+**CRITICAL: Read these files before working on this project:**
+
+### Core Documents
 
 1. **`GOAL.md`** - Project goal and success criteria
    - Main objective: Create contract-enforced PHP libraries from OpenAPI specs
-   - Success definition
+   - Success definition and critical success criteria
    - Quality requirements overview
 
-2. **`CLAUDE.md`** (this file) - Implementation details
-   - How the repository is structured
-   - Quality requirements (detailed)
-   - Development guidelines
+2. **`GOAL_MAX.md`** - Laravel-focused solution specification
+   - Detailed specification of ideal Laravel library
+   - All components and patterns required
+   - Security middleware approach
+   - Manual integration philosophy
 
-3. **`openapi-generator-server-templates/GENERATORS-COMMON.md`** - Generator concepts
+3. **`CLAUDE.md`** (this file) - Implementation details
+   - Repository structure and organization
+   - Development guidelines and critical rules
+   - Quality requirements (detailed)
+
+### Reference Implementation (ETALON)
+
+**📌 `generated-examples/laravel-max/`** - **THE IDEAL REFERENCE IMPLEMENTATION**
+
+This is the **etalon (standard)** - the maximum quality solution that demonstrates:
+- ✅ All patterns from `GOAL_MAX.md` implemented correctly
+- ✅ One controller per operation pattern
+- ✅ Complete library/application separation
+- ✅ Authentication middleware with interface/stub/validator
+- ✅ Comprehensive test coverage (31 tests, 131 assertions)
+- ✅ Full documentation
+
+**Key files in laravel-max:**
+- **`generated-examples/laravel-max/README.md`** - Overview and quick start
+- **`generated-examples/laravel-max/ARCHITECTURE.md`** - Complete architecture documentation
+  - Controller patterns (one per operation)
+  - Library vs Application separation (critical architectural decision)
+  - Request/response flow
+  - Design patterns used
+  - Component responsibilities
+
+**⚠️ IMPORTANT:** When implementing generators or templates, **compare against laravel-max**. It demonstrates the target quality and architecture we want generators to produce.
+
+### Generator Documentation
+
+4. **`openapi-generator-server-templates/GENERATORS-COMMON.md`** - Generator concepts
    - Template loop types
    - Customization via `files` config
    - Common patterns across all generators
 
-4. **Generator-Specific Analyses:**
+5. **Generator-Specific Analyses:**
    - `openapi-generator-server-templates/openapi-generator-server-php-laravel-default/GENERATOR-ANALYSIS.md`
      - php-laravel generator capabilities
      - Quality score: 85%
@@ -36,7 +69,8 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 - Extract default templates to `openapi-generator-server-templates/openapi-generator-server-{generator}-default/`
 - Create `GENERATOR-ANALYSIS.md` following the same structure
 - Reference `GENERATORS-COMMON.md` to avoid duplicating common concepts
-- Compare against requirements in `GOAL.md` and this file
+- **Compare against `GOAL_MAX.md` and `laravel-max` reference implementation**
+- Document gaps between generator capabilities and ideal solution
 
 ---
 
@@ -370,15 +404,19 @@ openapi-generator-demos/
 │   ├── openapi-generator-server-php-laravel/        # php-laravel custom templates
 │   ├── openapi-generator-server-php-lumen-package/  # php-lumen custom templates
 │   └── openapi-generator-server-php-lumen-default/  # php-lumen default (for reference)
-├── generated/                            # Generated library output (gitignored)
-│   ├── php-laravel/petstore/             # PetStore API (php-laravel generator)
-│   ├── php-laravel/tictactoe/            # TicTacToe API (php-laravel generator)
-│   └── php-lumen/petstore/               # PetStore API (php-lumen generator)
-│                                         # Future: versioned libs to be published to repository/artifactory
-└── projects/                             # Laravel demo applications
-    ├── laravel-api--php-laravel--replaced-tags/       # Demo: php-laravel generator
-    └── laravel-api--php-lumen--laravel-templates/     # Demo: php-lumen generator
+├── generated-examples/                   # Reference implementations (committed to git)
+│   └── laravel-max/                      # 🏆 ETALON - Ideal Laravel library reference
+│                                         # Shows maximum quality expected from generators
+│                                         # All patterns from GOAL_MAX.md implemented
+│                                         # Use this as comparison when building generators
+└── projects/                             # Demo applications that consume generated libraries
+    └── laravel-api--example--laravel-max/ # Example app using laravel-max library
 ```
+
+**IMPORTANT: generated-examples/ vs generated/ (deprecated)**
+- **`generated-examples/`** - Reference implementations committed to git (like `laravel-max`)
+- **`generated/`** - (Deprecated) Was used for temporary generation output, now gitignored
+- Future: Generated libraries will be published to Composer repository/artifactory
 
 **IMPORTANT:** The three `openapi-generator-*` directories are **gitignored** and maintained as separate git repositories. Clone them separately to work with this project.
 

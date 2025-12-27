@@ -1,6 +1,16 @@
 # Laravel-Max Library Architecture
 
-This document describes the architecture patterns used in the laravel-max generated library.
+**📌 This is THE ETALON (Standard) - Reference Implementation**
+
+This document describes the architecture patterns used in the laravel-max library. This library is a **hand-crafted reference implementation** showing exactly what we want OpenAPI generators to produce.
+
+**Purpose:**
+- ✅ Demonstrates all patterns from [`../../GOAL_MAX.md`](../../GOAL_MAX.md)
+- ✅ Shows maximum quality expected from code generators
+- ✅ Serves as benchmark for generator evaluation
+- ✅ Provides examples for template customization
+
+**Use this as the comparison standard when building or evaluating generators.**
 
 ## ⚠️ CRITICAL: Separation of Library vs Application
 

@@ -2,8 +2,9 @@
 
 declare(strict_types=1);
 
-namespace App\Http\Middleware;
+namespace LaravelMaxApi\Http\Middleware;
 
+use LaravelMaxApi\Security\BearerHttpAuthenticationInterface;
 use Closure;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -11,10 +12,22 @@ use Symfony\Component\HttpFoundation\Response;
 /**
  * AuthenticateGame Middleware
  *
+ * EXAMPLE implementation of Bearer token authentication
  * Auto-generated from OpenAPI security scheme: bearerHttpAuthentication
- * Validates Bearer token authentication for game operations
+ *
+ * IMPLEMENTS: BearerHttpAuthenticationInterface (REQUIRED)
+ * This ensures the middleware fulfills the contract from OpenAPI spec
+ * The library validates this interface is implemented in debug mode
+ *
+ * In a real application, this would:
+ * - Validate JWT token signature
+ * - Check token expiration
+ * - Load user from token claims
+ * - Store authenticated user in request
+ *
+ * PSR-4 COMPLIANT: One class per file
  */
-class AuthenticateGame
+class AuthenticateGame implements BearerHttpAuthenticationInterface
 {
     /**
      * Handle an incoming request.

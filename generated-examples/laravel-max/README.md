@@ -42,18 +42,23 @@ generated-examples/laravel-max/
 │   └── api.php                              # Route definitions with middleware
 ├── Http/
 │   ├── Middleware/
-│   │   └── AuthenticateGame.php             # Bearer auth from OpenAPI security
+│   │   └── AuthenticateGame.php             # Bearer auth (implements security interface)
 │   ├── Requests/
 │   │   └── CreateGameRequest.php            # Validation rules from OpenAPI schema
 │   ├── Controllers/
 │   │   └── GameController.php               # HTTP layer delegation
 │   └── Resources/
-│       ├── GameResource.php                 # Success response (200/201)
+│       ├── CreateGame201Resource.php        # createGame operation (HTTP 201 with Location)
+│       ├── GetGame200Resource.php           # getGame operation (HTTP 200)
+│       ├── GameCollectionResource.php       # listGames operation (HTTP 200 with pagination)
 │       ├── ValidationErrorResource.php      # Validation error (422)
 │       └── UnauthorizedErrorResource.php    # Auth error (401)
 ├── Models/
 │   ├── CreateGameRequestDto.php             # Typed request DTO
 │   └── Game.php                             # Game model DTO
+├── Security/
+│   ├── BearerHttpAuthenticationInterface.php # Security interface from OpenAPI
+│   └── SecurityValidator.php                # Validates middleware implements interfaces
 └── Api/
     ├── GameApi.php                          # Handler interface (contract)
     └── Handlers/
@@ -62,24 +67,70 @@ generated-examples/laravel-max/
 
 ## Key Components
 
-### 1. Routes with Middleware
+### 1. Routes with Conditional Middleware
 
 **File:** `routes/api.php`
 
-```php
-Route::post('/games', [GameController::class, 'createGame'])
-    ->name('api.createGame')
-    ->middleware(['api', AuthenticateGame::class]);
+This file is designed to be included from the main Laravel `routes/api.php` within a `Route::group()`:
 
-Route::get('/games/{gameId}', [GameController::class, 'getGame'])
-    ->name('api.getGame')
-    ->middleware(['api', AuthenticateGame::class]);
+```php
+// routes/api.php (main Laravel routes file)
+Route::group(['prefix' => 'v1', 'middleware' => ['api']], function ($router) {
+    require base_path('generated/server/routes.php');
+});
 ```
 
+**Route pattern in generated file:**
+
+```php
+// Store route instance for conditional middleware attachment
+$route = $router->POST('/games', [GameController::class, 'createGame'])
+    ->name('api.createGame');
+
+// SECURITY REQUIREMENT: This operation requires authentication
+// Required security: bearerHttpAuthentication
+// Middleware group 'api.middlewareGroup.createGame' MUST be defined and contain middleware implementing:
+// - GameApiV2\Server\Security\bearerHttpAuthenticationInterface
+
+// Attach middleware group (if defined)
+if ($router->hasMiddlewareGroup('api.middlewareGroup.createGame')) {
+    $route->middleware('api.middlewareGroup.createGame');
+}
+```
+
+**Key features:**
+- Uses `$router` variable from `Route::group()` closure
+- Stores route in `$route` variable for middleware attachment
+- **Conditional middleware:** Only attaches middleware if group is defined
+- Named routes: `api.{operationId}`
+- Extensive documentation comments with security requirements
+
 **Auto-generated from:**
-- OpenAPI paths and operations
-- OpenAPI security schemes → middleware
-- operationId → route name
+- OpenAPI paths and operations → HTTP method + path
+- OpenAPI security schemes → security requirement comments + middleware group suggestions
+- operationId → route name + middleware group name
+
+**Middleware group definition (in bootstrap/app.php):**
+
+```php
+->withMiddleware(function (Middleware $middleware): void {
+    // Define middleware groups for specific operations
+    $middleware->group('api.middlewareGroup.createGame', [
+        \LaravelMaxApi\Http\Middleware\AuthenticateGame::class,
+    ]);
+
+    $middleware->group('api.middlewareGroup.getGame', [
+        \LaravelMaxApi\Http\Middleware\AuthenticateGame::class,
+        \LaravelMaxApi\Http\Middleware\CacheResponse::class,
+    ]);
+})
+```
+
+**Benefits:**
+- ✅ Flexible: Middleware only applied when group is defined
+- ✅ Operation-specific: Each operation can have different middleware
+- ✅ No hardcoded middleware classes in generated routes
+- ✅ Developer controls middleware in bootstrap/app.php
 
 ### 2. Middleware (Authentication)
 
@@ -268,21 +319,36 @@ public function createGame(CreateGameRequest $request): JsonResponse
 
 ### 8. Resources (THE KEY SOLUTION)
 
-**File:** `Http/Resources/GameResource.php`
+**CRITICAL PRINCIPLE: One Resource Per Operation Response**
+
+Each operation response (operation + HTTP code) gets its own Resource class, even if they return the same schema.
+
+**Why?**
+- ✅ **Single Responsibility** - Each Resource knows its exact HTTP code and headers
+- ✅ **No Conditional Logic** - No `if ($httpCode === 201)` branches
+- ✅ **Clear Mapping** - Operation → Resource is 1:1
+- ✅ **Type Safety** - Union types enforce correct Resource per operation
+- ✅ **Hardcoded Values** - HTTP codes and required headers are baked in
+
+**File:** `Http/Resources/CreateGame201Resource.php`
 
 ```php
-class GameResource extends JsonResource
+/**
+ * Auto-generated for: createGame operation, HTTP 201 response
+ * OpenAPI Operation: createGame
+ * Response: 201 Created
+ * Schema: Game
+ * Headers: Location (REQUIRED)
+ */
+class CreateGame201Resource extends JsonResource
 {
     /**
-     * HTTP status code for this response
-     * MUST be set by Handler
+     * HTTP status code - Hardcoded: 201 Created
      */
-    public int $httpCode;
+    protected int $httpCode = 201;
 
     /**
-     * Location header for 201 Created responses
-     * REQUIRED for createGame (201)
-     * NOT used for getGame (200)
+     * Location header (REQUIRED for 201)
      */
     public ?string $location = null;
 
@@ -294,60 +360,94 @@ class GameResource extends JsonResource
         return [
             'id' => $game->id,
             'status' => $game->status,
-            'mode' => $game->mode,
-            'playerXId' => $game->playerXId,
-            'playerOId' => $game->playerOId,
-            'currentTurn' => $game->currentTurn,
-            'winner' => $game->winner,
-            'createdAt' => $game->createdAt->format(\DateTime::ISO8601),
-            'updatedAt' => $game->updatedAt->format(\DateTime::ISO8601),
+            // ... all Game schema properties
         ];
     }
 
     public function withResponse($request, $response)
     {
-        // Enforce HTTP status code is set
-        if (!isset($this->httpCode)) {
-            throw new \RuntimeException('HTTP status code not set for GameResource. Handler must set $resource->httpCode');
-        }
-
+        // Set hardcoded HTTP 201 status
         $response->setStatusCode($this->httpCode);
 
-        // Enforce headers based on HTTP code
-        if ($this->httpCode === 201) {
-            // 201 Created REQUIRES Location header
-            if ($this->location === null) {
-                throw new \RuntimeException('Location header is REQUIRED for HTTP 201 (createGame) but was not set');
-            }
-            $response->header('Location', $this->location);
+        // Location header is REQUIRED for 201 Created
+        if ($this->location === null) {
+            throw new \RuntimeException('Location header is REQUIRED for createGame (HTTP 201)');
         }
-
-        // 200 OK (getGame) has no special headers
+        $response->header('Location', $this->location);
     }
 }
 ```
 
-**Auto-generated from:**
-- OpenAPI response schemas (Game schema) → `toArray()` structure
-- OpenAPI response headers → public properties (`$location`, `$xTotalCount`, etc.)
-- OpenAPI response codes per operation → `withResponse()` validation logic
+**File:** `Http/Resources/GetGame200Resource.php`
 
-**This Pattern Solves Everything:**
+```php
+/**
+ * Auto-generated for: getGame operation, HTTP 200 response
+ * OpenAPI Operation: getGame
+ * Response: 200 OK
+ * Schema: Game (SAME schema as createGame, but DIFFERENT Resource!)
+ * Headers: None
+ */
+class GetGame200Resource extends JsonResource
+{
+    /**
+     * HTTP status code - Hardcoded: 200 OK
+     */
+    protected int $httpCode = 200;
+
+    public function toArray($request): array
+    {
+        /** @var Game $game */
+        $game = $this->resource;
+
+        return [
+            'id' => $game->id,
+            'status' => $game->status,
+            // ... all Game schema properties (SAME as CreateGame201Resource)
+        ];
+    }
+
+    public function withResponse($request, $response)
+    {
+        // Set hardcoded HTTP 200 status
+        $response->setStatusCode($this->httpCode);
+
+        // No special headers for getGame
+    }
+}
+```
+
+**Key Differences:**
+- **CreateGame201Resource**: HTTP 201, requires Location header
+- **GetGame200Resource**: HTTP 200, no headers
+- **SAME data structure** (Game schema) but **DIFFERENT HTTP context**
+
+**Auto-generated from:**
+- OpenAPI operation + response code → Resource class name
+- OpenAPI response schema → `toArray()` structure
+- OpenAPI response headers → public properties
+- HTTP status code → hardcoded `$httpCode` property
+
+**Key Features:**
+- ✅ **One Resource per operation response** - createGame/201, getGame/200, etc.
+- ✅ **Protected httpCode hardcoded** - No constructor parameter needed
 - ✅ **PSR-4 Compliant** - One class per file
-- ✅ **Reusable** - Same Resource for multiple operations (createGame=201, getGame=200)
-- ✅ **Validates HTTP Code** - Runtime check ensures Handler set it
-- ✅ **Validates Headers** - Required headers checked based on HTTP code
+- ✅ **No Conditional Logic** - Each Resource knows its exact requirements
+- ✅ **Validates Headers** - Required headers validated, optional skipped
 - ✅ **Type-Safe Data** - `toArray()` structure from OpenAPI schema
 - ✅ **No Post-Processing** - All generated directly from templates
 
-**Error Resources:**
+**Error Resources (Fixed HTTP Codes):**
 
 **File:** `Http/Resources/ValidationErrorResource.php`
 
 ```php
 class ValidationErrorResource extends JsonResource
 {
-    public int $httpCode;
+    /**
+     * HTTP status code - Hardcoded: 422 Unprocessable Entity
+     */
+    protected int $httpCode = 422;
 
     public function toArray($request): array
     {
@@ -360,10 +460,7 @@ class ValidationErrorResource extends JsonResource
 
     public function withResponse($request, $response)
     {
-        if (!isset($this->httpCode)) {
-            throw new \RuntimeException('HTTP status code not set for ValidationErrorResource. Handler must set $resource->httpCode');
-        }
-
+        // Set hardcoded HTTP 422 status
         $response->setStatusCode($this->httpCode);
     }
 }
@@ -374,7 +471,10 @@ class ValidationErrorResource extends JsonResource
 ```php
 class UnauthorizedErrorResource extends JsonResource
 {
-    public int $httpCode;
+    /**
+     * HTTP status code - Hardcoded: 401 Unauthorized
+     */
+    protected int $httpCode = 401;
 
     public function toArray($request): array
     {
@@ -386,13 +486,97 @@ class UnauthorizedErrorResource extends JsonResource
 
     public function withResponse($request, $response)
     {
-        if (!isset($this->httpCode)) {
-            throw new \RuntimeException('HTTP status code not set for UnauthorizedErrorResource. Handler must set $resource->httpCode');
-        }
-
+        // Set hardcoded HTTP 401 status
         $response->setStatusCode($this->httpCode);
     }
 }
+```
+
+**Collection Resource with Custom Headers (Example):**
+
+**File:** `Http/Resources/GameCollectionResource.php`
+
+```php
+class GameCollectionResource extends ResourceCollection
+{
+    /**
+     * HTTP status code - Hardcoded: 200 OK
+     */
+    protected int $httpCode = 200;
+
+    // REQUIRED header from OpenAPI spec
+    public ?int $xTotalCount = null;
+
+    // OPTIONAL headers from OpenAPI spec
+    public ?int $xPageNumber = null;
+    public ?int $xPageSize = null;
+    public ?string $link = null; // RFC 5988 pagination links
+
+    public function toArray($request): array
+    {
+        return [
+            'data' => GameResource::collection($this->collection),
+            'meta' => [
+                'total' => $this->xTotalCount,
+                'page' => $this->xPageNumber,
+                'pageSize' => $this->xPageSize,
+            ],
+        ];
+    }
+
+    public function withResponse($request, $response)
+    {
+        $response->setStatusCode($this->httpCode);
+
+        // REQUIRED header validation
+        if ($this->xTotalCount === null) {
+            throw new \RuntimeException('X-Total-Count header is REQUIRED but was not set');
+        }
+        $response->header('X-Total-Count', (string) $this->xTotalCount);
+
+        // OPTIONAL headers (only set if provided)
+        if ($this->xPageNumber !== null) {
+            $response->header('X-Page-Number', (string) $this->xPageNumber);
+        }
+        if ($this->xPageSize !== null) {
+            $response->header('X-Page-Size', (string) $this->xPageSize);
+        }
+        if ($this->link !== null) {
+            $response->header('Link', $this->link);
+        }
+    }
+}
+```
+
+**Usage Example:**
+
+```php
+// Handler returns collection with pagination headers
+public function listGames(ListGamesRequest $request): GameCollectionResource
+{
+    $games = Game::paginate(20);
+
+    $resource = new GameCollectionResource($games->items());
+    $resource->xTotalCount = $games->total(); // REQUIRED
+    $resource->xPageNumber = $games->currentPage(); // OPTIONAL
+    $resource->xPageSize = $games->perPage(); // OPTIONAL
+    $resource->link = GameCollectionResource::buildLinkHeader(
+        url('/api/games'),
+        $games->currentPage(),
+        $games->lastPage()
+    ); // OPTIONAL
+
+    return $resource;
+}
+```
+
+**Response includes headers:**
+```
+HTTP/1.1 200 OK
+X-Total-Count: 150
+X-Page-Number: 2
+X-Page-Size: 20
+Link: <https://api.example.com/games?page=1>; rel="first", <https://api.example.com/games?page=1>; rel="prev", <https://api.example.com/games?page=3>; rel="next", <https://api.example.com/games?page=8>; rel="last"
 ```
 
 ### 9. Handler Implementation (Developer Code)
@@ -404,7 +588,7 @@ class UnauthorizedErrorResource extends JsonResource
 ```php
 class GameApiHandler implements GameApi
 {
-    public function createGame(CreateGameRequestDto $request): GameResource|ValidationErrorResource|UnauthorizedErrorResource
+    public function createGame(CreateGameRequestDto $request): CreateGame201Resource|ValidationErrorResource|UnauthorizedErrorResource
     {
         // Business logic: Create game
         $game = new Game(
@@ -419,15 +603,14 @@ class GameApiHandler implements GameApi
             updatedAt: new \DateTime(),
         );
 
-        // Return GameResource with 201 Created
-        $resource = new GameResource($game);
-        $resource->httpCode = 201; // REQUIRED
+        // Return CreateGame201Resource (HTTP 201 hardcoded)
+        $resource = new CreateGame201Resource($game);
         $resource->location = route('api.getGame', ['gameId' => $game->id]); // REQUIRED for 201
 
         return $resource;
     }
 
-    public function getGame(string $gameId): GameResource|ValidationErrorResource
+    public function getGame(string $gameId): GetGame200Resource|ValidationErrorResource
     {
         // Business logic: Fetch game
         $game = new Game(
@@ -442,9 +625,8 @@ class GameApiHandler implements GameApi
             updatedAt: new \DateTime(),
         );
 
-        // Return GameResource with 200 OK
-        $resource = new GameResource($game);
-        $resource->httpCode = 200; // REQUIRED
+        // Return GetGame200Resource (HTTP 200 hardcoded)
+        $resource = new GetGame200Resource($game);
         // Note: No Location header for GET
 
         return $resource;
@@ -455,16 +637,20 @@ class GameApiHandler implements GameApi
 **Developer Workflow:**
 1. Implement `GameApi` interface
 2. Write business logic
-3. Create appropriate Resource
-4. **Set `$httpCode`** (required)
-5. **Set header properties** (if required for that code)
-6. Return Resource
+3. Create **operation-specific Resource** (e.g., `CreateGame201Resource`)
+4. **Set header properties** (if required)
+5. Return Resource
 
 **What Happens if Developer Forgets:**
-- Forgets `$httpCode` → RuntimeException in `withResponse()`
-- Forgets `$location` for 201 → RuntimeException in `withResponse()`
-- Returns wrong Resource type → Compilation error (union types)
+- Forgets to set required header → RuntimeException in `withResponse()`
+- Uses wrong Resource (e.g., GetGame200Resource for createGame) → Compilation error (union types)
 - Returns wrong data structure → Type error (DTO properties)
+- HTTP code is always correct (hardcoded in Resource)
+
+**Key Benefit:**
+- ✅ **Cannot use wrong HTTP code** - It's hardcoded in each Resource
+- ✅ **Clear which Resource to use** - Operation name in Resource class name
+- ✅ **No constructor parameters** - Just `new CreateGame201Resource($game)`
 
 ## Why This Pattern Works
 
@@ -512,7 +698,150 @@ public function getGame(...): GameResource|ValidationErrorResource;
 
 **Compile-time + Runtime Enforcement:**
 - Compile-time: Interface signature, union types, DTO types
-- Runtime: `$httpCode` set, required headers present
+- Runtime: `$httpCode` set, required headers present, **security middleware validated**
+
+## Security Middleware Validation
+
+### The Problem
+
+How do we ensure developers implement authentication middleware as specified in the OpenAPI security schemes?
+
+### The Solution: Interface-Based Validation
+
+The library provides **security interfaces** from OpenAPI security schemes and **validates** that developer's middleware implements these interfaces (debug mode only).
+
+**1. Generated Security Interface (from OpenAPI):**
+
+**File:** `Security/BearerHttpAuthenticationInterface.php`
+
+```php
+/**
+ * Auto-generated from OpenAPI security scheme: bearerHttpAuthentication
+ * Type: http, Scheme: bearer, Bearer Format: JWT
+ */
+interface BearerHttpAuthenticationInterface
+{
+    public function handle(Request $request, Closure $next);
+}
+```
+
+**2. Developer's Middleware Implementation:**
+
+**File:** `Http/Middleware/AuthenticateGame.php`
+
+```php
+class AuthenticateGame implements BearerHttpAuthenticationInterface
+{
+    public function handle(Request $request, Closure $next): Response
+    {
+        $token = $request->bearerToken();
+
+        if (!$token || !$this->validateToken($token)) {
+            return response()->json(['error' => 'Unauthorized'], 401);
+        }
+
+        return $next($request);
+    }
+}
+```
+
+**3. Middleware Registration (bootstrap/app.php):**
+
+```php
+->withMiddleware(function (Middleware $middleware): void {
+    // Register security middleware group
+    $middleware->group('api.security.bearerHttpAuthentication', [
+        \LaravelMaxApi\Http\Middleware\AuthenticateGame::class,
+    ]);
+})
+```
+
+**4. Automatic Validation (routes/api.php):**
+
+```php
+// At end of routes file - only runs in debug mode
+if (config('app.debug', false)) {
+    if (class_exists(LaravelMaxApi\Security\SecurityValidator::class)) {
+        try {
+            LaravelMaxApi\Security\SecurityValidator::validateMiddleware($router);
+        } catch (\RuntimeException $e) {
+            error_log("Security middleware validation failed:");
+            error_log($e->getMessage());
+        }
+    }
+}
+```
+
+**5. SecurityValidator validates:**
+
+**File:** `Security/SecurityValidator.php`
+
+```php
+class SecurityValidator
+{
+    private static array $securitySchemes = [
+        'bearerHttpAuthentication' => BearerHttpAuthenticationInterface::class,
+    ];
+
+    private static array $operationSecurity = [
+        'createGame' => ['bearerHttpAuthentication'],
+        'getGame' => ['bearerHttpAuthentication'],
+    ];
+
+    public static function validateMiddleware(Router $router): void
+    {
+        // For each required security scheme:
+        // 1. Check middleware group 'api.security.{scheme}' is defined
+        // 2. Check group contains middleware implementing required interface
+        // 3. Throw detailed error if validation fails
+    }
+}
+```
+
+**What Gets Validated:**
+
+✅ Middleware group `api.security.bearerHttpAuthentication` is defined
+✅ Group contains at least one middleware class
+✅ Middleware class implements `BearerHttpAuthenticationInterface`
+❌ Throws detailed error if any check fails (debug mode only)
+
+**Example Validation Error:**
+
+```
+================================================================================
+SECURITY MIDDLEWARE VALIDATION FAILED
+================================================================================
+
+Missing middleware group 'api.security.bearerHttpAuthentication' for security scheme 'bearerHttpAuthentication'
+  Required by operations: createGame, getGame
+  Middleware must implement: LaravelMaxApi\Security\BearerHttpAuthenticationInterface
+  Define in bootstrap/app.php:
+    $middleware->group('api.security.bearerHttpAuthentication', [
+        \LaravelMaxApi\Http\Middleware\YourAuthMiddleware::class,
+    ]);
+
+================================================================================
+Fix these issues in bootstrap/app.php or disable validation in production
+by setting APP_DEBUG=false
+================================================================================
+```
+
+**Benefits:**
+
+- ✅ **Contract enforcement:** Library defines interface, developer implements
+- ✅ **Automatic validation:** Catches missing/incorrect security setup
+- ✅ **Debug-only:** No performance impact in production (APP_DEBUG=false)
+- ✅ **Clear errors:** Detailed messages show exactly what's missing
+- ✅ **Auto-generated:** All interfaces and validation from OpenAPI spec
+
+**Key Pattern:**
+
+1. **OpenAPI defines:** Security scheme (bearer, apiKey, oauth2, etc.)
+2. **Library generates:** Interface for that scheme
+3. **Developer implements:** Middleware with that interface
+4. **Library validates:** Implementation is correct (debug mode only)
+
+This ensures security requirements from the API spec are **enforced** at runtime!
 
 ## Developer Experience
 
@@ -552,6 +881,7 @@ class MyGameHandler implements GameApi
 - ✅ HTTP code validation (runtime check)
 - ✅ Header validation (runtime check)
 - ✅ Response structure (Resource toArray)
+- ✅ **Security middleware validation (debug mode)**
 
 **Clear error messages:**
 ```

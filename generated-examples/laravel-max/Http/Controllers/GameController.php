@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace App\Http\Controllers;
+namespace LaravelMaxApi\Http\Controllers;
 
-use App\Api\GameApi;
-use App\Http\Requests\CreateGameRequest;
-use App\Models\CreateGameRequestDto;
+use LaravelMaxApi\Api\GameApi;
+use LaravelMaxApi\Http\Requests\CreateGameRequest;
+use LaravelMaxApi\Models\CreateGameRequestDto;
 use Illuminate\Http\JsonResponse;
 
 /**
@@ -23,8 +23,10 @@ use Illuminate\Http\JsonResponse;
  * - Resource response (Handler sets httpCode and headers)
  *
  * PSR-4 COMPLIANT: One class per file
+ *
+ * Note: No base Controller class needed in modern Laravel
  */
-class GameController extends Controller
+class GameController
 {
     /**
      * Inject business logic handler via constructor

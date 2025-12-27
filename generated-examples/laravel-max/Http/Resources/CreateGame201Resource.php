@@ -2,37 +2,37 @@
 
 declare(strict_types=1);
 
-namespace App\Http\Resources;
+namespace LaravelMaxApi\Http\Resources;
 
 use Illuminate\Http\Resources\Json\JsonResource;
-use App\Models\Game;
+use LaravelMaxApi\Models\Game;
 
 /**
- * GameResource
+ * CreateGame201Resource
  *
- * Auto-generated Laravel Resource from OpenAPI schema: Game
- * Enforces response structure and HTTP headers
+ * Auto-generated Laravel Resource for createGame operation (HTTP 201)
+ * Returns Game schema with Location header
  *
- * Used by operations:
- * - createGame: HTTP 201 (requires $location header)
- * - getGame: HTTP 200 (no headers)
+ * OpenAPI Operation: createGame
+ * Response: 201 Created
+ * Schema: Game
+ * Headers: Location (REQUIRED)
  *
- * PSR-4 COMPLIANT: One class per file
+ * PSR-4 COMPLIANT: One class per file, one Resource per operation response
  */
-class GameResource extends JsonResource
+class CreateGame201Resource extends JsonResource
 {
     /**
      * HTTP status code for this response
-     * MUST be set by Handler
+     * Hardcoded: 201 Created
      *
      * @var int
      */
-    public int $httpCode;
+    protected int $httpCode = 201;
 
     /**
-     * Location header for 201 Created responses
-     * REQUIRED for createGame (201)
-     * NOT used for getGame (200)
+     * Location header (REQUIRED for 201 Created)
+     * MUST be set by Handler
      *
      * @var string|null
      */
@@ -67,31 +67,25 @@ class GameResource extends JsonResource
     /**
      * Customize the outgoing response.
      *
-     * Enforces HTTP status code and headers from OpenAPI spec
+     * Enforces HTTP 201 status code and Location header from OpenAPI spec
      *
      * @param  \Illuminate\Http\Request  $request
      * @param  \Illuminate\Http\Response  $response
      * @return void
-     * @throws \RuntimeException if httpCode not set or required headers missing
+     * @throws \RuntimeException if required headers missing
      */
     public function withResponse($request, $response)
     {
-        // Enforce HTTP status code is set
-        if (!isset($this->httpCode)) {
-            throw new \RuntimeException('HTTP status code not set for GameResource. Handler must set $resource->httpCode');
-        }
-
+        // Set hardcoded HTTP 201 Created status
         $response->setStatusCode($this->httpCode);
 
-        // Enforce headers based on HTTP code
-        if ($this->httpCode === 201) {
-            // 201 Created REQUIRES Location header
-            if ($this->location === null) {
-                throw new \RuntimeException('Location header is REQUIRED for HTTP 201 (createGame) but was not set');
-            }
-            $response->header('Location', $this->location);
+        // Location header is REQUIRED for 201 Created
+        if ($this->location === null) {
+            throw new \RuntimeException(
+                'Location header is REQUIRED for createGame (HTTP 201) but was not set. ' .
+                'Set $resource->location in your handler.'
+            );
         }
-
-        // 200 OK (getGame) has no special headers
+        $response->header('Location', $this->location);
     }
 }

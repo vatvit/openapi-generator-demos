@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Http\Resources;
+namespace LaravelMaxApi\Http\Resources;
 
 use Illuminate\Http\Resources\Json\JsonResource;
 
@@ -18,11 +18,11 @@ class UnauthorizedErrorResource extends JsonResource
 {
     /**
      * HTTP status code for this response
-     * MUST be set by Handler
+     * Hardcoded: 401 Unauthorized
      *
      * @var int
      */
-    public int $httpCode;
+    protected int $httpCode = 401;
 
     /**
      * Transform the resource into an array.
@@ -52,11 +52,7 @@ class UnauthorizedErrorResource extends JsonResource
      */
     public function withResponse($request, $response)
     {
-        // Enforce HTTP status code is set
-        if (!isset($this->httpCode)) {
-            throw new \RuntimeException('HTTP status code not set for UnauthorizedErrorResource. Handler must set $resource->httpCode');
-        }
-
+        // Set hardcoded HTTP 401 status
         $response->setStatusCode($this->httpCode);
 
         // UnauthorizedError has no special headers

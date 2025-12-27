@@ -2,12 +2,13 @@
 
 declare(strict_types=1);
 
-namespace App\Api;
+namespace LaravelMaxApi\Api;
 
-use App\Models\CreateGameRequestDto;
-use App\Http\Resources\GameResource;
-use App\Http\Resources\ValidationErrorResource;
-use App\Http\Resources\UnauthorizedErrorResource;
+use LaravelMaxApi\Models\CreateGameRequestDto;
+use LaravelMaxApi\Http\Resources\CreateGame201Resource;
+use LaravelMaxApi\Http\Resources\GetGame200Resource;
+use LaravelMaxApi\Http\Resources\ValidationErrorResource;
+use LaravelMaxApi\Http\Resources\UnauthorizedErrorResource;
 
 /**
  * GameApi Interface
@@ -30,28 +31,25 @@ interface GameApi
      * HTTP Method: POST /games
      *
      * @param CreateGameRequestDto $request Validated and typed request data
-     * @return GameResource|ValidationErrorResource|UnauthorizedErrorResource
+     * @return CreateGame201Resource|ValidationErrorResource|UnauthorizedErrorResource
      *
      * RESPONSE CONTRACT:
      * Return one of these Resources (each enforces its own HTTP code and structure):
      *
      * Success (201 Created):
-     *   $resource = new GameResource($game);
+     *   $resource = new CreateGame201Resource($game);
      *   $resource->location = route('api.getGame', ['gameId' => $game->id]); // REQUIRED header
-     *   $resource->httpCode = 201; // REQUIRED
      *   return $resource;
      *
      * Validation Error (422):
      *   $resource = new ValidationErrorResource($errors);
-     *   $resource->httpCode = 422;
      *   return $resource;
      *
      * Unauthorized (401):
      *   $resource = new UnauthorizedErrorResource($error);
-     *   $resource->httpCode = 401;
      *   return $resource;
      */
-    public function createGame(CreateGameRequestDto $request): GameResource|ValidationErrorResource|UnauthorizedErrorResource;
+    public function createGame(CreateGameRequestDto $request): CreateGame201Resource|ValidationErrorResource|UnauthorizedErrorResource;
 
     /**
      * Get game details
@@ -60,20 +58,18 @@ interface GameApi
      * HTTP Method: GET /games/{gameId}
      *
      * @param string $gameId Unique game identifier
-     * @return GameResource|UnauthorizedErrorResource
+     * @return GetGame200Resource|ValidationErrorResource
      *
      * RESPONSE CONTRACT:
      *
      * Success (200 OK):
-     *   $resource = new GameResource($game);
-     *   $resource->httpCode = 200; // REQUIRED
+     *   $resource = new GetGame200Resource($game);
      *   return $resource;
      *   // Note: No Location header for GET operations
      *
      * Not Found (404):
      *   $resource = new NotFoundErrorResource($error);
-     *   $resource->httpCode = 404;
      *   return $resource;
      */
-    public function getGame(string $gameId): GameResource|ValidationErrorResource;
+    public function getGame(string $gameId): GetGame200Resource|ValidationErrorResource;
 }

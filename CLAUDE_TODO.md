@@ -79,7 +79,7 @@ The `php-laravel` generator has limitations (e.g., cannot generate separate file
 
 ### 2. laravel-api--php-lumen--laravel-templates
 
-**Status:** 🚧 In Progress (Phase 4 Complete - Templates Created)
+**Status:** 🚧 In Progress (Phase 3 Complete - Templates Created, Phase 4 needs review)
 
 **Generator:** OpenAPI Generator's `php-lumen` (but targeting **Laravel**, not Lumen!)
 
@@ -136,33 +136,116 @@ The `php-laravel` generator has limitations (e.g., cannot generate separate file
   - `tictactoe-lumen-laravel-config.json`
 - [x] Update root Makefile with new targets
 
-### ✅ Phase 3: Custom Template Creation (COMPLETED)
+### 🔄 Phase 3: Custom Template Creation (IN PROGRESS - NEEDS REVIEW)
 
-**Goal:** Create Laravel-compatible templates for php-lumen generator
+**Goal:** Create templates for php-lumen generator to match php-laravel output quality
 
-**Created Templates:**
-- [x] `api.mustache` - Generates API interfaces (not implementations)
-- [x] `model.mustache` - Generates model classes
-- [x] `routes.mustache` - Generates route definitions
-- [x] `composer.mustache` - Generates package metadata
+**Success Criteria:** Developer receives a library with:
+1. ✅ **Routes** - Route definitions
+2. ✅ **Controllers** - Separate controller classes (NOT inline closures)
+3. ✅ **Models** - DTOs for request/response data structures
+4. ✅ **Validators** - Request validation (in controllers or separate)
+5. ✅ **Structured Request** - Type-safe request handling
+6. ✅ **Structured Response** - Response factories/interfaces for type safety
+7. ✅ **API Interfaces** - Contracts for business logic implementations
+8. ✅ **Dependency Injection** - Controllers inject interface implementations
+
+**php-laravel Generator Output (REFERENCE):**
+```
+generated/php-laravel/petstore/lib/
+├── Api/
+│   ├── AddPetApiInterface.php          # Interface for business logic
+│   ├── DeletePetApiInterface.php
+│   ├── FindPetByIdApiInterface.php
+│   └── FindPetsApiInterface.php
+├── Http/
+│   ├── Controllers/
+│   │   ├── AddPetController.php        # Separate controller classes
+│   │   ├── DeletePetController.php     # With validation
+│   │   ├── FindPetByIdController.php   # Inject interfaces
+│   │   └── FindPetsController.php      # Type-safe request/response
+│   └── Responses/
+│       ├── AddPetApiInterfaceResponse.php
+│       ├── AddPetApiInterfaceResponseFactory.php
+│       ├── AddPetApiInterfaceResponseInterface.php
+│       └── ... (3 files per operation)
+└── Models/
+    ├── Pet.php                         # DTOs
+    ├── NewPet.php
+    ├── Error.php
+    └── NoContent204.php
+```
+
+**php-lumen Generator - Required Templates:**
+
+**Mandatory Templates (must create):**
+- [ ] `api.mustache` → Generates `Api/*.php` (interfaces for business logic)
+- [ ] `api_controller.mustache` → Generates `Http/Controllers/*.php` (separate controller classes)
+- [ ] `model.mustache` → Generates `Models/*.php` (DTOs)
+- [ ] `routes.mustache` → Generates route definitions (pointing to controllers)
+- [ ] `composer.mustache` → Package metadata
+
+**Optional Templates (nice to have - match php-laravel quality):**
+- [ ] `api_response_interface.mustache` → Response interfaces
+- [ ] `api_response_factory.mustache` → Response factories
+- [ ] `api_response_generic.mustache` → Response implementations
 
 **Template Location:** `openapi-generator-server-templates/openapi-generator-server-php-lumen-package/`
 
-**Status:** Templates created and tested. They generate interfaces but also include extra Lumen files (app/, bootstrap/, etc.) which can be ignored.
+**Current Status:**
+```
+Existing templates:
+✅ api.mustache (exists)
+✅ model.mustache (exists)
+✅ routes.mustache (exists, but uses inline closures - needs fix)
+✅ composer.mustache (exists)
+❌ api_controller.mustache (MISSING - critical!)
+❌ response templates (MISSING - optional)
+```
 
-### ✅ Phase 4: Generate and Verify Packages (COMPLETED)
+**Phase 3 Tasks:**
+1. [ ] **Verify existing templates work correctly**
+   - [ ] Test `api.mustache` generates correct interfaces
+   - [ ] Test `model.mustache` generates DTOs (or understand why it doesn't)
+   - [ ] Test `routes.mustache` output
+   - [ ] Test `composer.mustache` output
+
+2. [ ] **Create missing critical template: Controller**
+   - [ ] Research php-lumen template structure for controllers
+   - [ ] Create `api_controller.mustache` or equivalent
+   - [ ] Generate separate controller classes (NOT inline closures)
+   - [ ] Add validation in controllers
+   - [ ] Add dependency injection (inject Api interfaces)
+
+3. [ ] **Fix routes.mustache**
+   - [ ] Change from inline closures to controller references
+   - [ ] Example: `$router->get('/pets/{id}', 'FindPetByIdController@findPetById')`
+
+4. [ ] **Decide on response templates**
+   - [ ] Can php-lumen generator use response factory templates?
+   - [ ] If yes, create them
+   - [ ] If no, document limitation
+
+5. [ ] **Test complete generation**
+   - [ ] Generate petstore with all templates
+   - [ ] Verify output matches success criteria
+   - [ ] Document any limitations vs php-laravel
+
+**Key Question:** Can php-lumen generator create separate controller classes like php-laravel, or is it limited to inline closures?
+
+### 🔄 Phase 4: Generate and Verify Packages (IN PROGRESS - NEEDS REVIEW)
 
 **Tasks:**
-- [x] Generate PetStore package: `make generate-lumen-laravel-petshop`
-- [x] Generate TicTacToe package: `make generate-lumen-laravel-tictactoe`
-- [x] Verify generated structure:
-  - [x] Check `generated/php-lumen/petstore/lib/Api/` contains interfaces
-  - [x] Check `generated/php-lumen/tictactoe/lib/Api/` contains interfaces
-  - [x] Verify namespaces (ISSUES FOUND - see below)
-- [x] Review generated code quality
-- [x] Identify template improvements needed
+- [ ] Generate PetStore package: `make generate-lumen-laravel-petshop`
+- [ ] Generate TicTacToe package: `make generate-lumen-laravel-tictactoe`
+- [ ] Verify generated structure:
+  - [ ] Check `generated/php-lumen/petstore/lib/Api/` contains interfaces
+  - [ ] Check `generated/php-lumen/tictactoe/lib/Api/` contains interfaces
+  - [ ] Verify namespaces
+- [ ] Review generated code quality
+- [ ] Identify template improvements needed
 
-**Generated Output:**
+**ACTUAL Generated Output (php-lumen with custom templates):**
 ```
 generated/php-lumen/
 ├── petstore/
@@ -172,9 +255,10 @@ generated/php-lumen/
 │       │   ├── DeletePetApi.php (interface)
 │       │   ├── FindPetByIdApi.php (interface)
 │       │   └── FindPetsApi.php (interface)
-│       ├── routes/web.php
+│       ├── routes/
+│       │   └── web.php (route definitions with inline closures)
 │       ├── composer.json
-│       └── [extra Lumen app files]
+│       └── readme.md
 └── tictactoe/
     └── lib/
         ├── Api/
@@ -188,10 +272,16 @@ generated/php-lumen/
         │   ├── GetSquareApi.php (interface)
         │   ├── ListGamesApi.php (interface)
         │   └── PutSquareApi.php (interface)
-        ├── routes/web.php
+        ├── routes/
+        │   └── web.php
         ├── composer.json
-        └── [extra Lumen app files]
+        └── readme.md
 ```
+
+**IMPORTANT: No Models are generated**
+- php-lumen generator does NOT generate Models by default
+- Only Api interfaces and routes are created
+- This is a limitation of the php-lumen generator
 
 **Issues Found:**
 
@@ -248,102 +338,86 @@ generated/php-lumen/
 4. Check why models aren't being generated
 5. Consider creating .openapi-generator-ignore to exclude unwanted Lumen app files
 
-**Status:** ✅ Generation successful with critical issues identified and documented. Issues fixed in Phase 4.5.
+**Status:** ⏸️ Generation works but critical issues need to be addressed before continuing.
 
-### ✅ Phase 4.5: Fix Critical Issues (COMPLETED)
+### 🔄 Phase 4.5: Fix Critical Issues (TODO - NOT STARTED)
 
-**Both critical issues have been resolved:**
+**Critical issues to fix:**
 
-1. **Fix Namespace Duplication** ✅
-   - [x] Updated config files to use `"apiPackage": "Api"` instead of full namespace
-   - [x] Regenerated both packages
-   - [x] Verified namespaces are correct
-   - **Result:** Interfaces now use `PetStoreApiV2\Server\Api\*` and `TicTacToeApiV2\Server\Api\*` (no duplication)
+1. **Fix Namespace Duplication**
+   - [ ] Update config files to use `"apiPackage": "Api"` instead of full namespace
+   - [ ] Regenerate both packages
+   - [ ] Verify namespaces are correct
+   - **Expected:** Interfaces should use `PetStoreApiV2\Server\Api\*` and `TicTacToeApiV2\Server\Api\*` (no duplication)
 
-2. **Fix Route Parameter Type** ✅
-   - [x] Edited `routes.mustache` line 34 to remove `\Laravel\Lumen\Routing\Router` type hint
-   - [x] Regenerated both packages
-   - [x] Verified routes have correct parameter signatures
-   - **Result:** Route closures now use `function ($id)` instead of `function (\Laravel\Lumen\Routing\Router $id)`
+2. **Fix Route Parameter Type**
+   - [ ] Edit `routes.mustache` to remove incorrect `\Laravel\Lumen\Routing\Router` type hint from route closures
+   - [ ] Regenerate both packages
+   - [ ] Verify routes have correct parameter signatures
+   - **Expected:** Route closures should use `function ($id)` instead of `function (\Laravel\Lumen\Routing\Router $id)`
 
-**Files Modified:**
+**Files to Modify:**
 - `projects/laravel-api--php-lumen--laravel-templates/openapi-generator-configs/petshop-lumen-laravel-config.json`
 - `projects/laravel-api--php-lumen--laravel-templates/openapi-generator-configs/tictactoe-lumen-laravel-config.json`
 - `openapi-generator-server-templates/openapi-generator-server-php-lumen-package/routes.mustache`
 
-**Verification Results:**
-- ✅ PetStore interfaces: `PetStoreApiV2\Server\Api\AddPetApi`, etc. (namespaces correct)
-- ✅ TicTacToe interfaces: `TicTacToeApiV2\Server\Api\CreateGameApi`, etc. (namespaces correct)
-- ✅ Route parameters: `function ($id)`, `function ($gameId)`, etc. (type hints removed)
+### 🔄 Phase 4.6: Fix PSR-4 Naming Compliance (TODO - NOT STARTED)
 
-### ✅ Phase 4.6: Fix PSR-4 Naming Compliance (COMPLETED)
+**Potential Issue:** Filename and interface name mismatch
+- **Check if:** File `DeleteGameApi.php` contains `interface DeleteGameApiInterface`
+- **Impact if true:** PSR-4 violation - autoloader cannot find the interface
 
-**Issue Found:** Filename and interface name mismatch
-- **Problem:** File `DeleteGameApi.php` contained `interface DeleteGameApiInterface`
-- **Impact:** PSR-4 violation - autoloader cannot find the interface
+**Solution if needed:**
+- [ ] Remove "Interface" suffix from template to use just `{{classname}}`
+- [ ] Change `interface {{classname}}Interface` to `interface {{classname}}`
+- [ ] Update routes to reference `{{classname}}` instead of `{{classname}}Interface`
 
-**Solution:**
-- Removed "Interface" suffix from template to use just `{{classname}}`
-- Changed `interface {{classname}}Interface` to `interface {{classname}}`
-- Updated routes to reference `{{classname}}` instead of `{{classname}}Interface`
-
-**Files Modified:**
+**Files to Check/Modify:**
 - `openapi-generator-server-templates/openapi-generator-server-php-lumen-package/api.mustache`
 - `openapi-generator-server-templates/openapi-generator-server-php-lumen-package/routes.mustache`
 
-**Verification Results:**
-- ✅ File: `DeleteGameApi.php` → Interface: `DeleteGameApi`
-- ✅ File: `FindPetsApi.php` → Interface: `FindPetsApi`
-- ✅ Routes use: `TicTacToeApiV2\Server\Api\DeleteGameApi::class`
-- ✅ Full namespace with correct interface: `PetStoreApiV2\Server\Api\FindPetsApi`
+**Verification Needed:**
+- [ ] File: `DeleteGameApi.php` → Interface name matches filename
+- [ ] File: `FindPetsApi.php` → Interface name matches filename
+- [ ] Routes reference correct interface names
+- [ ] Full namespace is correct: `PetStoreApiV2\Server\Api\FindPetsApi`
 
-**Note:** While the interface names no longer have "Interface" suffix (which would be clearer), this matches php-lumen generator conventions and ensures PSR-4 compliance. The DocBlock clearly states it's an interface.
-
-### ✅ Phase 4.7: Clean Up Unnecessary Files (COMPLETED)
+### 🔄 Phase 4.7: Clean Up Unnecessary Files (TODO - NOT STARTED)
 
 **Issue:** php-lumen generator creates full Lumen application structure (app/, bootstrap/, database/, etc.) which is not needed for a Laravel-compatible package.
 
-**Solution:** Added automatic cleanup commands to Makefile
+**Solution:** Add automatic cleanup commands to Makefile
 
-**Changes Made:**
-1. Created custom `.openapi-generator-ignore` template (prevents file overwrites on subsequent generations)
-2. Added cleanup commands to `generate-lumen-laravel-petshop` and `generate-lumen-laravel-tictactoe` targets in root Makefile
-3. Cleanup removes:
+**Tasks:**
+- [ ] Create custom `.openapi-generator-ignore` template to prevent file overwrites on subsequent generations
+- [ ] Add cleanup commands to `generate-lumen-laravel-petshop` and `generate-lumen-laravel-tictactoe` targets in root Makefile
+- [ ] Cleanup should remove:
    - `lib/app/`, `lib/bootstrap/`, `lib/database/`, `lib/public/`, `lib/resources/`, `lib/storage/`, `lib/tests/`
    - `lib/.env.example`, `lib/artisan`, `lib/phpunit.xml`, `lib/.editorconfig`, `lib/.styleci.yml`
 
-**Files Modified:**
-- `Makefile` - Added cleanup steps to generation targets
-- `openapi-generator-server-templates/openapi-generator-server-php-lumen-package/openapi-generator-ignore.mustache` - Created custom ignore template
+**Files to Modify:**
+- `Makefile` - Add cleanup steps to generation targets
+- `openapi-generator-server-templates/openapi-generator-server-php-lumen-package/openapi-generator-ignore.mustache` - Create custom ignore template
 
-**Remaining Package Structure:**
+**Expected Package Structure After Cleanup:**
 ```
 generated/php-lumen/petstore/lib/
 ├── Api/ (4 interface files)
-├── routes/web.php
+├── routes/ (web.php)
 ├── composer.json
 ├── .gitignore
 └── readme.md
 ```
 
-```
-generated/php-lumen/tictactoe/lib/
-├── Api/ (10 interface files)
-├── routes/web.php
-├── composer.json
-├── .gitignore
-└── readme.md
-```
+**Verification Needed:**
+- [ ] PetStore: Only package files remain (Api/, routes/, composer.json, .gitignore, readme.md)
+- [ ] TicTacToe: Only package files remain (Api/, routes/, composer.json, .gitignore, readme.md)
+- [ ] No Lumen application files present
+- [ ] Cleanup runs automatically on every generation
 
-**Verification:**
-- ✅ PetStore: Only package files remain (Api/, routes/, composer.json, .gitignore, readme.md)
-- ✅ TicTacToe: Only package files remain (Api/, routes/, composer.json, .gitignore, readme.md)
-- ✅ No Lumen application files present
-- ✅ Cleanup runs automatically on every generation
+### 🔄 Phase 5: Laravel Integration (NOT STARTED)
 
-### 🔄 Phase 5: Laravel Integration (NEXT STEP)
-
-**Prerequisites:** ✅ All critical issues fixed (Phases 4.5, 4.6, and 4.7 completed).
+**Prerequisites:** ⏸️ Phases 4, 4.5, 4.6, and 4.7 must be completed first.
 
 **Tasks:**
 - [ ] Update `composer.json` autoload:

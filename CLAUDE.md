@@ -2,6 +2,44 @@
 
 This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
 
+## 📚 Key Documentation
+
+**Before working on this project, read these files:**
+
+1. **`GOAL.md`** - Project goal and success criteria
+   - Main objective: Create contract-enforced PHP libraries from OpenAPI specs
+   - Success definition
+   - Quality requirements overview
+
+2. **`CLAUDE.md`** (this file) - Implementation details
+   - How the repository is structured
+   - Quality requirements (detailed)
+   - Development guidelines
+
+3. **`openapi-generator-server-templates/GENERATORS-COMMON.md`** - Generator concepts
+   - Template loop types
+   - Customization via `files` config
+   - Common patterns across all generators
+
+4. **Generator-Specific Analyses:**
+   - `openapi-generator-server-templates/openapi-generator-server-php-laravel-default/GENERATOR-ANALYSIS.md`
+     - php-laravel generator capabilities
+     - Quality score: 85%
+     - Recommended for production use
+
+   - `openapi-generator-server-templates/openapi-generator-server-php-lumen-default/GENERATOR-ANALYSIS.md`
+     - php-lumen generator capabilities
+     - Quality score: 17%
+     - Requires extensive custom development
+
+**When analyzing a new generator:**
+- Extract default templates to `openapi-generator-server-templates/openapi-generator-server-{generator}-default/`
+- Create `GENERATOR-ANALYSIS.md` following the same structure
+- Reference `GENERATORS-COMMON.md` to avoid duplicating common concepts
+- Compare against requirements in `GOAL.md` and this file
+
+---
+
 ## ⚠️ Critical Rules
 
 **MUST follow these rules at all times:**
@@ -58,26 +96,297 @@ The goal is to demonstrate **separation of concerns** in OpenAPI-driven developm
 3. **Generator** - The code generation logic and scripts
 4. **Templates** - Mustache templates for different architectural approaches
 
+---
+
+## Library Quality Requirements
+
+This section defines the quality attributes and implementation requirements for generated libraries. See `GOAL.md` for the high-level goal definition.
+
+### Integration Requirements
+
+**Easy Installation & Integration:**
+- ✅ Installable via Composer as a dependency
+- ✅ Simple integration into existing Laravel projects
+- ✅ Minimal configuration required
+- ✅ Clear documentation and examples
+
+**Complete API Implementation:**
+- ✅ Provides **everything** needed to expose the API in a Laravel project
+- ✅ No manual route definitions required
+- ✅ No manual request/response handling required
+- ✅ Just implement business logic, framework handles the rest
+
+### API Contract Enforcement
+
+**Force Developer to Follow Specification:**
+
+The library must make it **impossible or highly difficult** to break the API contract by:
+
+1. **Interface Contracts** - Developer implements interfaces, not modifies generated code
+   - Each operation has a typed interface
+   - Method signatures match the API spec exactly
+   - Changing signatures = compilation error
+
+2. **Request DTOs** - All endpoints use structured Request objects
+   - Auto-generated from OpenAPI request body schemas
+   - Type-safe properties based on spec
+   - Validation enforces schema constraints
+   - Developer cannot accept invalid data
+
+3. **Response Structures** - Developer must return spec-compliant responses
+   - Response factories enforce response schema
+   - Type-safe response objects/DTOs
+   - HTTP status codes from spec
+   - Developer cannot return wrong structure
+
+4. **Type Safety** - PHP 8.1+ strict typing throughout
+   - Typed properties
+   - Typed parameters
+   - Typed return values
+   - IDE autocomplete and static analysis support
+
+**Example Flow:**
+```php
+// Generated Interface (from OpenAPI spec)
+interface CreatePetApiInterface
+{
+    public function createPet(CreatePetRequest $request): CreatePetResponse;
+}
+
+// Developer Implementation (business logic only)
+class CreatePetHandler implements CreatePetApiInterface
+{
+    public function createPet(CreatePetRequest $request): CreatePetResponse
+    {
+        // $request->name is typed (string)
+        // $request->age is typed (int|null) if optional
+        // Cannot access properties not in spec
+
+        $pet = Pet::create(['name' => $request->name]);
+
+        // Must return CreatePetResponse (enforced by type)
+        // Cannot return wrong status code or structure
+        return CreatePetResponse::created($pet);
+    }
+}
+```
+
+### Code Quality Requirements
+
+**Follow Best Practices & Design Principles:**
+
+**SOLID Principles:**
+- **S**ingle Responsibility - Each class has one purpose
+- **O**pen/Closed - Generated code open for extension, closed for modification
+- **L**iskov Substitution - Interfaces enable substitutability
+- **I**nterface Segregation - Focused interfaces per operation
+- **D**ependency Inversion - Depend on interfaces, not implementations
+
+**DRY (Don't Repeat Yourself):**
+- Shared validation logic
+- Reusable DTOs and response factories
+- Common base classes where appropriate
+
+**KISS (Keep It Simple, Stupid):**
+- Clear, readable generated code
+- Minimal abstractions
+- No over-engineering
+
+**PSR Standards:**
+- ✅ **PSR-4** - Autoloading standard (file structure matches namespaces)
+- ✅ **PSR-12** - Code style guide (if possible)
+- ✅ Proper namespacing and class organization
+
+**Laravel Best Practices:**
+- Use Laravel's Request validation
+- Follow Laravel naming conventions
+- Compatible with Laravel's dependency injection container
+- Leverage Laravel's service providers
+- Use Laravel's Response helpers
+- Follow Laravel directory structure conventions
+
+**Laravel Framework Structures (Support IF POSSIBLE):**
+
+The library should leverage Laravel's framework structures when applicable:
+
+1. **Laravel Resources** - For response transformation
+   - Use `Illuminate\Http\Resources\Json\JsonResource` for API responses
+   - Transform models to JSON according to OpenAPI schema
+   - Support resource collections for array responses
+
+2. **Route Middleware** - For request processing
+   - Support Laravel middleware in generated routes
+   - Allow authentication middleware (`auth:api`, `auth:sanctum`)
+   - Allow throttling middleware (`throttle:60,1`)
+   - Allow custom middleware from spec (via extensions if needed)
+
+3. **Form Requests** - For validation
+   - Use `Illuminate\Foundation\Http\FormRequest` for complex validation
+   - Auto-generate validation rules from OpenAPI schema
+   - Support custom validation messages
+   - Support authorization logic
+
+4. **Route Groups** - For route organization
+   - Support route prefixes (e.g., `/api/v1`)
+   - Support route naming
+   - Support middleware groups
+
+5. **Service Providers** - For configuration
+   - Auto-discovery support (`extra.laravel.providers` in composer.json)
+   - Route registration
+   - Dependency injection bindings
+
+6. **API Resources** - Type-safe response transformations
+   ```php
+   // Example: Generated resource
+   class PetResource extends JsonResource
+   {
+       public function toArray($request): array
+       {
+           return [
+               'id' => $this->id,
+               'name' => $this->name,
+               'tag' => $this->tag,
+           ];
+       }
+   }
+   ```
+
+7. **Exception Handling** - Laravel-compatible errors
+   - Use Laravel's exception handler
+   - Return JSON error responses matching OpenAPI error schemas
+   - Support validation exceptions
+
+**Implementation Priority:**
+- ✅ **MUST HAVE:** Routes, Middlewares, Service Providers
+- ✅ **SHOULD HAVE:** Form Requests (validation), Resources (response transformation)
+- ⚠️ **NICE TO HAVE:** Route groups, custom middleware configuration
+
+**Note:** If the generator cannot support a Laravel structure, document the limitation clearly.
+
+### Generated Library Components
+
+The library must provide:
+
+1. **Routes** - Route definitions pointing to generated controllers
+   ```php
+   Route::post('/pets', [CreatePetController::class, 'createPet']);
+   ```
+
+2. **Controllers** - Separate controller classes (NOT inline closures)
+   - One controller per operation (preferred) OR per resource group
+   - Inject business logic interfaces
+   - Handle HTTP layer (validation, request parsing, response formatting)
+
+3. **API Interfaces** - Contracts for business logic implementations
+   ```php
+   interface CreatePetApiInterface {
+       public function createPet(CreatePetRequest $request): CreatePetResponse;
+   }
+   ```
+
+4. **Request DTOs** - Typed data structures from OpenAPI request schemas
+   ```php
+   class CreatePetRequest {
+       public function __construct(
+           public string $name,
+           public ?int $age,
+       ) {}
+   }
+   ```
+
+5. **Response DTOs/Factories** - Type-safe response structures
+   ```php
+   class CreatePetResponse {
+       public static function created(Pet $pet): JsonResponse;
+       public static function validationError(array $errors): JsonResponse;
+   }
+   ```
+
+6. **Validators** - Request validation based on OpenAPI schema
+   - Automatic validation rules from spec
+   - Type constraints (string, integer, array, etc.)
+   - Length constraints (minLength, maxLength)
+   - Value constraints (minimum, maximum, pattern)
+   - Required vs optional fields
+
+7. **Model DTOs** - Data transfer objects from OpenAPI components/schemas
+   ```php
+   class Pet {
+       public function __construct(
+           public int $id,
+           public string $name,
+           public ?string $tag,
+       ) {}
+   }
+   ```
+
+8. **Dependency Injection Setup** - Service provider or binding configuration
+   - Map interfaces to implementations
+   - Laravel service container integration
+
+### Current Approach: Generator Comparison
+
+To achieve these quality requirements, we're:
+
+1. **Evaluating different OpenAPI generators** (php-laravel, php-lumen, php-symfony, etc.)
+2. **Creating custom templates** for each generator to meet our quality requirements
+3. **Building demo Laravel projects** to test and compare generated libraries
+4. **Documenting capabilities and limitations** of each generator
+
+**Why compare generators?**
+- Different generators have different capabilities (per-operation files vs per-tag files)
+- Template flexibility varies between generators
+- Code generation quality differs
+- We want to find the best tool for our requirements
+
+**Progress Status:**
+
+**✅ php-laravel Generator:**
+- Custom templates created
+- Meets all library requirements
+- Generates high-quality, contract-enforced libraries
+
+**🚧 php-lumen Generator:**
+- Analyzing generator capabilities
+- Creating custom templates
+- Goal: Match php-laravel quality (if generator supports it)
+
+**🔮 Future Generators:**
+- php-symfony, php (generic), custom generators
+- Only if they can meet our quality requirements
+
+---
+
 ### Repository Structure
 
 ```
 openapi-generator-demos/
-├── openapi-generator-specs/          # Separate git repo (gitignored, cloned locally)
-│                                      # Contains demo OpenAPI specification files
-├── openapi-generator-generators/     # Separate git repo (gitignored, cloned locally)
-│                                      # Custom generators, scripts, and generation instructions
-├── openapi-generator-server-templates/ # Separate git repo (gitignored, cloned locally)
-│                                       # Mustache templates for different approaches
-├── generated/                         # Output directory for generated code (gitignored)
-│   └── php-laravel/                   # Generated code organized by generator type
-│       ├── petstore/                  # PetStore API generated with php-laravel
-│       └── tictactoe/                 # TicTacToe API generated with php-laravel
-│                                      # Future: versioned libs to be published to repository/artifactory
-└── projects/                          # Demo applications
-    └── laravel-api--php-laravel--replaced-tags/  # Demo: Laravel with tag-replaced specs
+├── openapi-generator-specs/              # OpenAPI specifications (separate git repo, gitignored)
+│                                          # Contains demo OpenAPI specification files
+├── openapi-generator-generators/         # Generator scripts and Makefiles (separate git repo, gitignored)
+│                                          # Custom generators, scripts, and generation instructions
+├── openapi-generator-server-templates/   # Custom templates per generator (separate git repo, gitignored)
+│   ├── openapi-generator-server-php-laravel/        # php-laravel custom templates
+│   ├── openapi-generator-server-php-lumen-package/  # php-lumen custom templates
+│   └── openapi-generator-server-php-lumen-default/  # php-lumen default (for reference)
+├── generated/                            # Generated library output (gitignored)
+│   ├── php-laravel/petstore/             # PetStore API (php-laravel generator)
+│   ├── php-laravel/tictactoe/            # TicTacToe API (php-laravel generator)
+│   └── php-lumen/petstore/               # PetStore API (php-lumen generator)
+│                                         # Future: versioned libs to be published to repository/artifactory
+└── projects/                             # Laravel demo applications
+    ├── laravel-api--php-laravel--replaced-tags/       # Demo: php-laravel generator
+    └── laravel-api--php-lumen--laravel-templates/     # Demo: php-lumen generator
 ```
 
-**IMPORTANT:** The three `openapi-generator-*` directories are **gitignored** and maintained as separate git repositories. Clone them separately to work with this project. This separation allows independent versioning and reuse across different projects.
+**IMPORTANT:** The three `openapi-generator-*` directories are **gitignored** and maintained as separate git repositories. Clone them separately to work with this project.
+
+**Key Principle: Separation of Concerns**
+- OpenAPI specs, generators, templates, and projects are independently versioned
+- Reusable across multiple projects
+- Clean comparison between different generator approaches
+- This separation allows independent versioning and reuse across different projects
 
 ### Current Demos
 

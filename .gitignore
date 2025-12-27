@@ -3,3 +3,4 @@
 /openapi-generator-server-templates/
 /openapi-generator-specs/
 .idea/
+/openapi-generator-default-php-laravel/

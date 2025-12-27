@@ -62,6 +62,11 @@
  * Create a new game
  * Creates a new TicTacToe game with specified configuration.
  *
+ * ONE CONTROLLER PER OPERATION PATTERN:
+ * - Uses CreateGameController (invokable controller)
+ * - Clear 1:1 mapping between OpenAPI operation and controller
+ * - Easier to generate, test, and maintain
+ *
  * Security Requirements:
  * - bearerHttpAuthentication (http): Bearer token using a JWT
  *   Format: Bearer token (JWT)
@@ -71,7 +76,7 @@
  *     \LaravelMaxApi\Http\Middleware\AuthenticateGame::class,  // Validate JWT token
  * ]);
  */
-$route = $router->POST('/games', [LaravelMaxApi\Http\Controllers\GameController::class, 'createGame'])
+$route = $router->POST('/games', LaravelMaxApi\Http\Controllers\CreateGameController::class)
     ->name('api.createGame');
 
 // SECURITY REQUIREMENT: This operation requires authentication
@@ -86,9 +91,43 @@ if ($router->hasMiddlewareGroup('api.middlewareGroup.createGame')) {
 
 
 /**
+ * GET /games
+ * List all games
+ * Retrieves a paginated list of all games with optional filtering.
+ *
+ * ONE CONTROLLER PER OPERATION PATTERN:
+ * - Uses ListGamesController (invokable controller)
+ *
+ * Security Requirements:
+ * - bearerHttpAuthentication (http): Bearer token using a JWT
+ *   Format: Bearer token (JWT)
+ *
+ * Suggested middleware group (in bootstrap/app.php):
+ * $middleware->group('api.middlewareGroup.listGames', [
+ *     \LaravelMaxApi\Http\Middleware\AuthenticateGame::class,  // Validate JWT token
+ * ]);
+ */
+$route = $router->GET('/games', LaravelMaxApi\Http\Controllers\ListGamesController::class)
+    ->name('api.listGames');
+
+// SECURITY REQUIREMENT: This operation requires authentication
+// Required security: bearerHttpAuthentication
+// Middleware group 'api.middlewareGroup.listGames' MUST be defined and contain middleware implementing:
+// - LaravelMaxApi\Security\bearerHttpAuthenticationInterface
+
+// Attach middleware group (if defined)
+if ($router->hasMiddlewareGroup('api.middlewareGroup.listGames')) {
+    $route->middleware('api.middlewareGroup.listGames');
+}
+
+
+/**
  * GET /games/{gameId}
  * Get game details
  * Retrieves detailed information about a specific game.
+ *
+ * ONE CONTROLLER PER OPERATION PATTERN:
+ * - Uses GetGameController (invokable controller)
  *
  * Security Requirements:
  * - bearerHttpAuthentication (http): Bearer token using a JWT
@@ -99,7 +138,7 @@ if ($router->hasMiddlewareGroup('api.middlewareGroup.createGame')) {
  *     \LaravelMaxApi\Http\Middleware\AuthenticateGame::class,  // Validate JWT token
  * ]);
  */
-$route = $router->GET('/games/{gameId}', [LaravelMaxApi\Http\Controllers\GameController::class, 'getGame'])
+$route = $router->GET('/games/{gameId}', LaravelMaxApi\Http\Controllers\GetGameController::class)
     ->name('api.getGame');
 
 // SECURITY REQUIREMENT: This operation requires authentication
@@ -110,6 +149,99 @@ $route = $router->GET('/games/{gameId}', [LaravelMaxApi\Http\Controllers\GameCon
 // Attach middleware group (if defined)
 if ($router->hasMiddlewareGroup('api.middlewareGroup.getGame')) {
     $route->middleware('api.middlewareGroup.getGame');
+}
+
+
+/**
+ * DELETE /games/{gameId}
+ * Delete a game
+ * Deletes a specific game. Only the game creator can delete their game.
+ *
+ * ONE CONTROLLER PER OPERATION PATTERN:
+ * - Uses DeleteGameController (invokable controller)
+ *
+ * Security Requirements:
+ * - bearerHttpAuthentication (http): Bearer token using a JWT
+ *   Format: Bearer token (JWT)
+ *
+ * Suggested middleware group (in bootstrap/app.php):
+ * $middleware->group('api.middlewareGroup.deleteGame', [
+ *     \LaravelMaxApi\Http\Middleware\AuthenticateGame::class,  // Validate JWT token
+ * ]);
+ */
+$route = $router->DELETE('/games/{gameId}', LaravelMaxApi\Http\Controllers\DeleteGameController::class)
+    ->name('api.deleteGame');
+
+// SECURITY REQUIREMENT: This operation requires authentication
+// Required security: bearerHttpAuthentication
+// Middleware group 'api.middlewareGroup.deleteGame' MUST be defined and contain middleware implementing:
+// - LaravelMaxApi\Security\bearerHttpAuthenticationInterface
+
+// Attach middleware group (if defined)
+if ($router->hasMiddlewareGroup('api.middlewareGroup.deleteGame')) {
+    $route->middleware('api.middlewareGroup.deleteGame');
+}
+
+
+/**
+ * GET /games/{gameId}/board
+ * Get game board
+ * Retrieves the current state of the game board.
+ *
+ * ONE CONTROLLER PER OPERATION PATTERN:
+ * - Uses GetBoardController (invokable controller)
+ *
+ * Security Requirements:
+ * - bearerHttpAuthentication (http): Bearer token using a JWT
+ *   Format: Bearer token (JWT)
+ *
+ * Suggested middleware group (in bootstrap/app.php):
+ * $middleware->group('api.middlewareGroup.getBoard', [
+ *     \LaravelMaxApi\Http\Middleware\AuthenticateGame::class,  // Validate JWT token
+ * ]);
+ */
+$route = $router->GET('/games/{gameId}/board', LaravelMaxApi\Http\Controllers\GetBoardController::class)
+    ->name('api.getBoard');
+
+// SECURITY REQUIREMENT: This operation requires authentication
+// Required security: bearerHttpAuthentication
+// Middleware group 'api.middlewareGroup.getBoard' MUST be defined and contain middleware implementing:
+// - LaravelMaxApi\Security\bearerHttpAuthenticationInterface
+
+// Attach middleware group (if defined)
+if ($router->hasMiddlewareGroup('api.middlewareGroup.getBoard')) {
+    $route->middleware('api.middlewareGroup.getBoard');
+}
+
+
+/**
+ * PUT /games/{gameId}/board/{row}/{column}
+ * Place a mark on the board
+ * Places a mark (X or O) at the specified position on the board.
+ *
+ * ONE CONTROLLER PER OPERATION PATTERN:
+ * - Uses PutSquareController (invokable controller)
+ *
+ * Security Requirements:
+ * - bearerHttpAuthentication (http): Bearer token using a JWT
+ *   Format: Bearer token (JWT)
+ *
+ * Suggested middleware group (in bootstrap/app.php):
+ * $middleware->group('api.middlewareGroup.putSquare', [
+ *     \LaravelMaxApi\Http\Middleware\AuthenticateGame::class,  // Validate JWT token
+ * ]);
+ */
+$route = $router->PUT('/games/{gameId}/board/{row}/{column}', LaravelMaxApi\Http\Controllers\PutSquareController::class)
+    ->name('api.putSquare');
+
+// SECURITY REQUIREMENT: This operation requires authentication
+// Required security: bearerHttpAuthentication
+// Middleware group 'api.middlewareGroup.putSquare' MUST be defined and contain middleware implementing:
+// - LaravelMaxApi\Security\bearerHttpAuthenticationInterface
+
+// Attach middleware group (if defined)
+if ($router->hasMiddlewareGroup('api.middlewareGroup.putSquare')) {
+    $route->middleware('api.middlewareGroup.putSquare');
 }
 
 

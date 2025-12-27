@@ -10,23 +10,31 @@ use LaravelMaxApi\Models\CreateGameRequestDto;
 use Illuminate\Http\JsonResponse;
 
 /**
- * GameController
+ * CreateGameController
  *
- * Auto-generated controller for Game API operations
- * Handles HTTP layer and delegates to business logic Handler
+ * Auto-generated controller for createGame operation
+ * One controller per operation pattern - easier to generate, better separation of concerns
+ *
+ * ADVANTAGES OF ONE CONTROLLER PER OPERATION:
+ * - Each controller is focused on a single responsibility
+ * - Easier to generate from OpenAPI spec (1:1 mapping operation -> controller)
+ * - Simpler testing (one test file per controller)
+ * - Better code organization and discoverability
+ * - No routing confusion (clear which controller handles which operation)
+ * - Each controller can have operation-specific dependencies
  *
  * RESPONSIBILITIES:
- * - Route handling
- * - Request validation (via FormRequest)
+ * - Route handling for POST /games
+ * - Request validation (via CreateGameRequest FormRequest)
  * - DTO conversion
- * - Delegation to Handler
+ * - Delegation to GameApi handler
  * - Resource response (Handler sets httpCode and headers)
  *
  * PSR-4 COMPLIANT: One class per file
  *
  * Note: No base Controller class needed in modern Laravel
  */
-class GameController
+class CreateGameController
 {
     /**
      * Inject business logic handler via constructor
@@ -51,9 +59,9 @@ class GameController
      * 5. Resource->withResponse() enforces status code and headers
      *
      * @param CreateGameRequest $request Auto-validated request
-     * @return JsonResponse GameResource (201) | ValidationErrorResource (422) | UnauthorizedErrorResource (401)
+     * @return JsonResponse CreateGame201Resource (201) | ValidationErrorResource (422) | UnauthorizedErrorResource (401)
      */
-    public function createGame(CreateGameRequest $request): JsonResponse
+    public function __invoke(CreateGameRequest $request): JsonResponse
     {
         // Convert validated data to typed DTO
         $dto = CreateGameRequestDto::fromArray($request->validated());
@@ -65,30 +73,5 @@ class GameController
         // - HTTP status code is set
         // - Required headers are present (e.g., Location for 201)
         return $resource->response($request);
-    }
-
-    /**
-     * Get game details
-     *
-     * OpenAPI operation: getGame
-     * HTTP Method: GET /games/{gameId}
-     *
-     * FLOW:
-     * 1. Route parameter binding provides $gameId
-     * 2. Handler fetches game (or returns error Resource)
-     * 3. Handler returns Resource with $httpCode set
-     * 4. Resource->withResponse() enforces status code
-     *
-     * @param string $gameId Unique game identifier from route parameter
-     * @return JsonResponse GameResource (200) | ValidationErrorResource (422)
-     */
-    public function getGame(string $gameId): JsonResponse
-    {
-        // Delegate to Handler - Handler MUST set $httpCode
-        $resource = $this->handler->getGame($gameId);
-
-        // Resource->withResponse() enforces HTTP status code is set
-        // Note: GET operations typically don't have special headers
-        return $resource->response(request());
     }
 }

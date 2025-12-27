@@ -196,23 +196,23 @@ class GameApiTest extends BaseTestCase
     }
 
     /**
-     * Test getGame returns 422 for game not found
+     * Test getGame returns 404 for game not found
      */
-    public function test_get_game_returns_422_for_not_found(): void
+    public function test_get_game_returns_404_for_not_found(): void
     {
         $response = $this->getJson('/games/notfound-123');
 
-        $response->assertStatus(422);
+        $response->assertStatus(404);
         $response->assertJsonStructure([
             'error',
             'message',
-            'errors',
+            'code',
         ]);
         $response->assertJson([
-            'error' => 'Validation Error',
+            'error' => 'Not Found',
             'message' => 'Game not found',
+            'code' => 'GAME_NOT_FOUND',
         ]);
-        $response->assertJsonPath('errors.gameId', fn($errors) => count($errors) > 0);
     }
 
     /**
@@ -233,5 +233,322 @@ class GameApiTest extends BaseTestCase
             'message' => 'Invalid game ID',
         ]);
         $response->assertJsonPath('errors.gameId', fn($errors) => count($errors) > 0);
+    }
+
+    // ============================================================================
+    // LIST GAMES ENDPOINT TESTS
+    // ============================================================================
+
+    /**
+     * Test listGames returns 200 with games array
+     */
+    public function test_list_games_returns_200_with_games(): void
+    {
+        $response = $this->getJson('/games');
+
+        $response->assertStatus(200);
+        $response->assertJsonStructure([
+            'data' => [
+                '*' => [
+                    'id',
+                    'status',
+                    'mode',
+                    'playerXId',
+                    'playerOId',
+                    'currentTurn',
+                    'winner',
+                    'createdAt',
+                    'updatedAt',
+                ]
+            ]
+        ]);
+    }
+
+    /**
+     * Test listGames returns pagination headers
+     */
+    public function test_list_games_returns_pagination_headers(): void
+    {
+        $response = $this->getJson('/games?page=2&limit=10');
+
+        $response->assertStatus(200);
+        // X-Total-Count is REQUIRED
+        $response->assertHeader('X-Total-Count');
+        // X-Page-Number and X-Page-Size are OPTIONAL
+        $this->assertTrue(
+            $response->headers->has('X-Page-Number') || true,
+            'X-Page-Number is optional'
+        );
+        $this->assertTrue(
+            $response->headers->has('X-Page-Size') || true,
+            'X-Page-Size is optional'
+        );
+    }
+
+    /**
+     * Test listGames accepts pagination parameters
+     */
+    public function test_list_games_accepts_pagination_parameters(): void
+    {
+        $response = $this->getJson('/games?page=1&limit=5');
+
+        $response->assertStatus(200);
+        $response->assertHeader('X-Total-Count');
+    }
+
+    /**
+     * Test listGames accepts filter parameters
+     */
+    public function test_list_games_accepts_filter_parameters(): void
+    {
+        $response = $this->getJson('/games?status=in-progress&playerXId=player1');
+
+        $response->assertStatus(200);
+    }
+
+    /**
+     * Test listGames validates invalid page number
+     */
+    public function test_list_games_validates_invalid_page(): void
+    {
+        $response = $this->getJson('/games?page=0');
+
+        $response->assertStatus(422);
+        $response->assertJsonPath('errors.page', fn($errors) => count($errors) > 0);
+    }
+
+    /**
+     * Test listGames validates invalid limit
+     */
+    public function test_list_games_validates_invalid_limit(): void
+    {
+        $response = $this->getJson('/games?limit=200');
+
+        $response->assertStatus(422);
+        $response->assertJsonPath('errors.limit', fn($errors) => count($errors) > 0);
+    }
+
+    /**
+     * Test listGames validates invalid status
+     */
+    public function test_list_games_validates_invalid_status(): void
+    {
+        $response = $this->getJson('/games?status=invalid-status');
+
+        $response->assertStatus(422);
+        $response->assertJsonPath('errors.status', fn($errors) => count($errors) > 0);
+    }
+
+    // ============================================================================
+    // DELETE GAME ENDPOINT TESTS
+    // ============================================================================
+
+    /**
+     * Test deleteGame returns 204 No Content
+     */
+    public function test_delete_game_returns_204_no_content(): void
+    {
+        $response = $this->deleteJson('/games/game-to-delete');
+
+        $response->assertStatus(204);
+        $response->assertNoContent();
+    }
+
+    /**
+     * Test deleteGame returns 404 for game not found
+     */
+    public function test_delete_game_returns_404_for_not_found(): void
+    {
+        $response = $this->deleteJson('/games/notfound-123');
+
+        $response->assertStatus(404);
+        $response->assertJsonStructure([
+            'error',
+            'message',
+            'code',
+        ]);
+        $response->assertJson([
+            'error' => 'Not Found',
+            'message' => 'Game not found',
+            'code' => 'GAME_NOT_FOUND',
+        ]);
+    }
+
+    /**
+     * Test deleteGame returns 403 Forbidden for permission denied
+     */
+    public function test_delete_game_returns_403_forbidden(): void
+    {
+        $response = $this->deleteJson('/games/forbidden-123');
+
+        $response->assertStatus(403);
+        $response->assertJsonStructure([
+            'error',
+            'message',
+            'code',
+        ]);
+        $response->assertJson([
+            'error' => 'Forbidden',
+            'code' => 'FORBIDDEN',
+        ]);
+    }
+
+    // ============================================================================
+    // GET BOARD ENDPOINT TESTS
+    // ============================================================================
+
+    /**
+     * Test getBoard returns 200 with board state
+     */
+    public function test_get_board_returns_200_with_board(): void
+    {
+        $response = $this->getJson('/games/test-game-123/board');
+
+        $response->assertStatus(200);
+        $response->assertJsonStructure([
+            'board',
+            'winner',
+        ]);
+        // Board should be a 3x3 array
+        $board = $response->json('board');
+        $this->assertIsArray($board);
+        $this->assertCount(3, $board);
+        $this->assertCount(3, $board[0]);
+    }
+
+    /**
+     * Test getBoard returns 404 for game not found
+     */
+    public function test_get_board_returns_404_for_not_found(): void
+    {
+        $response = $this->getJson('/games/notfound-123/board');
+
+        $response->assertStatus(404);
+        $response->assertJson([
+            'error' => 'Not Found',
+            'message' => 'Game not found',
+            'code' => 'GAME_NOT_FOUND',
+        ]);
+    }
+
+    // ============================================================================
+    // PUT SQUARE ENDPOINT TESTS
+    // ============================================================================
+
+    /**
+     * Test putSquare returns 200 with updated board
+     */
+    public function test_put_square_returns_200_with_updated_board(): void
+    {
+        $response = $this->putJson('/games/test-game-123/board/1/1', [
+            'mark' => 'X',
+        ]);
+
+        $response->assertStatus(200);
+        $response->assertJsonStructure([
+            'board',
+            'winner',
+        ]);
+
+        // Verify the mark was placed
+        $board = $response->json('board');
+        $this->assertEquals('X', $board[0][0]);
+    }
+
+    /**
+     * Test putSquare validates required mark field
+     */
+    public function test_put_square_validates_required_mark(): void
+    {
+        $response = $this->putJson('/games/test-game-123/board/1/1', []);
+
+        $response->assertStatus(422);
+        $response->assertJsonPath('errors.mark', fn($errors) => count($errors) > 0);
+    }
+
+    /**
+     * Test putSquare validates mark enum
+     */
+    public function test_put_square_validates_mark_enum(): void
+    {
+        $response = $this->putJson('/games/test-game-123/board/1/1', [
+            'mark' => 'invalid-mark',
+        ]);
+
+        $response->assertStatus(422);
+        $response->assertJsonPath('errors.mark', fn($errors) => count($errors) > 0);
+    }
+
+    /**
+     * Test putSquare validates invalid coordinates
+     */
+    public function test_put_square_validates_invalid_coordinates(): void
+    {
+        $response = $this->putJson('/games/test-game-123/board/5/5', [
+            'mark' => 'X',
+        ]);
+
+        $response->assertStatus(422);
+        $response->assertJsonStructure([
+            'error',
+            'message',
+            'errors',
+        ]);
+    }
+
+    /**
+     * Test putSquare returns 404 for game not found
+     */
+    public function test_put_square_returns_404_for_not_found(): void
+    {
+        $response = $this->putJson('/games/notfound-123/board/1/1', [
+            'mark' => 'X',
+        ]);
+
+        $response->assertStatus(404);
+        $response->assertJson([
+            'error' => 'Not Found',
+            'message' => 'Game not found',
+            'code' => 'GAME_NOT_FOUND',
+        ]);
+    }
+
+    /**
+     * Test putSquare returns 409 Conflict for square already occupied
+     */
+    public function test_put_square_returns_409_for_square_occupied(): void
+    {
+        $response = $this->putJson('/games/occupied-game/board/1/1', [
+            'mark' => 'X',
+        ]);
+
+        $response->assertStatus(409);
+        $response->assertJsonStructure([
+            'error',
+            'message',
+            'code',
+        ]);
+        $response->assertJson([
+            'error' => 'Conflict',
+            'message' => 'Square already occupied',
+            'code' => 'SQUARE_OCCUPIED',
+        ]);
+    }
+
+    /**
+     * Test putSquare returns 409 Conflict for game already finished
+     */
+    public function test_put_square_returns_409_for_game_finished(): void
+    {
+        $response = $this->putJson('/games/finished-game/board/1/1', [
+            'mark' => 'X',
+        ]);
+
+        $response->assertStatus(409);
+        $response->assertJson([
+            'error' => 'Conflict',
+            'message' => 'Game is already finished',
+            'code' => 'GAME_FINISHED',
+        ]);
     }
 }

@@ -4,7 +4,7 @@ namespace App\Providers;
 
 use Illuminate\Support\ServiceProvider;
 use LaravelMaxApi\Api\GameApi;
-use LaravelMaxApi\Api\Handlers\GameApiHandler;
+use App\Api\GameApiHandler;
 use Illuminate\Http\Resources\Json\JsonResource;
 
 class AppServiceProvider extends ServiceProvider
@@ -14,7 +14,9 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
-        // Bind generated API interfaces to implementations
+        // Bind generated API interface to application implementation
+        // Generated Library: GameApi interface (contract)
+        // Application: GameApiHandler (business logic)
         $this->app->bind(GameApi::class, GameApiHandler::class);
     }
 

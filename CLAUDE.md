@@ -377,14 +377,17 @@ To achieve these quality requirements, we're:
 **Progress Status:**
 
 **✅ php-laravel Generator:**
-- Custom templates created
+- Custom templates created (`openapi-generator-server-php-laravel`)
 - Meets all library requirements
 - Generates high-quality, contract-enforced libraries
+- Reference project: `laravel-api--php-laravel--replaced-tags`
 
-**🚧 php-lumen Generator:**
-- Analyzing generator capabilities
-- Creating custom templates
-- Goal: Match php-laravel quality (if generator supports it)
+**✅ php-lumen Generator:**
+- Custom templates created (`openapi-generator-server-php-lumen-package`)
+- Templates adapted to generate Laravel-compatible packages
+- Working demo project exists
+- Reference project: `laravel-api--php-lumen--laravel-templates`
+- Note: php-lumen generator repurposed to create Laravel packages (not Lumen apps)
 
 **🔮 Future Generators:**
 - php-symfony, php (generic), custom generators
@@ -430,12 +433,32 @@ openapi-generator-demos/
 
 #### laravel-api--php-laravel--replaced-tags
 
-Uses the out-of-the-box "php-laravel" OpenAPI generator with:
-- **Custom templates** from `openapi-generator-server-templates/`
+Uses the **php-laravel** OpenAPI generator with:
+- **Custom templates** from `openapi-generator-server-templates/openapi-generator-server-php-laravel/`
 - **Pre-processing script** that replaces OpenAPI spec tags for specific internal requirements
 - **Custom integration** showing Interface-First Architecture with Laravel dependency injection
+- Demonstrates the php-laravel generator's capability to create contract-enforced libraries
 
-More demo projects will be added to showcase different generators and approaches.
+**Key Features:**
+- One controller per operation pattern
+- Type-safe request/response DTOs
+- Interface-based business logic separation
+- Comprehensive validation
+
+#### laravel-api--php-lumen--laravel-templates
+
+Uses the **php-lumen** OpenAPI generator (repurposed for Laravel packages) with:
+- **Custom templates** from `openapi-generator-server-templates/openapi-generator-server-php-lumen-package/`
+- **Laravel package generation** using php-lumen generator's template structure
+- Demonstrates alternative approach: using php-lumen generator to create Laravel-compatible libraries
+
+**Key Features:**
+- php-lumen generator with Laravel-specific templates
+- Package-oriented code generation
+- Integration with Laravel 12
+- Docker-based development environment
+
+**Note:** Despite the "lumen" generator name, the custom templates produce Laravel-compatible packages, not Lumen applications.
 
 ### Key Concepts
 
@@ -451,10 +474,13 @@ More demo projects will be added to showcase different generators and approaches
 - Currently `generated/` is gitignored, but versioned artifacts are the long-term goal
 
 **Generated Code Integration:**
-- Generated code is organized by generator type in `generated/php-laravel/`
+- Generated code is organized by generator type:
+  - php-laravel: `generated/php-laravel/`
+  - php-lumen: `generated/php-lumen/`
 - Generated namespaces: `PetStoreApiV2\Server\` and `TicTacToeApiV2\Server\`
-- Autoloaded from `../generated/php-laravel/petstore/lib/` and `../generated/php-laravel/tictactoe/lib/` (see `composer.json`)
-- Business logic implementations live in `app/Api/PetStore/` and `app/Api/TicTacToe/`
+- **php-laravel project:** Autoloaded from `../generated/php-laravel/{api}/lib/` (see `composer.json`)
+- **php-lumen project:** Autoloaded from `../generated/php-lumen/{api}/lib/` (see `composer.json`)
+- Business logic implementations live in `app/Api/{ApiName}/`
 - Dependency injection bindings in `app/Providers/AppServiceProvider.php` map generated interfaces to business logic implementations
 
 ## Development Commands
@@ -465,33 +491,70 @@ From the repository root, you can use these convenience commands:
 
 ```bash
 make help                    # Show all available commands
+make validate-spec           # Validate OpenAPI specifications
+make clean                   # Clean generated files
+make test-complete           # Run complete test: validate → generate → test
+```
+
+#### php-laravel Generator Commands (Default Project)
+
+```bash
+# Code generation (php-laravel generator)
 make generate-server         # Generate all API server code (PetStore + TicTacToe)
 make generate-petshop        # Generate only PetStore API server
 make generate-tictactoe      # Generate only TicTacToe API server
-make validate-spec           # Validate OpenAPI specifications
-make test-complete           # Run complete test: validate → generate → test
 
-# Laravel commands (from root)
+# Laravel application (laravel-api--php-laravel--replaced-tags)
 make setup-laravel           # Setup Laravel application
 make start-laravel           # Start Laravel development environment
 make stop-laravel            # Stop Laravel development environment
-make test-laravel-phpunit    # Run PHPUnit tests
+make logs-laravel            # Show Laravel application logs
 make test-laravel            # Test API endpoints with curl
+make test-laravel-phpunit    # Run PHPUnit tests
 make dumpautoload            # Refresh composer autoload
-
-# Generator utilities (from root)
-make extract-templates       # Extract default PHP templates for reference
-make extract-laravel-templates # Extract default php-laravel templates for reference
-make check-version           # Verify generator version
 ```
 
-### Laravel Application
+#### php-lumen Generator Commands (Laravel Packages)
 
-**All Laravel development should be done via Docker.** The application uses docker-compose with services for app, webserver (nginx), database (MySQL), and Redis.
+```bash
+# Code generation (php-lumen generator → Laravel packages)
+make generate-lumen-laravel           # Generate all Laravel packages (PetStore + TicTacToe)
+make generate-lumen-laravel-petshop   # Generate only PetStore package
+make generate-lumen-laravel-tictactoe # Generate only TicTacToe package
 
-Navigate to the Laravel project directory:
+# Laravel application (laravel-api--php-lumen--laravel-templates)
+make setup-lumen-laravel       # Setup Laravel application
+make start-lumen-laravel       # Start Laravel development environment
+make stop-lumen-laravel        # Stop Laravel development environment
+make test-lumen-laravel-phpunit # Run PHPUnit tests
+```
+
+#### Generator Utilities
+
+```bash
+make extract-templates         # Extract default PHP templates
+make extract-laravel-templates # Extract default php-laravel templates
+make extract-lumen-templates   # Extract default php-lumen templates
+make check-version             # Verify generator version
+make update-generator-version  # Update to new generator version
+```
+
+### Laravel Applications
+
+**All Laravel development should be done via Docker.** Both demo applications use docker-compose with services for app, webserver (nginx), database (MySQL), and Redis.
+
+#### php-laravel Project
+
+Navigate to the php-laravel generator demo:
 ```bash
 cd projects/laravel-api--php-laravel--replaced-tags
+```
+
+#### php-lumen Project (Laravel Templates)
+
+Navigate to the php-lumen generator demo (using Laravel templates):
+```bash
+cd projects/laravel-api--php-lumen--laravel-templates
 ```
 
 **Setup and Start:**
@@ -540,9 +603,10 @@ docker run --rm -v $(pwd):/app -w /app -p 5173:5173 node:20 npm run dev
 
 ## Architecture
 
-### OpenAPI-Driven Development (Laravel Demo)
+### OpenAPI-Driven Development (Laravel Demos)
 
-The `laravel-api--php-laravel--replaced-tags` demo follows an **Interface-First Architecture** where:
+Both Laravel demo projects follow an **Interface-First Architecture**. The architecture is most fully developed in `laravel-api--php-laravel--replaced-tags`:
+
 
 1. **Generated Interfaces** define operation contracts (from OpenAPI spec)
    - Located in `generated/{api}/lib/Api/`
@@ -572,9 +636,9 @@ Each demo in `projects/` should showcase a different approach or generator confi
 4. Document the approach in the project's README
 5. Update this CLAUDE.md with information about the new demo
 
-### Adding a New API Operation (Laravel Demo)
+### Adding a New API Operation (Laravel Demos)
 
-When adding a new operation to an existing API in the Laravel demo:
+When adding a new operation to an existing API in either Laravel demo:
 
 1. Update the OpenAPI spec in `openapi-generator-specs/`
 2. Run pre-processing script (if using tag replacement)
@@ -584,11 +648,17 @@ When adding a new operation to an existing API in the Laravel demo:
 6. Register binding in `app/Providers/AppServiceProvider.php`
 7. Laravel routes and controllers are auto-generated
 
-### Configuration Files (Laravel Demo)
+### Configuration Files (Laravel Demos)
 
-**Generator Configurations** in `projects/laravel-api--php-laravel--replaced-tags/openapi-generator-configs/`:
+Both Laravel demo projects have generator configuration files:
+
+**php-laravel project:** `projects/laravel-api--php-laravel--replaced-tags/openapi-generator-configs/`
 - `petshop-server-config.json`
 - `tictactoe-server-config.json`
+
+**php-lumen project:** `projects/laravel-api--php-lumen--laravel-templates/openapi-generator-configs/`
+- `petshop-lumen-laravel-config.json`
+- `tictactoe-lumen-laravel-config.json`
 
 These JSON files configure the OpenAPI generator:
 - Package namespaces (`invokerPackage`, `modelPackage`, `apiPackage`)
@@ -598,18 +668,18 @@ These JSON files configure the OpenAPI generator:
 
 Each demo project may have its own configuration approach depending on the generator used.
 
-## Docker Services (Laravel Demo)
+## Docker Services (Laravel Demos)
 
-The Laravel demo application runs in a multi-container environment:
+Both Laravel demo applications run in multi-container environments with the same structure:
 
-- **app** (laravel-api): PHP 8.3-FPM application container
-- **webserver** (laravel-webserver): Nginx on port 8000
-- **db** (laravel-db): MySQL 8.0 on port 3306
+- **app**: PHP 8.3-FPM application container
+- **webserver**: Nginx on port 8000
+- **db**: MySQL 8.0 on port 3306
   - Database: `laravel_api`
   - User: `laravel` / Password: `password`
-- **redis** (laravel-redis): Redis on port 6379
+- **redis**: Redis on port 6379
 
-Application is accessible at: `http://localhost:8000`
+Applications are accessible at: `http://localhost:8000` (only one can run at a time on the same ports)
 
 ## Initial Setup
 
@@ -651,5 +721,5 @@ This repository structure uses multiple independent git repositories co-located 
 - After regenerating code in a Laravel project, always run `make dumpautoload` to update composer's autoload mappings
 - Generated code should never be manually edited; customize via templates in `openapi-generator-server-templates/`
 - Business logic goes in `app/Api/` implementations, not in generated code
-- The Laravel demo uses PHP 8.2+ features (typed properties, constructor property promotion, etc.)
-- Tag replacement pre-processing allows customization of OpenAPI specs before code generation
+- Both Laravel demos use PHP 8.3+ features (typed properties, constructor property promotion, etc.)
+- Tag replacement pre-processing allows customization of OpenAPI specs before code generation (used in php-laravel demo)

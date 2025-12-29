@@ -1,0 +1,13 @@
+[project]
+ticketsPath = "tickets"
+id = "openapi-generator-demos"
+name = "openapi-generator-demos"
+code = "GENDE"
+startNumber = 1
+counterFile = ".mdt-next"
+description = ""
+repository = "https://github.com/vatvit/openapi-generator-demos"
+path = "."
+
+[document]
+excludeFolders = [ "tickets" ]

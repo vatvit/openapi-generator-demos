@@ -1,7 +1,7 @@
 <?php declare(strict_types=1);
 
 {{>licenseInfo}}
-namespace {{{apiPackage}}}\Api;
+namespace {{{apiPackage}}}\Handlers;
 
 {{#imports}}
 use {{import}};
@@ -15,7 +15,7 @@ use {{apiPackage}}\Http\Resources\{{operationIdCamelCase}}{{code}}Resource;
 {{/operations}}
 
 /**
- * {{classname}}Api
+ * {{classname}}Handler
  *
  * Handler interface - implement this to provide business logic
  * Returns Resources with compile-time type safety via union types
@@ -26,7 +26,7 @@ use {{apiPackage}}\Http\Resources\{{operationIdCamelCase}}{{code}}Resource;
 {{/operation}}
 {{/operations}}
  */
-interface {{classname}}Api
+interface {{classname}}Handler
 {
 {{#operations}}
 {{#operation}}

@@ -38,7 +38,7 @@ class {{classname}}
      * {{description}}
      */
 {{/description}}
-    public {{#isNullable}}?{{/isNullable}}{{^isNullable}}{{^required}}{{^defaultValue}}?{{/defaultValue}}{{/required}}{{/isNullable}}{{{dataType}}} ${{name}}{{#defaultValue}} = {{{defaultValue}}}{{/defaultValue}}{{^required}}{{^defaultValue}} = null{{/defaultValue}}{{/required}};
+    public {{#isNullable}}?{{/isNullable}}{{^isNullable}}{{^required}}{{^defaultValue}}?{{/defaultValue}}{{/required}}{{/isNullable}}{{{dataType}}} ${{nameInCamelCase}}{{#defaultValue}} = {{{defaultValue}}}{{/defaultValue}}{{^required}}{{^defaultValue}} = null{{/defaultValue}}{{/required}};
 {{/vars}}
 
     /**
@@ -46,11 +46,11 @@ class {{classname}}
      */
     public function __construct(
 {{#vars}}
-        {{#isNullable}}?{{/isNullable}}{{^isNullable}}{{^required}}{{^defaultValue}}?{{/defaultValue}}{{/required}}{{/isNullable}}{{{dataType}}} ${{name}}{{#defaultValue}} = {{{defaultValue}}}{{/defaultValue}}{{^required}}{{^defaultValue}} = null{{/defaultValue}}{{/required}},
+        {{#isNullable}}?{{/isNullable}}{{^isNullable}}{{^required}}{{^defaultValue}}?{{/defaultValue}}{{/required}}{{/isNullable}}{{{dataType}}} ${{nameInCamelCase}}{{#defaultValue}} = {{{defaultValue}}}{{/defaultValue}}{{^required}}{{^defaultValue}} = null{{/defaultValue}}{{/required}},
 {{/vars}}
     ) {
 {{#vars}}
-        $this->{{name}} = ${{name}};
+        $this->{{nameInCamelCase}} = ${{nameInCamelCase}};
 {{/vars}}
     }
 
@@ -64,7 +64,12 @@ class {{classname}}
     {
         return new self(
 {{#vars}}
-            {{name}}: $data['{{baseName}}']{{^required}} ?? null{{/required}},
+{{#isDateTime}}
+            {{nameInCamelCase}}: isset($data['{{baseName}}']) ? new \DateTime($data['{{baseName}}']) : {{^required}}null{{/required}}{{#required}}throw new \InvalidArgumentException('{{baseName}} is required'){{/required}},
+{{/isDateTime}}
+{{^isDateTime}}
+            {{nameInCamelCase}}: $data['{{baseName}}']{{^required}} ?? null{{/required}},
+{{/isDateTime}}
 {{/vars}}
         );
     }
@@ -78,7 +83,12 @@ class {{classname}}
     {
         return [
 {{#vars}}
-            '{{baseName}}' => $this->{{name}},
+{{#isDateTime}}
+            '{{baseName}}' => $this->{{nameInCamelCase}}?->format(\DateTime::ATOM),
+{{/isDateTime}}
+{{^isDateTime}}
+            '{{baseName}}' => $this->{{nameInCamelCase}},
+{{/isDateTime}}
 {{/vars}}
         ];
     }

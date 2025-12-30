@@ -4,7 +4,7 @@ namespace Tests\Feature;
 
 use TictactoeApi\Http\Controllers\CreateGameController;
 use TictactoeApi\Http\Requests\CreateGameFormRequest;
-use TictactoeApi\Api\GameManagementApiApi;
+use TictactoeApi\Handlers\GameManagementApiHandler;  // Handler interface (GameManagementApi + Handler)
 use Illuminate\Foundation\Testing\TestCase;
 use Illuminate\Http\Request;
 
@@ -24,8 +24,8 @@ class CreateGameControllerTest extends TestCase
     public function test_controller_accepts_form_request(): void
     {
         // Verify controller __invoke method signature
-        // Create a mock handler since GameManagementApiApi is user-implemented
-        $mockHandler = $this->createMock(GameManagementApiApi::class);
+        // Create a mock handler since GameManagementApiHandler is user-implemented
+        $mockHandler = $this->createMock(GameManagementApiHandler::class);
         $controller = new CreateGameController($mockHandler);
 
         $reflection = new \ReflectionMethod($controller, '__invoke');
@@ -110,8 +110,8 @@ class CreateGameControllerTest extends TestCase
         $type = $param->getType();
         $this->assertNotNull($type,
             'Constructor parameter should have type hint');
-        $this->assertEquals('TictactoeApi\Api\GameManagementApiApi', $type->getName(),
-            'Handler should be typed as GameManagementApiApi interface');
+        $this->assertEquals('TictactoeApi\Handlers\GameManagementApiHandler', $type->getName(),
+            'Handler should be typed as GameManagementApiHandler interface (GameManagementApi + Handler)');
     }
 
     /**

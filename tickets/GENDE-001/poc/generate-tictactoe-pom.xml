@@ -30,7 +30,7 @@
                             <goal>generate</goal>
                         </goals>
                         <configuration>
-                            <inputSpec>/workspace/openapi-generator-specs/tictactoe/tictactoe.json</inputSpec>
+                            <inputSpec>${project.basedir}/openapi-generator-specs/tictactoe/tictactoe.json</inputSpec>
                             <generatorName>laravel-max</generatorName>
                             <output>${project.basedir}/../generated/tictactoe</output>
                             <configOptions>

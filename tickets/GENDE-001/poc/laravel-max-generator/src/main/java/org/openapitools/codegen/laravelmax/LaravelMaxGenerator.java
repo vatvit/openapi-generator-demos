@@ -32,8 +32,8 @@ public class LaravelMaxGenerator extends AbstractPhpCodegen implements CodegenCo
   // Store FormRequest generation tasks for custom processing
   private List<Map<String, Object>> formRequestGenerationTasks = new ArrayList<>();
 
-  // Store all operations for routes generation
-  private List<CodegenOperation> allOperations = new ArrayList<>();
+  // Store all operations for routes generation (keyed by operationId to prevent duplicates)
+  private Map<String, CodegenOperation> allOperationsMap = new LinkedHashMap<>();
 
   // Store enum models and their allowable values for validation rules
   private Map<String, List<String>> enumModels = new HashMap<>();
@@ -43,6 +43,15 @@ public class LaravelMaxGenerator extends AbstractPhpCodegen implements CodegenCo
 
   // Track if security schemes have been extracted
   private boolean securitySchemesExtracted = false;
+
+  // Store Query Parameter DTO generation tasks
+  private List<Map<String, Object>> queryParamsDtoTasks = new ArrayList<>();
+
+  // Store Error Resource generation tasks
+  private List<Map<String, Object>> errorResourceTasks = new ArrayList<>();
+
+  // Track if error resources have been generated
+  private boolean errorResourcesGenerated = false;
 
   /**
    * Configures the type of generator.
@@ -151,10 +160,36 @@ public class LaravelMaxGenerator extends AbstractPhpCodegen implements CodegenCo
     for (Map<String, Object> task : resourceGenerationTasks) {
       String fileName = (String) task.get("fileName");
       String outputDir = (String) task.get("outputDir");
+      String templateName = (String) task.get("templateName");
       Map<String, Object> data = (Map<String, Object>) task.get("data");
+      Boolean isCollection = (Boolean) task.get("isCollection");
 
-      // Generate Resource PHP code
-      String content = generateResourceContent(data);
+      String content;
+
+      // Use template for ResourceCollection, otherwise use legacy generator
+      if (isCollection != null && isCollection && templateName != null && templateName.contains("collection")) {
+        try {
+          String templatePath = "laravel-max/" + templateName;
+          InputStream templateStream = this.getClass().getClassLoader().getResourceAsStream(templatePath);
+
+          if (templateStream == null) {
+            throw new IOException("Template not found: " + templatePath);
+          }
+
+          String templateContent = new String(templateStream.readAllBytes(), StandardCharsets.UTF_8);
+
+          // Process with mustache engine
+          com.samskivert.mustache.Template template =
+              com.samskivert.mustache.Mustache.compiler().escapeHTML(false).compile(templateContent);
+
+          content = template.execute(data);
+        } catch (IOException e) {
+          throw new RuntimeException("Failed to process template for: " + fileName, e);
+        }
+      } else {
+        // Generate Resource PHP code using legacy generator
+        content = generateResourceContent(data);
+      }
 
       // Write file
       File dir = new File(outputDir);
@@ -208,11 +243,12 @@ public class LaravelMaxGenerator extends AbstractPhpCodegen implements CodegenCo
     sb.append(" * Response: ").append(data.get("code")).append(" ").append(data.get("message")).append("\n");
     sb.append(" * Schema: ").append(baseType).append("\n");
 
-    List<CodegenProperty> headers = (List<CodegenProperty>) data.get("headers");
+    @SuppressWarnings("unchecked")
+    List<Map<String, Object>> headers = (List<Map<String, Object>>) data.get("headers");
     if (headers != null) {
-      for (CodegenProperty header : headers) {
-        sb.append(" * Header: ").append(header.baseName).append(" ");
-        sb.append(header.required ? "(REQUIRED)" : "(optional)").append("\n");
+      for (Map<String, Object> header : headers) {
+        sb.append(" * Header: ").append(header.get("headerName")).append(" ");
+        sb.append(Boolean.TRUE.equals(header.get("required")) ? "(REQUIRED)" : "(optional)").append("\n");
       }
     }
     sb.append(" */\n");
@@ -229,12 +265,12 @@ public class LaravelMaxGenerator extends AbstractPhpCodegen implements CodegenCo
 
     // Header properties
     if (headers != null) {
-      for (CodegenProperty header : headers) {
+      for (Map<String, Object> header : headers) {
         sb.append("    /**\n");
-        sb.append("     * ").append(header.baseName).append(" header ");
-        sb.append(header.required ? "(REQUIRED)" : "").append("\n");
+        sb.append("     * ").append(header.get("headerName")).append(" header ");
+        sb.append(Boolean.TRUE.equals(header.get("required")) ? "(REQUIRED)" : "").append("\n");
         sb.append("     */\n");
-        sb.append("    public ?string $").append(header.nameInCamelCase).append(" = null;\n\n");
+        sb.append("    public ?string $").append(header.get("propertyName")).append(" = null;\n\n");
       }
     }
 
@@ -287,20 +323,23 @@ public class LaravelMaxGenerator extends AbstractPhpCodegen implements CodegenCo
 
     // Header validation/setting
     if (headers != null) {
-      for (CodegenProperty header : headers) {
-        if (header.required) {
-          sb.append("        // ").append(header.baseName).append(" header is REQUIRED\n");
-          sb.append("        if ($this->").append(header.nameInCamelCase).append(" === null) {\n");
+      for (Map<String, Object> header : headers) {
+        String headerName = (String) header.get("headerName");
+        String propertyName = (String) header.get("propertyName");
+        boolean isRequired = Boolean.TRUE.equals(header.get("required"));
+        if (isRequired) {
+          sb.append("        // ").append(headerName).append(" header is REQUIRED\n");
+          sb.append("        if ($this->").append(propertyName).append(" === null) {\n");
           sb.append("            throw new \\RuntimeException(\n");
-          sb.append("                '").append(header.baseName).append(" header is REQUIRED for ");
+          sb.append("                '").append(headerName).append(" header is REQUIRED for ");
           sb.append(data.get("operationId")).append(" (HTTP ").append(data.get("code")).append(") but was not set'\n");
           sb.append("            );\n");
           sb.append("        }\n");
-          sb.append("        $response->header('").append(header.baseName).append("', $this->").append(header.nameInCamelCase).append(");\n\n");
+          sb.append("        $response->header('").append(headerName).append("', $this->").append(propertyName).append(");\n\n");
         } else {
-          sb.append("        // ").append(header.baseName).append(" header is optional\n");
-          sb.append("        if ($this->").append(header.nameInCamelCase).append(" !== null) {\n");
-          sb.append("            $response->header('").append(header.baseName).append("', $this->").append(header.nameInCamelCase).append(");\n");
+          sb.append("        // ").append(headerName).append(" header is optional\n");
+          sb.append("        if ($this->").append(propertyName).append(" !== null) {\n");
+          sb.append("            $response->header('").append(headerName).append("', $this->").append(propertyName).append(");\n");
           sb.append("        }\n\n");
         }
       }
@@ -360,7 +399,7 @@ public class LaravelMaxGenerator extends AbstractPhpCodegen implements CodegenCo
     sb.append("namespace ").append(data.get("apiPackage")).append("\\Http\\Controllers;\n\n");
 
     // Use statements
-    sb.append("use ").append(data.get("apiPackage")).append("\\Api\\").append(data.get("apiClassName")).append(";\n");
+    sb.append("use ").append(data.get("apiPackage")).append("\\Handlers\\").append(data.get("apiClassName")).append(";\n");
 
     // Add FormRequest or Model import if present
     CodegenParameter bodyParam = (CodegenParameter) data.get("bodyParam");
@@ -375,6 +414,9 @@ public class LaravelMaxGenerator extends AbstractPhpCodegen implements CodegenCo
       if (importClassName != null) {
         sb.append("use ").append(data.get("modelPackage")).append("\\").append(importClassName).append(";\n");
       }
+    } else {
+      // Use base Request when no FormRequest is needed
+      sb.append("use Illuminate\\Http\\Request;\n");
     }
 
     sb.append("use Illuminate\\Http\\JsonResponse;\n\n");
@@ -428,17 +470,19 @@ public class LaravelMaxGenerator extends AbstractPhpCodegen implements CodegenCo
 
     sb.append("    public function __invoke(\n");
 
-    // Inject FormRequest as first parameter if present
+    // Always inject Request as first parameter (FormRequest or base Request)
     List<CodegenParameter> pathParams = (List<CodegenParameter>) data.get("pathParams");
     boolean hasPathParams = pathParams != null && !pathParams.isEmpty();
 
     if (formRequestClassName != null) {
       sb.append("        ").append(formRequestClassName).append(" $request");
-      if (hasPathParams) {
-        sb.append(",\n");
-      } else {
-        sb.append("\n");
-      }
+    } else {
+      sb.append("        Request $request");
+    }
+    if (hasPathParams) {
+      sb.append(",\n");
+    } else {
+      sb.append("\n");
     }
 
     // Add path parameters
@@ -520,6 +564,204 @@ public class LaravelMaxGenerator extends AbstractPhpCodegen implements CodegenCo
         writer.write(content);
       } catch (IOException e) {
         throw new RuntimeException("Failed to write FormRequest file: " + fileName, e);
+      }
+    }
+  }
+
+  /**
+   * Write Query Parameter DTO files
+   */
+  private void writeQueryParamsDtoFiles() {
+    for (Map<String, Object> task : queryParamsDtoTasks) {
+      String fileName = (String) task.get("fileName");
+      String outputDir = (String) task.get("outputDir");
+      Map<String, Object> data = (Map<String, Object>) task.get("data");
+
+      try {
+        // Load and process template
+        String templatePath = "laravel-max/query-params.mustache";
+        InputStream templateStream = this.getClass().getClassLoader().getResourceAsStream(templatePath);
+
+        if (templateStream == null) {
+          throw new IOException("Template not found: " + templatePath);
+        }
+
+        String templateContent = new String(templateStream.readAllBytes(), StandardCharsets.UTF_8);
+
+        // Process with mustache engine (disable HTML escaping)
+        com.samskivert.mustache.Template template =
+            com.samskivert.mustache.Mustache.compiler().escapeHTML(false).compile(templateContent);
+
+        String content = template.execute(data);
+
+        // Write file
+        File dir = new File(outputDir);
+        if (!dir.exists()) {
+          dir.mkdirs();
+        }
+
+        File file = new File(dir, fileName);
+        try (FileWriter writer = new FileWriter(file)) {
+          writer.write(content);
+        }
+      } catch (IOException e) {
+        throw new RuntimeException("Failed to write Query Params DTO file: " + fileName, e);
+      }
+    }
+  }
+
+  /**
+   * Get PHP type from CodegenParameter
+   */
+  private String getPhpType(CodegenParameter param) {
+    if (param.isArray) {
+      return "array";
+    }
+    if ("int".equals(param.dataType) || "integer".equals(param.dataType)) {
+      return param.required ? "int" : "?int";
+    }
+    if ("float".equals(param.dataType) || "double".equals(param.dataType) || "number".equals(param.dataType)) {
+      return param.required ? "float" : "?float";
+    }
+    if ("bool".equals(param.dataType) || "boolean".equals(param.dataType)) {
+      return param.required ? "bool" : "?bool";
+    }
+    // Default to string
+    return param.required ? "string" : "?string";
+  }
+
+  /**
+   * Format default value for PHP
+   *
+   * Handles cases where OpenAPI Generator may have already quoted the value
+   * or where HTML entities may have been introduced.
+   */
+  private String formatDefaultValue(CodegenParameter param) {
+    if (param.defaultValue == null || param.defaultValue.isEmpty()) {
+      return "null";
+    }
+
+    String value = param.defaultValue;
+
+    // Decode HTML entities that may have been introduced by OpenAPI Generator
+    value = decodeHtmlEntities(value);
+
+    // Handle different types
+    if ("int".equals(param.dataType) || "integer".equals(param.dataType)) {
+      return value;
+    }
+    if ("float".equals(param.dataType) || "double".equals(param.dataType) || "number".equals(param.dataType)) {
+      return value;
+    }
+    if ("bool".equals(param.dataType) || "boolean".equals(param.dataType)) {
+      return "true".equalsIgnoreCase(value) ? "true" : "false";
+    }
+    if (param.isArray) {
+      return "[]";
+    }
+
+    // String value - check if already quoted (OpenAPI Generator may pre-quote)
+    if ((value.startsWith("'") && value.endsWith("'")) ||
+        (value.startsWith("\"") && value.endsWith("\""))) {
+      // Already quoted, convert to single-quoted PHP string
+      String unquoted = value.substring(1, value.length() - 1);
+      return "'" + unquoted.replace("'", "\\'") + "'";
+    }
+
+    // Wrap in quotes
+    return "'" + value.replace("'", "\\'") + "'";
+  }
+
+  /**
+   * Decode common HTML entities to their character equivalents
+   */
+  private String decodeHtmlEntities(String value) {
+    if (value == null) {
+      return null;
+    }
+    return value
+        .replace("&#39;", "'")
+        .replace("&#34;", "\"")
+        .replace("&quot;", "\"")
+        .replace("&apos;", "'")
+        .replace("&lt;", "<")
+        .replace("&gt;", ">")
+        .replace("&amp;", "&");
+  }
+
+  /**
+   * Write Error Resource files
+   * Generates one Resource per error schema (401, 403, 404, 422)
+   */
+  private void writeErrorResourceFiles() {
+    if (errorResourcesGenerated) {
+      return; // Already generated
+    }
+    errorResourcesGenerated = true;
+
+    // Define standard HTTP error resources
+    Map<Integer, String[]> errorResources = new LinkedHashMap<>();
+    // Format: code -> [schemaName, httpStatus, defaultMessage, hasCode, hasErrors]
+    errorResources.put(400, new String[]{"BadRequestError", "Bad Request", "The request was invalid", "true", "false"});
+    errorResources.put(401, new String[]{"UnauthorizedError", "Unauthorized", "Authentication required", "false", "false"});
+    errorResources.put(403, new String[]{"ForbiddenError", "Forbidden", "Access denied", "true", "false"});
+    errorResources.put(404, new String[]{"NotFoundError", "Not Found", "The requested resource was not found", "true", "false"});
+    errorResources.put(422, new String[]{"ValidationError", "Unprocessable Entity", "Validation failed", "true", "true"});
+    errorResources.put(409, new String[]{"ConflictError", "Conflict", "The request conflicts with current state", "true", "false"});
+    errorResources.put(500, new String[]{"InternalServerError", "Internal Server Error", "An unexpected error occurred", "true", "false"});
+
+    for (Map.Entry<Integer, String[]> entry : errorResources.entrySet()) {
+      int httpCode = entry.getKey();
+      String[] data = entry.getValue();
+      String schemaName = data[0];
+      String httpStatus = data[1];
+      String defaultMessage = data[2];
+      boolean hasCode = "true".equals(data[3]);
+      boolean hasErrors = "true".equals(data[4]);
+
+      String className = schemaName + "Resource";
+      String fileName = className + ".php";
+
+      try {
+        Map<String, Object> templateData = new HashMap<>();
+        templateData.put("invokerPackage", invokerPackage);
+        templateData.put("className", className);
+        templateData.put("schemaName", schemaName);
+        templateData.put("httpCode", httpCode);
+        templateData.put("httpStatus", httpStatus);
+        templateData.put("defaultMessage", defaultMessage);
+        templateData.put("defaultCode", schemaName.toUpperCase().replace("ERROR", ""));
+        templateData.put("hasCode", hasCode);
+        templateData.put("hasErrors", hasErrors);
+
+        // Load and process template
+        String templatePath = "laravel-max/error-resource.mustache";
+        InputStream templateStream = this.getClass().getClassLoader().getResourceAsStream(templatePath);
+
+        if (templateStream == null) {
+          throw new IOException("Template not found: " + templatePath);
+        }
+
+        String templateContent = new String(templateStream.readAllBytes(), StandardCharsets.UTF_8);
+
+        // Process with mustache engine
+        com.samskivert.mustache.Template template =
+            com.samskivert.mustache.Mustache.compiler().escapeHTML(false).compile(templateContent);
+
+        String content = template.execute(templateData);
+
+        // Write file
+        File resourceDir = new File(outputFolder, "app/Http/Resources");
+        if (!resourceDir.exists()) {
+          resourceDir.mkdirs();
+        }
+
+        File resourceFile = new File(resourceDir, fileName);
+        try (FileWriter writer = new FileWriter(resourceFile)) {
+          writer.write(content);
+        }
+      } catch (Exception e) {
+        throw new RuntimeException("Failed to write error resource file: " + fileName, e);
       }
     }
   }
@@ -626,7 +868,7 @@ public class LaravelMaxGenerator extends AbstractPhpCodegen implements CodegenCo
 
         // Process with mustache engine
         com.samskivert.mustache.Template template =
-            com.samskivert.mustache.Mustache.compiler().compile(templateContent);
+            com.samskivert.mustache.Mustache.compiler().escapeHTML(false).compile(templateContent);
 
         String content = template.execute(templateData);
 
@@ -647,6 +889,73 @@ public class LaravelMaxGenerator extends AbstractPhpCodegen implements CodegenCo
   }
 
   /**
+   * Write middleware stub files (one per security scheme)
+   * These are example implementations that developers can customize
+   */
+  private void writeMiddlewareStubFiles() {
+    if (securitySchemes.isEmpty()) {
+      return;
+    }
+
+    for (Map<String, Object> scheme : securitySchemes) {
+      try {
+        String schemeName = (String) scheme.get("name");
+        String interfaceName = (String) scheme.get("interfaceName");
+
+        // Generate middleware class name from scheme name
+        // bearerHttpAuthentication -> AuthenticateBearerHttp
+        String middlewareClassName = "Authenticate" + toModelName(schemeName);
+        String fileName = middlewareClassName + ".php";
+
+        // Add template data
+        Map<String, Object> templateData = new HashMap<>(scheme);
+        templateData.put("invokerPackage", invokerPackage);
+        templateData.put("schemeName", schemeName);
+        templateData.put("interfaceName", interfaceName);
+        templateData.put("middlewareClassName", middlewareClassName);
+
+        // Add apiKeyIn location flags for template conditionals
+        if ("header".equalsIgnoreCase((String) scheme.get("apiKeyIn"))) {
+          templateData.put("apiKeyInHeader", true);
+        } else if ("query".equalsIgnoreCase((String) scheme.get("apiKeyIn"))) {
+          templateData.put("apiKeyInQuery", true);
+        } else if ("cookie".equalsIgnoreCase((String) scheme.get("apiKeyIn"))) {
+          templateData.put("apiKeyInCookie", true);
+        }
+
+        // Load and process template
+        String templatePath = "laravel-max/middleware-stub.mustache";
+        InputStream templateStream = this.getClass().getClassLoader().getResourceAsStream(templatePath);
+
+        if (templateStream == null) {
+          throw new IOException("Template not found: " + templatePath);
+        }
+
+        String templateContent = new String(templateStream.readAllBytes(), StandardCharsets.UTF_8);
+
+        // Process with mustache engine
+        com.samskivert.mustache.Template template =
+            com.samskivert.mustache.Mustache.compiler().escapeHTML(false).compile(templateContent);
+
+        String content = template.execute(templateData);
+
+        // Write file
+        File middlewareDir = new File(outputFolder, "app/Http/Middleware");
+        if (!middlewareDir.exists()) {
+          middlewareDir.mkdirs();
+        }
+
+        File middlewareFile = new File(middlewareDir, fileName);
+        try (FileWriter writer = new FileWriter(middlewareFile)) {
+          writer.write(content);
+        }
+      } catch (Exception e) {
+        throw new RuntimeException("Failed to write middleware stub file", e);
+      }
+    }
+  }
+
+  /**
    * Write SecurityValidator file
    */
   private void writeSecurityValidatorFile() {
@@ -658,7 +967,7 @@ public class LaravelMaxGenerator extends AbstractPhpCodegen implements CodegenCo
       Map<String, Object> templateData = new HashMap<>();
       templateData.put("invokerPackage", invokerPackage);
       templateData.put("securitySchemes", securitySchemes);
-      templateData.put("operations", allOperations);
+      templateData.put("operations", new ArrayList<>(allOperationsMap.values()));
 
       // Load and process template
       String templatePath = "laravel-max/security-validator.mustache";
@@ -672,7 +981,7 @@ public class LaravelMaxGenerator extends AbstractPhpCodegen implements CodegenCo
 
       // Process with mustache engine
       com.samskivert.mustache.Template template =
-          com.samskivert.mustache.Mustache.compiler().compile(templateContent);
+          com.samskivert.mustache.Mustache.compiler().escapeHTML(false).compile(templateContent);
 
       String content = template.execute(templateData);
 
@@ -695,7 +1004,7 @@ public class LaravelMaxGenerator extends AbstractPhpCodegen implements CodegenCo
    * Write routes file with all collected operations
    */
   private void writeRoutesFile() {
-    if (allOperations.isEmpty()) {
+    if (allOperationsMap.isEmpty()) {
       return; // No operations to write
     }
 
@@ -719,6 +1028,10 @@ public class LaravelMaxGenerator extends AbstractPhpCodegen implements CodegenCo
 
   /**
    * Generate routes PHP content
+   *
+   * Uses conditional middleware pattern from GOAL_MAX.md:
+   * Routes only have middleware attached if middleware group is defined.
+   * This allows application to opt-in to security per operation.
    */
   private String generateRoutesContent() {
     StringBuilder sb = new StringBuilder();
@@ -736,47 +1049,110 @@ public class LaravelMaxGenerator extends AbstractPhpCodegen implements CodegenCo
     sb.append(" * DO NOT EDIT - This file was generated by the laravel-max generator\n");
     sb.append(" */\n\n");
 
-    sb.append("use Illuminate\\Support\\Facades\\Route;\n");
-
-    // Add use statements for all controllers (deduplicated)
-    Set<String> controllerNames = new LinkedHashSet<>();
-    for (CodegenOperation op : allOperations) {
-      String controllerName = toModelName(op.operationId) + "Controller";
-      controllerNames.add(controllerName);
-    }
-    for (String controllerName : controllerNames) {
-      sb.append("use ").append(apiPackage).append("\\Http\\Controllers\\").append(controllerName).append(";\n");
-    }
-
-    sb.append("\n/**\n");
-    sb.append(" * Auto-generated API Routes\n");
+    // File expects $router variable from Route::group closure
+    sb.append("/**\n");
+    sb.append(" * GENERATED API ROUTES\n");
     sb.append(" *\n");
-    sb.append(" * Generated from OpenAPI spec: ").append(version).append("\n");
+    sb.append(" * This file is generated from OpenAPI specification.\n");
+    sb.append(" * Include this file from your Laravel routes/api.php within a Route::group.\n");
+    sb.append(" *\n");
+    sb.append(" * Routes will use middleware groups with 'api.security.' prefix if they are defined.\n");
+    sb.append(" * Define these groups in bootstrap/app.php when you need security for an operation.\n");
+    sb.append(" *\n");
+    sb.append(" * Usage in routes/api.php:\n");
+    sb.append(" * ```php\n");
+    sb.append(" * Route::group(['prefix' => 'v1', 'middleware' => ['api']], function ($router) {\n");
+    sb.append(" *     require base_path('vendor/").append(invokerPackage.toLowerCase().replace("\\", "/")).append("/routes/api.php');\n");
+    sb.append(" * });\n");
+    sb.append(" * ```\n");
+    sb.append(" *\n");
+    sb.append(" * MIDDLEWARE USAGE:\n");
+    sb.append(" *\n");
+    sb.append(" * Routes will automatically use middleware groups named 'api.security.{operationId}'\n");
+    sb.append(" * if they are defined in your application. Define middleware groups in bootstrap/app.php:\n");
+    sb.append(" *\n");
+    sb.append(" * ```php\n");
+    sb.append(" * ->withMiddleware(function (Middleware $middleware): void {\n");
+    sb.append(" *     $middleware->group('api.security.createGame', [\n");
+    sb.append(" *         \\").append(invokerPackage).append("\\Http\\Middleware\\AuthenticateBearerHttpAuthentication::class,\n");
+    sb.append(" *     ]);\n");
+    sb.append(" * })\n");
+    sb.append(" * ```\n");
+    sb.append(" *\n");
+    sb.append(" * Routes will only have middleware attached if their corresponding group is defined.\n");
+    sb.append(" * Operations without defined middleware groups will have no middleware applied.\n");
     sb.append(" */\n\n");
 
-    // Add route definitions
-    for (CodegenOperation op : allOperations) {
+    sb.append("// Use $router variable passed from Route::group closure\n");
+    sb.append("// This file expects $router to be available from the including context\n\n");
+
+    // Add route definitions with conditional middleware
+    // Note: allOperationsMap is keyed by operationId, so no duplicates
+    for (CodegenOperation op : allOperationsMap.values()) {
       String controllerName = toModelName(op.operationId) + "Controller";
-      String httpMethod = op.httpMethod.toLowerCase();
+      String httpMethod = op.httpMethod.toUpperCase();
 
-      sb.append("// ").append(op.httpMethod).append(" ").append(op.path);
+      // Route comment with description
+      sb.append("/**\n");
+      sb.append(" * ").append(op.httpMethod).append(" ").append(op.path).append("\n");
       if (op.summary != null && !op.summary.isEmpty()) {
-        sb.append(" - ").append(op.summary);
+        sb.append(" * ").append(op.summary).append("\n");
       }
-      sb.append("\n");
+      if (op.notes != null && !op.notes.isEmpty()) {
+        sb.append(" * ").append(op.notes).append("\n");
+      }
 
-      sb.append("Route::").append(httpMethod).append("('").append(op.path).append("', ");
-      sb.append(controllerName).append("::class)");
-
-      sb.append("\n    ->name('").append(op.operationId).append("')");
-
-      // Add flexible middleware group if auth is required
+      // Document security requirements if present
       if (op.authMethods != null && !op.authMethods.isEmpty()) {
-        sb.append("\n    ->middleware('api.security.").append(op.operationId).append("')");
+        sb.append(" *\n");
+        sb.append(" * Security Requirements:\n");
+        for (int i = 0; i < op.authMethods.size(); i++) {
+          CodegenSecurity auth = op.authMethods.get(i);
+          sb.append(" * - ").append(auth.name);
+          if (auth.type != null) {
+            sb.append(" (").append(auth.type).append(")");
+          }
+          sb.append("\n");
+        }
+      }
+      sb.append(" */\n");
+
+      // Route definition with $router-> pattern
+      sb.append("$route = $router->").append(httpMethod).append("('").append(op.path).append("', ");
+      sb.append("\\").append(apiPackage).append("\\Http\\Controllers\\").append(controllerName).append("::class)");
+      sb.append("\n    ->name('api.").append(op.operationId).append("');\n");
+
+      // Conditional middleware - only attach if group is defined
+      if (op.authMethods != null && !op.authMethods.isEmpty()) {
+        sb.append("\n// Attach middleware group if defined (conditional security)\n");
+        sb.append("if ($router->hasMiddlewareGroup('api.security.").append(op.operationId).append("')) {\n");
+        sb.append("    $route->middleware('api.security.").append(op.operationId).append("');\n");
+        sb.append("}\n");
       }
 
-      sb.append(";\n\n");
+      sb.append("\n");
     }
+
+    // Add SecurityValidator call at the end (debug mode only)
+    sb.append("\n// ============================================================================\n");
+    sb.append("// Security Middleware Validation (Auto-generated)\n");
+    sb.append("// ============================================================================\n");
+    sb.append("// Validates that all required security middleware is properly configured\n");
+    sb.append("// Only runs when APP_DEBUG=true (development mode)\n");
+    sb.append("// ============================================================================\n\n");
+
+    sb.append("if (config('app.debug', false)) {\n");
+    sb.append("    // Validate security middleware configuration\n");
+    sb.append("    if (class_exists(\\").append(invokerPackage).append("\\Security\\SecurityValidator::class)) {\n");
+    sb.append("        try {\n");
+    sb.append("            \\").append(invokerPackage).append("\\Security\\SecurityValidator::validateMiddleware($router);\n");
+    sb.append("        } catch (\\RuntimeException $e) {\n");
+    sb.append("            // Log validation errors but don't break the application\n");
+    sb.append("            error_log(\"Security middleware validation failed:\");\n");
+    sb.append("            error_log($e->getMessage());\n");
+    sb.append("        }\n");
+    sb.append("    }\n");
+    sb.append("}\n");
 
     return sb.toString();
   }
@@ -1006,6 +1382,17 @@ public class LaravelMaxGenerator extends AbstractPhpCodegen implements CodegenCo
     OperationMap ops = results.getOperations();
     List<CodegenOperation> opList = ops.getOperation();
 
+    // Calculate the clean handler class name (strip "Api" suffix to avoid "GameManagementApiHandler")
+    String classname = ops.getClassname();
+    String handlerClassName = classname;
+    if (handlerClassName.endsWith("Api")) {
+      handlerClassName = handlerClassName.substring(0, handlerClassName.length() - 3);
+    }
+    handlerClassName = handlerClassName + "Handler";
+
+    // Add handler class name to results for template use
+    results.put("handlerClassName", handlerClassName);
+
     // Enrich operation data for controller templates
     for(CodegenOperation op : opList){
 
@@ -1051,8 +1438,9 @@ public class LaravelMaxGenerator extends AbstractPhpCodegen implements CodegenCo
       String controllerClassName = toModelName(op.operationId) + "Controller";
       String controllerFileName = controllerClassName + ".php";
 
-      // Get API class name from operations map
-      String apiClassName = ops.getClassname() + "Api";
+      // Get Handler class name from operations map
+      // Use classname + "Handler" to match the generated interface file name
+      String apiClassName = ops.getClassname() + "Handler";
 
       Map<String, Object> controllerData = new HashMap<>();
       controllerData.put("classname", controllerClassName);
@@ -1091,7 +1479,7 @@ public class LaravelMaxGenerator extends AbstractPhpCodegen implements CodegenCo
       controllerGenerationTasks.add(controllerTask);
 
       // Collect operation for routes generation
-      allOperations.add(op);
+      allOperationsMap.put(op.operationId, op);
 
       // Generate FormRequest for operations with body parameters
       // FormRequests encapsulate validation logic
@@ -1130,6 +1518,65 @@ public class LaravelMaxGenerator extends AbstractPhpCodegen implements CodegenCo
         formRequestGenerationTasks.add(formRequestTask);
       }
 
+      // Generate Query Parameter DTO for operations with query parameters
+      // Query params are typed DTOs with fromQuery() factory method
+      if (op.queryParams != null && !op.queryParams.isEmpty()) {
+        String queryParamsClassName = toModelName(op.operationId) + "QueryParams";
+        String queryParamsFileName = queryParamsClassName + ".php";
+
+        Map<String, Object> queryParamsData = new HashMap<>();
+        queryParamsData.put("className", queryParamsClassName);
+        queryParamsData.put("operationId", op.operationId);
+        queryParamsData.put("httpMethod", op.httpMethod);
+        queryParamsData.put("path", op.path);
+        queryParamsData.put("invokerPackage", invokerPackage);
+
+        // Build query params list with PHP types
+        List<Map<String, Object>> queryParams = new ArrayList<>();
+        for (CodegenParameter param : op.queryParams) {
+          Map<String, Object> paramData = new HashMap<>();
+          paramData.put("paramName", param.paramName);
+          paramData.put("baseName", param.baseName);
+          paramData.put("description", param.description != null ? param.description : "");
+
+          // Determine PHP type
+          String phpType = getPhpType(param);
+          paramData.put("phpType", phpType);
+
+          // Type flags for template conditionals
+          paramData.put("isInteger", "int".equals(param.dataType) || "integer".equals(param.dataType));
+          paramData.put("isNumber", "float".equals(param.dataType) || "double".equals(param.dataType) || "number".equals(param.dataType));
+          paramData.put("isBoolean", "bool".equals(param.dataType) || "boolean".equals(param.dataType));
+          paramData.put("isString", "string".equals(param.dataType) || param.isString);
+          paramData.put("isArray", param.isArray);
+
+          // Handle default value
+          if (param.defaultValue != null && !param.defaultValue.isEmpty()) {
+            paramData.put("hasDefault", true);
+            paramData.put("defaultValue", formatDefaultValue(param));
+          } else if (!param.required) {
+            paramData.put("hasDefault", true);
+            paramData.put("defaultValue", "null");
+          } else {
+            paramData.put("hasDefault", false);
+          }
+
+          queryParams.add(paramData);
+        }
+        queryParamsData.put("queryParams", queryParams);
+
+        Map<String, Object> queryParamsTask = new HashMap<>();
+        queryParamsTask.put("outputDir", outputFolder + "/app/Models");
+        queryParamsTask.put("fileName", queryParamsFileName);
+        queryParamsTask.put("data", queryParamsData);
+
+        queryParamsDtoTasks.add(queryParamsTask);
+
+        // Also update controller data to include query params DTO info
+        controllerData.put("hasQueryParams", true);
+        controllerData.put("queryParamsClassName", queryParamsClassName);
+      }
+
       // Generate one Resource file per operation+response
       // Collect tasks for custom processing (not using SupportingFile)
       for(CodegenResponse response : op.responses) {
@@ -1139,20 +1586,74 @@ public class LaravelMaxGenerator extends AbstractPhpCodegen implements CodegenCo
         String resourceClassName = toModelName(op.operationId) + response.code + "Resource";
         String resourceFileName = resourceClassName + ".php";
 
+        // Detect if this is a collection response (has pagination headers)
+        boolean isCollection = response.headers != null && !response.headers.isEmpty() &&
+            response.headers.stream().anyMatch(h ->
+                h.baseName != null && (
+                    h.baseName.toLowerCase().contains("total") ||
+                    h.baseName.toLowerCase().contains("page") ||
+                    h.baseName.toLowerCase().contains("count")
+                ));
+
         // Create a data map to pass to the resource template
         Map<String, Object> resourceData = new HashMap<>();
         resourceData.put("classname", resourceClassName);
+        resourceData.put("className", resourceClassName); // For resource-collection template
         resourceData.put("operationId", op.operationId);
         resourceData.put("code", response.code);
         resourceData.put("message", response.message);
         resourceData.put("baseType", response.baseType != null ? response.baseType : "mixed");
         resourceData.put("apiPackage", apiPackage);
+        resourceData.put("invokerPackage", invokerPackage);
         resourceData.put("modelPackage", modelPackage);
         resourceData.put("appVersion", apiVersion);
+        resourceData.put("httpMethod", op.httpMethod);
+        resourceData.put("path", op.path);
 
-        // Add headers if present
+        // Add headers if present (for ResourceCollection)
         if (response.headers != null && !response.headers.isEmpty()) {
           resourceData.put("headers", response.headers);
+
+          // Process headers for template
+          List<Map<String, Object>> headerData = new ArrayList<>();
+          boolean hasXTotalCount = false;
+          boolean hasXPageNumber = false;
+          boolean hasXPageSize = false;
+
+          for (CodegenProperty header : response.headers) {
+            Map<String, Object> hData = new HashMap<>();
+            hData.put("headerName", header.baseName);
+            hData.put("description", header.description != null ? header.description : "");
+            hData.put("required", header.required);
+
+            // Convert header name to PHP property name (X-Total-Count -> xTotalCount)
+            String propertyName = header.baseName.replaceAll("-", "");
+            propertyName = Character.toLowerCase(propertyName.charAt(0)) + propertyName.substring(1);
+            hData.put("propertyName", propertyName);
+
+            // Determine PHP type
+            String phpType = "?string";
+            if ("integer".equals(header.dataType) || "int".equals(header.dataType)) {
+              phpType = header.required ? "int" : "?int";
+            }
+            hData.put("phpType", phpType);
+
+            headerData.add(hData);
+
+            // Track specific headers for helper methods
+            if (header.baseName.equalsIgnoreCase("X-Total-Count")) {
+              hasXTotalCount = true;
+            } else if (header.baseName.equalsIgnoreCase("X-Page-Number")) {
+              hasXPageNumber = true;
+            } else if (header.baseName.equalsIgnoreCase("X-Page-Size")) {
+              hasXPageSize = true;
+            }
+          }
+
+          resourceData.put("headers", headerData);
+          resourceData.put("hasXTotalCount", hasXTotalCount);
+          resourceData.put("hasXPageNumber", hasXPageNumber);
+          resourceData.put("hasXPageSize", hasXPageSize);
         }
 
         // Add response schema vars if present
@@ -1170,12 +1671,24 @@ public class LaravelMaxGenerator extends AbstractPhpCodegen implements CodegenCo
           }
         }
 
+        // For collection resources, determine the item resource class
+        if (isCollection && response.baseType != null) {
+          // Try to extract the item type from the schema
+          String itemResourceClass = toModelName(response.baseType) + "Resource";
+          resourceData.put("itemResourceClass", itemResourceClass);
+        }
+
         // Create generation task
         Map<String, Object> task = new HashMap<>();
-        task.put("templateName", "resource.mustache");
+        if (isCollection) {
+          task.put("templateName", "resource-collection.mustache");
+        } else {
+          task.put("templateName", "resource.mustache");
+        }
         task.put("outputDir", outputFolder + "/app/Http/Resources");
         task.put("fileName", resourceFileName);
         task.put("data", resourceData);
+        task.put("isCollection", isCollection);
 
         resourceGenerationTasks.add(task);
       }
@@ -1194,8 +1707,20 @@ public class LaravelMaxGenerator extends AbstractPhpCodegen implements CodegenCo
     // One FormRequest per operation with body parameters
     writeFormRequestFiles();
 
+    // Write all collected Query Parameter DTO files
+    // One DTO per operation with query parameters
+    writeQueryParamsDtoFiles();
+
+    // Write Error Resource files (one per error status code)
+    // 401, 403, 404, 422, 500 etc.
+    writeErrorResourceFiles();
+
     // Write security interface files (one per security scheme)
     writeSecurityInterfaceFiles();
+
+    // Middleware stubs removed - users should implement their own middleware
+    // that implements the generated security interfaces
+    // writeMiddlewareStubFiles();
 
     // Write SecurityValidator file
     writeSecurityValidatorFile();
@@ -1222,15 +1747,40 @@ public class LaravelMaxGenerator extends AbstractPhpCodegen implements CodegenCo
       apiPackage = apiPackage.substring(1);
     }
 
+    // Fix double namespace: AbstractPhpCodegen prepends invokerPackage to apiPackage
+    // Example: invokerPackage=TictactoeApi, apiPackage=TictactoeApi -> becomes TictactoeApi\TictactoeApi
+    // We need to strip the duplicate prefix
+    if (apiPackage != null && invokerPackage != null && !invokerPackage.isEmpty()) {
+      String doublePrefix = invokerPackage + "\\" + invokerPackage;
+      if (apiPackage.startsWith(doublePrefix)) {
+        // Strip the first invokerPackage prefix
+        apiPackage = apiPackage.substring(invokerPackage.length() + 1);
+      } else if (apiPackage.equals(invokerPackage + "\\" + invokerPackage)) {
+        // Exact match of doubled namespace
+        apiPackage = invokerPackage;
+      }
+    }
+
+    // Fix double namespace in modelPackage similarly
+    if (modelPackage != null && invokerPackage != null && !invokerPackage.isEmpty()) {
+      String prefix = invokerPackage + "\\";
+      // Check for patterns like "TictactoeApi\TictactoeApi\Models"
+      if (modelPackage.startsWith(prefix + invokerPackage + "\\")) {
+        modelPackage = modelPackage.substring(prefix.length());
+      }
+    }
+
     // Fix double-escaped backslashes in packages for templates
     // PHP namespace declarations need single backslashes, not double
     if (modelPackage != null) {
       String fixedModelPackage = modelPackage.replace("\\\\", "\\");
       additionalProperties.put("modelPackage", fixedModelPackage);
+      modelPackage = fixedModelPackage;
     }
     if (apiPackage != null) {
       String fixedApiPackage = apiPackage.replace("\\\\", "\\");
       additionalProperties.put("apiPackage", fixedApiPackage);
+      apiPackage = fixedApiPackage;
     }
 
     // Clear any supporting files added by parent that we don't want
@@ -1269,15 +1819,15 @@ public class LaravelMaxGenerator extends AbstractPhpCodegen implements CodegenCo
       ".php");              // PHP extension
 
     /**
-     * Api classes: Generate API interfaces
+     * Handler classes: Generate Handler interfaces
      * NOTE: Controllers are now generated via custom Java code (one file per operation)
      * Clear defaults from parent first
      */
     apiTemplateFiles.clear();
     // Controllers are generated via custom Java code in postProcessOperationsWithModels()
     apiTemplateFiles.put(
-      "api-interface.mustache", // API interface with union types
-      "Api.php");               // e.g., GameManagementApiApi.php
+      "api-interface.mustache", // Handler interface with union types
+      "Handler.php");           // e.g., GameManagementHandler.php
 
     /**
      * Template Location: laravel-max templates directory
@@ -1369,6 +1919,46 @@ public class LaravelMaxGenerator extends AbstractPhpCodegen implements CodegenCo
     super.setModelPackage(modelPackage);
   }
 
+  /**
+   * Override setApiPackage to handle cases where full namespace is provided.
+   *
+   * When users pass --additional-properties=invokerPackage=App,apiPackage=App,
+   * AbstractPhpCodegen prepends invokerPackage to apiPackage, causing double namespace: App\App.
+   *
+   * This override strips the invokerPackage prefix if apiPackage already starts with it.
+   *
+   * @param apiPackage the API package namespace
+   */
+  @Override
+  public void setApiPackage(String apiPackage) {
+    if (apiPackage == null || apiPackage.isEmpty()) {
+      super.setApiPackage(apiPackage);
+      return;
+    }
+
+    // Remove leading backslash if present
+    if (apiPackage.startsWith("\\")) {
+      apiPackage = apiPackage.substring(1);
+    }
+
+    // If apiPackage starts with invokerPackage prefix, strip it to avoid double namespace
+    // Example: apiPackage="TictactoeApi" with invokerPackage="TictactoeApi" - don't let parent prepend again
+    if (invokerPackage != null && !invokerPackage.isEmpty()) {
+      String prefix = invokerPackage + "\\";
+      if (apiPackage.startsWith(prefix)) {
+        // Strip the invokerPackage prefix (AbstractPhpCodegen will add it back)
+        apiPackage = apiPackage.substring(prefix.length());
+      }
+      // If apiPackage equals invokerPackage exactly, set to empty so parent doesn't create double
+      if (apiPackage.equals(invokerPackage)) {
+        // Store the original value but don't let parent double it
+        this.apiPackage = apiPackage;
+        return;
+      }
+    }
+
+    super.setApiPackage(apiPackage);
+  }
 
   /**
    * Converts package name to proper PHP namespace import.
@@ -1425,12 +2015,12 @@ public class LaravelMaxGenerator extends AbstractPhpCodegen implements CodegenCo
   }
 
   /**
-   * Location to write api files: app/Api/ directory
-   * API interfaces go in Api/, not Http/Controllers/
+   * Location to write handler files: app/Handlers/ directory
+   * Handler interfaces go in Handlers/, not Http/Controllers/
    */
   @Override
   public String apiFileFolder() {
-    return outputFolder + "/app/Api";
+    return outputFolder + "/app/Handlers";
   }
 
   /**

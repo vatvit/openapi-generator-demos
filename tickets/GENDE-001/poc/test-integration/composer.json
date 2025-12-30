@@ -21,6 +21,13 @@
             "Tests\\": "tests/"
         }
     },
+    "scripts": {
+        "lint": "find ../../generated/tictactoe -name '*.php' -exec php -l {} \\;",
+        "test": [
+            "@lint",
+            "phpunit"
+        ]
+    },
     "minimum-stability": "stable",
     "prefer-stable": true,
     "config": {

@@ -1,7 +1,8 @@
-app/Api/GameManagementApiApi.php
-app/Api/GameplayApiApi.php
-app/Api/StatisticsApiApi.php
-app/Api/TicTacApiApi.php
+.openapi-generator-ignore
+app/Handlers/GameManagementApiHandler.php
+app/Handlers/GameplayApiHandler.php
+app/Handlers/StatisticsApiHandler.php
+app/Handlers/TicTacApiHandler.php
 app/Models/BadRequestError.php
 app/Models/CreateGameRequest.php
 app/Models/Error.php

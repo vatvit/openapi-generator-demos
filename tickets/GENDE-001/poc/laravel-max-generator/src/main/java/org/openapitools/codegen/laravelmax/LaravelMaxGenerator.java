@@ -8,11 +8,14 @@ import org.openapitools.codegen.templating.MustacheEngineAdapter;
 import org.openapitools.codegen.templating.TemplateManagerOptions;
 import org.openapitools.codegen.templating.mustache.*;
 import io.swagger.models.properties.*;
+import io.swagger.v3.oas.models.security.SecurityScheme;
 
 import java.util.*;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.InputStream;
+import java.nio.charset.StandardCharsets;
 
 public class LaravelMaxGenerator extends AbstractPhpCodegen implements CodegenConfig {
 
@@ -34,6 +37,12 @@ public class LaravelMaxGenerator extends AbstractPhpCodegen implements CodegenCo
 
   // Store enum models and their allowable values for validation rules
   private Map<String, List<String>> enumModels = new HashMap<>();
+
+  // Store security schemes from OpenAPI specification
+  private List<Map<String, Object>> securitySchemes = new ArrayList<>();
+
+  // Track if security schemes have been extracted
+  private boolean securitySchemesExtracted = false;
 
   /**
    * Configures the type of generator.
@@ -516,6 +525,173 @@ public class LaravelMaxGenerator extends AbstractPhpCodegen implements CodegenCo
   }
 
   /**
+   * Extract security schemes from OpenAPI specification
+   */
+  private void extractSecuritySchemes() {
+    if (securitySchemesExtracted) {
+      return; // Already extracted
+    }
+
+    // Don't set extracted flag yet - we may need to try again later if openAPI isn't ready
+    if (openAPI == null) {
+      return; // OpenAPI not available yet, skip for now
+    }
+
+    if (openAPI.getComponents() == null) {
+      securitySchemesExtracted = true; // Mark as extracted even if no components
+      return;
+    }
+
+    securitySchemesExtracted = true; // Now mark as extracted
+
+    Map<String, SecurityScheme> schemes = openAPI.getComponents().getSecuritySchemes();
+    if (schemes == null || schemes.isEmpty()) {
+      return;
+    }
+
+    for (Map.Entry<String, SecurityScheme> entry : schemes.entrySet()) {
+      String schemeName = entry.getKey();
+      SecurityScheme scheme = entry.getValue();
+
+      Map<String, Object> schemeData = new HashMap<>();
+      schemeData.put("name", schemeName);
+      schemeData.put("type", scheme.getType().toString());
+      schemeData.put("description", scheme.getDescription());
+
+      // Generate interface name: bearerHttpAuthentication -> BearerHttpAuthenticationInterface
+      String interfaceName = toModelName(schemeName) + "Interface";
+      schemeData.put("interfaceName", interfaceName);
+
+      // Type-specific data
+      if (scheme.getType() == SecurityScheme.Type.HTTP) {
+        schemeData.put("isHttp", true);
+        schemeData.put("httpScheme", scheme.getScheme());
+
+        if ("bearer".equalsIgnoreCase(scheme.getScheme())) {
+          schemeData.put("isBearerAuth", true);
+          schemeData.put("bearerFormat", scheme.getBearerFormat());
+        } else if ("basic".equalsIgnoreCase(scheme.getScheme())) {
+          schemeData.put("isBasicAuth", true);
+        }
+      } else if (scheme.getType() == SecurityScheme.Type.APIKEY) {
+        schemeData.put("isApiKey", true);
+        schemeData.put("apiKeyIn", scheme.getIn().toString());
+        schemeData.put("apiKeyName", scheme.getName());
+      } else if (scheme.getType() == SecurityScheme.Type.OAUTH2) {
+        schemeData.put("isOAuth2", true);
+        // Extract flows if needed
+        if (scheme.getFlows() != null) {
+          List<String> flowTypes = new ArrayList<>();
+          if (scheme.getFlows().getAuthorizationCode() != null) flowTypes.add("authorizationCode");
+          if (scheme.getFlows().getClientCredentials() != null) flowTypes.add("clientCredentials");
+          if (scheme.getFlows().getImplicit() != null) flowTypes.add("implicit");
+          if (scheme.getFlows().getPassword() != null) flowTypes.add("password");
+          schemeData.put("flows", flowTypes);
+        }
+      }
+
+      securitySchemes.add(schemeData);
+    }
+  }
+
+  /**
+   * Write security interface files (one per security scheme)
+   */
+  private void writeSecurityInterfaceFiles() {
+    if (securitySchemes.isEmpty()) {
+      return;
+    }
+
+    for (Map<String, Object> scheme : securitySchemes) {
+      try {
+        String interfaceName = (String) scheme.get("interfaceName");
+        String fileName = interfaceName + ".php";
+
+        // Add template data
+        Map<String, Object> templateData = new HashMap<>(scheme);
+        templateData.put("invokerPackage", invokerPackage);
+        templateData.put("schemeName", scheme.get("name"));
+        templateData.put("schemeType", scheme.get("type"));
+        templateData.put("schemeDescription", scheme.get("description"));
+
+        // Load and process template
+        String templatePath = "laravel-max/security-interface.mustache";
+        InputStream templateStream = this.getClass().getClassLoader().getResourceAsStream(templatePath);
+
+        if (templateStream == null) {
+          throw new IOException("Template not found: " + templatePath);
+        }
+
+        String templateContent = new String(templateStream.readAllBytes(), StandardCharsets.UTF_8);
+
+        // Process with mustache engine
+        com.samskivert.mustache.Template template =
+            com.samskivert.mustache.Mustache.compiler().compile(templateContent);
+
+        String content = template.execute(templateData);
+
+        // Write file
+        File securityDir = new File(outputFolder, "app/Security");
+        if (!securityDir.exists()) {
+          securityDir.mkdirs();
+        }
+
+        File interfaceFile = new File(securityDir, fileName);
+        try (FileWriter writer = new FileWriter(interfaceFile)) {
+          writer.write(content);
+        }
+      } catch (Exception e) {
+        throw new RuntimeException("Failed to write security interface file", e);
+      }
+    }
+  }
+
+  /**
+   * Write SecurityValidator file
+   */
+  private void writeSecurityValidatorFile() {
+    if (securitySchemes.isEmpty()) {
+      return; // No security schemes, no validator needed
+    }
+
+    try {
+      Map<String, Object> templateData = new HashMap<>();
+      templateData.put("invokerPackage", invokerPackage);
+      templateData.put("securitySchemes", securitySchemes);
+      templateData.put("operations", allOperations);
+
+      // Load and process template
+      String templatePath = "laravel-max/security-validator.mustache";
+      InputStream templateStream = this.getClass().getClassLoader().getResourceAsStream(templatePath);
+
+      if (templateStream == null) {
+        throw new IOException("Template not found: " + templatePath);
+      }
+
+      String templateContent = new String(templateStream.readAllBytes(), StandardCharsets.UTF_8);
+
+      // Process with mustache engine
+      com.samskivert.mustache.Template template =
+          com.samskivert.mustache.Mustache.compiler().compile(templateContent);
+
+      String content = template.execute(templateData);
+
+      // Write file
+      File securityDir = new File(outputFolder, "app/Security");
+      if (!securityDir.exists()) {
+        securityDir.mkdirs();
+      }
+
+      File validatorFile = new File(securityDir, "SecurityValidator.php");
+      try (FileWriter writer = new FileWriter(validatorFile)) {
+        writer.write(content);
+      }
+    } catch (Exception e) {
+      throw new RuntimeException("Failed to write SecurityValidator file", e);
+    }
+  }
+
+  /**
    * Write routes file with all collected operations
    */
   private void writeRoutesFile() {
@@ -592,12 +768,14 @@ public class LaravelMaxGenerator extends AbstractPhpCodegen implements CodegenCo
       sb.append("Route::").append(httpMethod).append("('").append(op.path).append("', ");
       sb.append(controllerName).append("::class)");
 
-      // Add middleware if auth is required
+      sb.append("\n    ->name('").append(op.operationId).append("')");
+
+      // Add flexible middleware group if auth is required
       if (op.authMethods != null && !op.authMethods.isEmpty()) {
-        sb.append("\n    ->middleware(['auth:sanctum'])");
+        sb.append("\n    ->middleware('api.security.").append(op.operationId).append("')");
       }
 
-      sb.append("\n    ->name('").append(op.operationId).append("');\n\n");
+      sb.append(";\n\n");
     }
 
     return sb.toString();
@@ -822,6 +1000,9 @@ public class LaravelMaxGenerator extends AbstractPhpCodegen implements CodegenCo
 
     OperationsMap results = super.postProcessOperationsWithModels(objs, allModels);
 
+    // Extract security schemes from OpenAPI spec (first time only)
+    extractSecuritySchemes();
+
     OperationMap ops = results.getOperations();
     List<CodegenOperation> opList = ops.getOperation();
 
@@ -1012,6 +1193,12 @@ public class LaravelMaxGenerator extends AbstractPhpCodegen implements CodegenCo
     // Write all collected FormRequest files
     // One FormRequest per operation with body parameters
     writeFormRequestFiles();
+
+    // Write security interface files (one per security scheme)
+    writeSecurityInterfaceFiles();
+
+    // Write SecurityValidator file
+    writeSecurityValidatorFile();
 
     // Write routes file with all operations
     writeRoutesFile();

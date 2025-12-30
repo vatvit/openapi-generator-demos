@@ -9,16 +9,16 @@
  */
 
 use Illuminate\Support\Facades\Route;
-use TictactoeApi\Http\Controllers\CreateGameController;
-use TictactoeApi\Http\Controllers\DeleteGameController;
-use TictactoeApi\Http\Controllers\GetGameController;
-use TictactoeApi\Http\Controllers\ListGamesController;
-use TictactoeApi\Http\Controllers\GetBoardController;
-use TictactoeApi\Http\Controllers\GetMovesController;
-use TictactoeApi\Http\Controllers\GetSquareController;
-use TictactoeApi\Http\Controllers\PutSquareController;
-use TictactoeApi\Http\Controllers\GetLeaderboardController;
-use TictactoeApi\Http\Controllers\GetPlayerStatsController;
+use TictactoeApi\TictactoeApi\Http\Controllers\CreateGameController;
+use TictactoeApi\TictactoeApi\Http\Controllers\DeleteGameController;
+use TictactoeApi\TictactoeApi\Http\Controllers\GetGameController;
+use TictactoeApi\TictactoeApi\Http\Controllers\ListGamesController;
+use TictactoeApi\TictactoeApi\Http\Controllers\GetBoardController;
+use TictactoeApi\TictactoeApi\Http\Controllers\GetMovesController;
+use TictactoeApi\TictactoeApi\Http\Controllers\GetSquareController;
+use TictactoeApi\TictactoeApi\Http\Controllers\PutSquareController;
+use TictactoeApi\TictactoeApi\Http\Controllers\GetLeaderboardController;
+use TictactoeApi\TictactoeApi\Http\Controllers\GetPlayerStatsController;
 
 /**
  * Auto-generated API Routes
@@ -28,48 +28,48 @@ use TictactoeApi\Http\Controllers\GetPlayerStatsController;
 
 // POST /games - Create a new game
 Route::post('/games', CreateGameController::class)
-    ->middleware(['auth:sanctum'])
-    ->name('createGame');
+    ->name('createGame')
+    ->middleware('api.security.createGame');
 
 // DELETE /games/{gameId} - Delete a game
 Route::delete('/games/{gameId}', DeleteGameController::class)
-    ->middleware(['auth:sanctum'])
-    ->name('deleteGame');
+    ->name('deleteGame')
+    ->middleware('api.security.deleteGame');
 
 // GET /games/{gameId} - Get game details
 Route::get('/games/{gameId}', GetGameController::class)
-    ->middleware(['auth:sanctum'])
-    ->name('getGame');
+    ->name('getGame')
+    ->middleware('api.security.getGame');
 
 // GET /games - List all games
 Route::get('/games', ListGamesController::class)
-    ->middleware(['auth:sanctum'])
-    ->name('listGames');
+    ->name('listGames')
+    ->middleware('api.security.listGames');
 
 // GET /games/{gameId}/board - Get the game board
 Route::get('/games/{gameId}/board', GetBoardController::class)
-    ->middleware(['auth:sanctum'])
-    ->name('getBoard');
+    ->name('getBoard')
+    ->middleware('api.security.getBoard');
 
 // GET /games/{gameId} - Get game details
 Route::get('/games/{gameId}', GetGameController::class)
-    ->middleware(['auth:sanctum'])
-    ->name('getGame');
+    ->name('getGame')
+    ->middleware('api.security.getGame');
 
 // GET /games/{gameId}/moves - Get move history
 Route::get('/games/{gameId}/moves', GetMovesController::class)
-    ->middleware(['auth:sanctum'])
-    ->name('getMoves');
+    ->name('getMoves')
+    ->middleware('api.security.getMoves');
 
 // GET /games/{gameId}/board/{row}/{column} - Get a single board square
 Route::get('/games/{gameId}/board/{row}/{column}', GetSquareController::class)
-    ->middleware(['auth:sanctum'])
-    ->name('getSquare');
+    ->name('getSquare')
+    ->middleware('api.security.getSquare');
 
 // PUT /games/{gameId}/board/{row}/{column} - Set a single board square
 Route::put('/games/{gameId}/board/{row}/{column}', PutSquareController::class)
-    ->middleware(['auth:sanctum'])
-    ->name('putSquare');
+    ->name('putSquare')
+    ->middleware('api.security.putSquare');
 
 // GET /leaderboard - Get leaderboard
 Route::get('/leaderboard', GetLeaderboardController::class)
@@ -77,11 +77,11 @@ Route::get('/leaderboard', GetLeaderboardController::class)
 
 // GET /players/{playerId}/stats - Get player statistics
 Route::get('/players/{playerId}/stats', GetPlayerStatsController::class)
-    ->middleware(['auth:sanctum'])
-    ->name('getPlayerStats');
+    ->name('getPlayerStats')
+    ->middleware('api.security.getPlayerStats');
 
 // GET /games/{gameId}/board - Get the game board
 Route::get('/games/{gameId}/board', GetBoardController::class)
-    ->middleware(['auth:sanctum'])
-    ->name('getBoard');
+    ->name('getBoard')
+    ->middleware('api.security.getBoard');
 

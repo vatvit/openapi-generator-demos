@@ -1,2 +1,2 @@
-/workspace/src/test/java/org/openapitools/codegen/laravelmax/LaravelMaxGeneratorRegressionTest.java
-/workspace/src/test/java/org/openapitools/codegen/laravelmax/LaravelMaxGeneratorTest.java
+/workspace/tickets/GENDE-001/poc/laravel-max-generator/src/test/java/org/openapitools/codegen/laravelmax/LaravelMaxGeneratorTest.java
+/workspace/tickets/GENDE-001/poc/laravel-max-generator/src/test/java/org/openapitools/codegen/laravelmax/LaravelMaxGeneratorRegressionTest.java

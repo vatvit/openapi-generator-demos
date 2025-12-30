@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>org.example</groupId>
+    <artifactId>generate-tictactoe</artifactId>
+    <version>1.0.0</version>
+
+    <dependencies>
+        <dependency>
+            <groupId>org.openapitools</groupId>
+            <artifactId>laravel-max-openapi-generator</artifactId>
+            <version>1.0.0</version>
+            <scope>system</scope>
+            <systemPath>${project.basedir}/laravel-max-generator/target/laravel-max-openapi-generator-1.0.0.jar</systemPath>
+        </dependency>
+    </dependencies>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.openapitools</groupId>
+                <artifactId>openapi-generator-maven-plugin</artifactId>
+                <version>7.10.0</version>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>generate</goal>
+                        </goals>
+                        <configuration>
+                            <inputSpec>${project.basedir}/../../openapi-generator-specs/tictactoe/tictactoe-extended.json</inputSpec>
+                            <generatorName>laravel-max</generatorName>
+                            <output>${project.basedir}/../generated/tictactoe</output>
+                            <configOptions>
+                                <apiPackage>TictactoeApi</apiPackage>
+                                <modelPackage>TictactoeApi\\Models</modelPackage>
+                            </configOptions>
+                        </configuration>
+                    </execution>
+                </executions>
+                <dependencies>
+                    <dependency>
+                        <groupId>org.openapitools</groupId>
+                        <artifactId>laravel-max-openapi-generator</artifactId>
+                        <version>1.0.0</version>
+                        <scope>system</scope>
+                        <systemPath>${project.basedir}/laravel-max-generator/target/laravel-max-openapi-generator-1.0.0.jar</systemPath>
+                    </dependency>
+                </dependencies>
+            </plugin>
+        </plugins>
+    </build>
+</project>

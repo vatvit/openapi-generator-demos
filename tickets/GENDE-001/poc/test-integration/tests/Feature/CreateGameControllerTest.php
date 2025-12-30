@@ -2,9 +2,9 @@
 
 namespace Tests\Feature;
 
-use App\Http\Controllers\CreateGameController;
-use App\Http\Requests\CreateGameFormRequest;
-use App\Api\GameManagementApiHandler;
+use TictactoeApi\Http\Controllers\CreateGameController;
+use TictactoeApi\Http\Requests\CreateGameFormRequest;
+use TictactoeApi\Api\GameManagementApiApi;
 use Illuminate\Foundation\Testing\TestCase;
 use Illuminate\Http\Request;
 
@@ -24,7 +24,9 @@ class CreateGameControllerTest extends TestCase
     public function test_controller_accepts_form_request(): void
     {
         // Verify controller __invoke method signature
-        $controller = new CreateGameController(new GameManagementApiHandler());
+        // Create a mock handler since GameManagementApiApi is user-implemented
+        $mockHandler = $this->createMock(GameManagementApiApi::class);
+        $controller = new CreateGameController($mockHandler);
 
         $reflection = new \ReflectionMethod($controller, '__invoke');
         $parameters = $reflection->getParameters();
@@ -40,7 +42,7 @@ class CreateGameControllerTest extends TestCase
         // Verify type hint
         $type = $param->getType();
         $this->assertNotNull($type, 'Parameter should have type hint');
-        $this->assertEquals('App\Http\Requests\CreateGameFormRequest', $type->getName(),
+        $this->assertEquals('TictactoeApi\Http\Requests\CreateGameFormRequest', $type->getName(),
             'Parameter should be typed as CreateGameFormRequest');
     }
 
@@ -59,7 +61,7 @@ class CreateGameControllerTest extends TestCase
         // 5. Controller returns Resource->response()
 
         // Read the controller source to verify this pattern
-        $controllerPath = __DIR__ . '/../../app/Http/Controllers/CreateGameController.php';
+        $controllerPath = __DIR__ . '/../../../../generated/tictactoe/app/Http/Controllers/CreateGameController.php';
         $source = file_get_contents($controllerPath);
 
         // Verify FormRequest is used
@@ -108,7 +110,7 @@ class CreateGameControllerTest extends TestCase
         $type = $param->getType();
         $this->assertNotNull($type,
             'Constructor parameter should have type hint');
-        $this->assertEquals('App\Api\GameManagementApiApi', $type->getName(),
+        $this->assertEquals('TictactoeApi\Api\GameManagementApiApi', $type->getName(),
             'Handler should be typed as GameManagementApiApi interface');
     }
 
@@ -132,7 +134,7 @@ class CreateGameControllerTest extends TestCase
         // The controller will ONLY execute if validation passes
 
         // Verify controller assumes validation has already happened
-        $controllerPath = __DIR__ . '/../../app/Http/Controllers/CreateGameController.php';
+        $controllerPath = __DIR__ . '/../../../../generated/tictactoe/app/Http/Controllers/CreateGameController.php';
         $source = file_get_contents($controllerPath);
 
         // Controller should NOT have manual validation

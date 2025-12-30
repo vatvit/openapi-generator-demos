@@ -2,7 +2,7 @@
 
 namespace Tests\Feature;
 
-use App\Http\Requests\CreateGameFormRequest;
+use TictactoeApi\Http\Requests\CreateGameFormRequest;
 use Illuminate\Foundation\Testing\TestCase;
 use Illuminate\Support\Facades\Validator;
 
@@ -23,7 +23,7 @@ class CreateGameFormRequestTest extends TestCase
 
         // Valid data matching OpenAPI schema
         $data = [
-            'mode' => 'PVP',
+            'mode' => 'pvp',
             'opponentId' => '550e8400-e29b-41d4-a716-446655440000',
             'isPrivate' => true,
             'metadata' => ['key' => 'value'],
@@ -104,7 +104,7 @@ class CreateGameFormRequestTest extends TestCase
 
         // Only required field provided
         $data = [
-            'mode' => 'PVC',
+            'mode' => 'pvp',
         ];
 
         $validator = Validator::make($data, $rules);

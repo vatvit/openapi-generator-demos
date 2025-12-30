@@ -1,12 +1,27 @@
 {{#models}}
 {{#model}}
+<?php declare(strict_types=1);
+
 {{>licenseInfo}}
-<?php
+namespace {{{modelPackage}}};
 
-declare(strict_types=1);
-
-namespace {{modelPackage}};
-
+{{#vendorExtensions.x-is-php-enum}}
+/**
+ * {{classname}} Enum
+ *
+ * Auto-generated from OpenAPI schema: {{name}}
+ * {{#description}}
+ * {{description}}
+ * {{/description}}
+ */
+enum {{classname}}: string
+{
+{{#vendorExtensions.x-enum-cases}}
+    case {{name}} = '{{value}}';
+{{/vendorExtensions.x-enum-cases}}
+}
+{{/vendorExtensions.x-is-php-enum}}
+{{^vendorExtensions.x-is-php-enum}}
 /**
  * {{classname}} DTO
  *
@@ -23,7 +38,7 @@ class {{classname}}
      * {{description}}
      */
 {{/description}}
-    public {{#isNullable}}?{{/isNullable}}{{dataType}} ${{name}}{{#defaultValue}} = {{{defaultValue}}}{{/defaultValue}}{{^required}}{{^defaultValue}} = null{{/defaultValue}}{{/required}};
+    public {{#isNullable}}?{{/isNullable}}{{^isNullable}}{{^required}}{{^defaultValue}}?{{/defaultValue}}{{/required}}{{/isNullable}}{{{dataType}}} ${{name}}{{#defaultValue}} = {{{defaultValue}}}{{/defaultValue}}{{^required}}{{^defaultValue}} = null{{/defaultValue}}{{/required}};
 {{/vars}}
 
     /**
@@ -31,7 +46,7 @@ class {{classname}}
      */
     public function __construct(
 {{#vars}}
-        {{#isNullable}}?{{/isNullable}}{{dataType}} ${{name}}{{#defaultValue}} = {{{defaultValue}}}{{/defaultValue}}{{^required}}{{^defaultValue}} = null{{/defaultValue}}{{/required}},
+        {{#isNullable}}?{{/isNullable}}{{^isNullable}}{{^required}}{{^defaultValue}}?{{/defaultValue}}{{/required}}{{/isNullable}}{{{dataType}}} ${{name}}{{#defaultValue}} = {{{defaultValue}}}{{/defaultValue}}{{^required}}{{^defaultValue}} = null{{/defaultValue}}{{/required}},
 {{/vars}}
     ) {
 {{#vars}}
@@ -68,5 +83,6 @@ class {{classname}}
         ];
     }
 }
+{{/vendorExtensions.x-is-php-enum}}
 {{/model}}
 {{/models}}

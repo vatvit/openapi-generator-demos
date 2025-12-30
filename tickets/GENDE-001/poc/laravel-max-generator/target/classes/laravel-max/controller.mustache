@@ -15,6 +15,7 @@ use {{apiPackage}}\Http\Requests\{{operationIdCamelCase}}Request;
 {{#vendorExtensions.x-importClassName}}use {{modelPackage}}\{{vendorExtensions.x-importClassName}};{{/vendorExtensions.x-importClassName}}
 {{/bodyParam}}
 {{/operation}}
+use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
 
 /**
@@ -56,6 +57,9 @@ class {{operationIdCamelCase}}Controller
 {{#hasFormParams}}
         {{operationIdCamelCase}}Request $request{{#hasPathParams}},{{/hasPathParams}}
 {{/hasFormParams}}
+{{^hasFormParams}}
+        Request $request{{#hasPathParams}},{{/hasPathParams}}
+{{/hasFormParams}}
 {{#pathParams}}
         {{dataType}} ${{paramName}}{{^-last}},{{/-last}}
 {{/pathParams}}
@@ -66,11 +70,21 @@ class {{operationIdCamelCase}}Controller
         $dto = {{bodyParam.dataType}}::fromArray($request->validated());
 
 {{/hasBodyParam}}
+{{#hasQueryParams}}
+        // Extract query parameters
+{{#queryParams}}
+        ${{paramName}} = {{#isArray}}$request->query('{{baseName}}', []){{/isArray}}{{^isArray}}{{#isInteger}}(int) {{/isInteger}}$request->query('{{baseName}}'{{#defaultValue}}, {{{defaultValue}}}{{/defaultValue}}{{^defaultValue}}{{#required}}, 0{{/required}}{{^required}}, {{#isInteger}}0{{/isInteger}}{{^isInteger}}null{{/isInteger}}{{/required}}{{/defaultValue}}){{/isArray}};
+{{/queryParams}}
+
+{{/hasQueryParams}}
         // Delegate to Handler
         $resource = $this->handler->{{operationId}}(
 {{#hasBodyParam}}
-            $dto{{#hasPathParams}},{{/hasPathParams}}
+            $dto{{#hasQueryParams}},{{/hasQueryParams}}{{#hasPathParams}},{{/hasPathParams}}
 {{/hasBodyParam}}
+{{#queryParams}}
+            ${{paramName}}{{^-last}},{{/-last}}{{#-last}}{{#hasPathParams}},{{/hasPathParams}}{{/-last}}
+{{/queryParams}}
 {{#pathParams}}
             ${{paramName}}{{^-last}},{{/-last}}
 {{/pathParams}}

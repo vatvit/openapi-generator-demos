@@ -22,11 +22,13 @@ use {{modelPackage}}\{{baseType}};
  */
 class {{classname}}Resource extends JsonResource
 {
+{{^isDefault}}
     /**
      * HTTP status code - Hardcoded: {{code}}
      */
     protected int $httpCode = {{code}};
 
+{{/isDefault}}
 {{#headers}}
     /**
      * {{baseName}} header {{#required}}(REQUIRED){{/required}}
@@ -42,6 +44,20 @@ class {{classname}}Resource extends JsonResource
      */
     public function toArray($request): array
     {
+{{#isArray}}
+        /** @var {{baseType}}[] $models */
+        $models = $this->resource;
+
+        // Response is an array of {{baseType}} objects
+        return array_map(function($model) {
+            return [
+{{#vars}}
+                '{{baseName}}' => $model->{{name}},
+{{/vars}}
+            ];
+        }, $models);
+{{/isArray}}
+{{^isArray}}
         /** @var {{baseType}} $model */
         $model = $this->resource;
 
@@ -50,6 +66,7 @@ class {{classname}}Resource extends JsonResource
             '{{baseName}}' => $model->{{name}},
 {{/vars}}
         ];
+{{/isArray}}
     }
 
     /**
@@ -63,8 +80,16 @@ class {{classname}}Resource extends JsonResource
      */
     public function withResponse($request, $response)
     {
+{{#isDefault}}
+        // For default/error responses, use dynamic status from Error model
+        /** @var {{baseType}} $model */
+        $model = $this->resource;
+        $response->setStatusCode($model->code);
+{{/isDefault}}
+{{^isDefault}}
         // Set hardcoded HTTP {{code}} status
         $response->setStatusCode($this->httpCode);
+{{/isDefault}}
 
 {{#headers}}
 {{#required}}

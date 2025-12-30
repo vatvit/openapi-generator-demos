@@ -1,17 +1,11 @@
+<?php declare(strict_types=1);
+
 {{>licenseInfo}}
-<?php
-
-declare(strict_types=1);
-
 use Illuminate\Support\Facades\Route;
 {{#apiInfo}}
-{{#apis}}
-{{#operations}}
-{{#operation}}
+{{#allOperations}}
 use {{apiPackage}}\Http\Controllers\{{operationIdCamelCase}}Controller;
-{{/operation}}
-{{/operations}}
-{{/apis}}
+{{/allOperations}}
 {{/apiInfo}}
 
 /**
@@ -21,15 +15,11 @@ use {{apiPackage}}\Http\Controllers\{{operationIdCamelCase}}Controller;
  */
 
 {{#apiInfo}}
-{{#apis}}
-{{#operations}}
-{{#operation}}
+{{#allOperations}}
 // {{httpMethod}} {{path}} - {{summary}}
 Route::{{#lambda.lowercase}}{{httpMethod}}{{/lambda.lowercase}}('{{path}}', {{operationIdCamelCase}}Controller::class){{#hasAuthMethods}}
     ->middleware(['auth:sanctum']){{/hasAuthMethods}}
     ->name('{{operationId}}');
 
-{{/operation}}
-{{/operations}}
-{{/apis}}
+{{/allOperations}}
 {{/apiInfo}}

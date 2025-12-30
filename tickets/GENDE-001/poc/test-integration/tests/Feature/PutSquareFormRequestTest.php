@@ -2,7 +2,7 @@
 
 namespace Tests\Feature;
 
-use App\Http\Requests\PutSquareFormRequest;
+use TictactoeApi\Http\Requests\PutSquareFormRequest;
 use Illuminate\Foundation\Testing\TestCase;
 use Illuminate\Support\Facades\Validator;
 

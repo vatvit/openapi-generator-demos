@@ -23,7 +23,7 @@ use Illuminate\Http\JsonResponse;
  * OpenAPI Operation: getSquare
  * HTTP Method: GET /games/{gameId}/board/{row}/{column}
  */
-class GetSquareController
+final class GetSquareController
 {
     public function __construct(
         private readonly GameplayApiHandlerInterface $handler

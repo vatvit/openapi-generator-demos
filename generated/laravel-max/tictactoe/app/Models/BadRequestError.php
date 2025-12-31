@@ -17,7 +17,7 @@ namespace TictactoeApi\Model;
  * Bad request error with invalid parameters
  * 
  */
-class BadRequestError
+final class BadRequestError
 {
     /**
      * Error code

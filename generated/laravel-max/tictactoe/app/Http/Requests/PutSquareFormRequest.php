@@ -18,7 +18,7 @@ use Illuminate\Foundation\Http\FormRequest;
  * Auto-generated FormRequest for putSquare operation
  * Validation rules extracted from OpenAPI schema
  */
-class PutSquareFormRequest extends FormRequest
+final class PutSquareFormRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.

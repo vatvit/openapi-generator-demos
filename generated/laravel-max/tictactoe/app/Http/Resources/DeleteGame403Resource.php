@@ -22,7 +22,7 @@ use TictactoeApi\Model\ForbiddenError;
  * Response: 403 Forbidden - Insufficient permissions
  * Schema: ForbiddenError
  */
-class DeleteGame403Resource extends JsonResource
+final class DeleteGame403Resource extends JsonResource
 {
     /**
      * HTTP status code - Hardcoded: 403

@@ -23,7 +23,7 @@ use Illuminate\Http\JsonResponse;
  * OpenAPI Operation: getPlayerStats
  * HTTP Method: GET /players/{playerId}/stats
  */
-class GetPlayerStatsController
+final class GetPlayerStatsController
 {
     public function __construct(
         private readonly StatisticsApiHandlerInterface $handler

@@ -24,7 +24,7 @@ use Illuminate\Http\JsonResponse;
  * OpenAPI Operation: putSquare
  * HTTP Method: PUT /games/{gameId}/board/{row}/{column}
  */
-class PutSquareController
+final class PutSquareController
 {
     public function __construct(
         private readonly GameplayApiHandlerInterface $handler

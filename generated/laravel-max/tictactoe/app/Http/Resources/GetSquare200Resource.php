@@ -22,7 +22,7 @@ use TictactoeApi\Model\SquareResponse;
  * Response: 200 OK
  * Schema: SquareResponse
  */
-class GetSquare200Resource extends JsonResource
+final class GetSquare200Resource extends JsonResource
 {
     /**
      * HTTP status code - Hardcoded: 200

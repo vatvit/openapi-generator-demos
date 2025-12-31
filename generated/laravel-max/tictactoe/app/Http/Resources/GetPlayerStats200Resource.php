@@ -22,7 +22,7 @@ use TictactoeApi\Model\PlayerStats;
  * Response: 200 Successful response
  * Schema: PlayerStats
  */
-class GetPlayerStats200Resource extends JsonResource
+final class GetPlayerStats200Resource extends JsonResource
 {
     /**
      * HTTP status code - Hardcoded: 200

@@ -15,7 +15,7 @@ namespace TictactoeApi\Model;
  * Auto-generated from OpenAPI schema: move
  * 
  */
-class Move
+final class Move
 {
     /**
      * Sequential move number

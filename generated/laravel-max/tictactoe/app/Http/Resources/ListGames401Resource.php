@@ -22,7 +22,7 @@ use TictactoeApi\Model\UnauthorizedError;
  * Response: 401 Unauthorized - Authentication required
  * Schema: UnauthorizedError
  */
-class ListGames401Resource extends JsonResource
+final class ListGames401Resource extends JsonResource
 {
     /**
      * HTTP status code - Hardcoded: 401

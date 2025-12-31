@@ -15,7 +15,7 @@ namespace TictactoeApi\Model;
  * Auto-generated from OpenAPI schema: createGameRequest
  * 
  */
-class CreateGameRequest
+final class CreateGameRequest
 {
     public \TictactoeApi\Model\GameMode $mode;
     /**

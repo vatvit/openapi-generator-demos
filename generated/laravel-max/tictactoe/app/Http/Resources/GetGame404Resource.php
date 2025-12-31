@@ -22,7 +22,7 @@ use TictactoeApi\Model\NotFoundError;
  * Response: 404 Not Found - Resource does not exist
  * Schema: NotFoundError
  */
-class GetGame404Resource extends JsonResource
+final class GetGame404Resource extends JsonResource
 {
     /**
      * HTTP status code - Hardcoded: 404

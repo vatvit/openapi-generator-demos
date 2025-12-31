@@ -15,7 +15,7 @@ namespace TictactoeApi\Model;
  * Auto-generated from OpenAPI schema: moveHistory
  * 
  */
-class MoveHistory
+final class MoveHistory
 {
     public string $gameId;
     public array $moves;

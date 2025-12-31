@@ -11,7 +11,7 @@ namespace TictactoeApi\Model;
  * OpenAPI Operation: listGames
  * HTTP Method: GET /games
  */
-class ListGamesQueryParams
+final class ListGamesQueryParams
 {
     /**
      * @param ?int $page Page number for pagination

@@ -15,7 +15,7 @@ namespace TictactoeApi\Model;
  * Auto-generated from OpenAPI schema: moveRequest
  * 
  */
-class MoveRequest
+final class MoveRequest
 {
     /**
      * Mark to place on the board

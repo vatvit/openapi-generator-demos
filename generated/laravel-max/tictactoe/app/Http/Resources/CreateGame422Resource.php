@@ -22,7 +22,7 @@ use TictactoeApi\Model\ValidationError;
  * Response: 422 Validation Error - Request body validation failed
  * Schema: ValidationError
  */
-class CreateGame422Resource extends JsonResource
+final class CreateGame422Resource extends JsonResource
 {
     /**
      * HTTP status code - Hardcoded: 422

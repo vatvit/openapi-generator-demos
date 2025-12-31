@@ -17,7 +17,7 @@ namespace TictactoeApi\Model;
  * Current game status including board state and winner
  * 
  */
-class Status
+final class Status
 {
     public \TictactoeApi\Model\Winner $winner;
     /**

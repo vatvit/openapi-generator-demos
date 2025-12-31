@@ -15,7 +15,7 @@ namespace TictactoeApi\Model;
  * Auto-generated from OpenAPI schema: validationError_allOf_errors
  * 
  */
-class ValidationErrorAllOfErrors
+final class ValidationErrorAllOfErrors
 {
     /**
      * Field that failed validation

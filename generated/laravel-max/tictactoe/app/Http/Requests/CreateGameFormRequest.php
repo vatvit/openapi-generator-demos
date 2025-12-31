@@ -18,7 +18,7 @@ use Illuminate\Foundation\Http\FormRequest;
  * Auto-generated FormRequest for createGame operation
  * Validation rules extracted from OpenAPI schema
  */
-class CreateGameFormRequest extends FormRequest
+final class CreateGameFormRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.

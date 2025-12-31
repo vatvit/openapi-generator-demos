@@ -24,7 +24,7 @@ use Illuminate\Http\JsonResponse;
  * OpenAPI Operation: createGame
  * HTTP Method: POST /games
  */
-class CreateGameController
+final class CreateGameController
 {
     public function __construct(
         private readonly GameManagementApiHandlerInterface $handler

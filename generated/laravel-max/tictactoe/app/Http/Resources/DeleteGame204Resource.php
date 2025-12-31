@@ -21,7 +21,7 @@ use Illuminate\Http\Resources\Json\JsonResource;
  * Response: 204 Game deleted successfully
  * Schema: mixed
  */
-class DeleteGame204Resource extends JsonResource
+final class DeleteGame204Resource extends JsonResource
 {
     /**
      * HTTP status code - Hardcoded: 204

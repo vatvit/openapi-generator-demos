@@ -22,7 +22,7 @@ use TictactoeApi\Model\BadRequestError;
  * Response: 400 Bad Request - Invalid parameters
  * Schema: BadRequestError
  */
-class ListGames400Resource extends JsonResource
+final class ListGames400Resource extends JsonResource
 {
     /**
      * HTTP status code - Hardcoded: 400

@@ -15,7 +15,7 @@ namespace TictactoeApi\Model;
  * Auto-generated from OpenAPI schema: pagination
  * 
  */
-class Pagination
+final class Pagination
 {
     /**
      * Current page number

@@ -23,7 +23,7 @@ use TictactoeApi\Model\Game;
  * Schema: Game
  * Header: Location (REQUIRED)
  */
-class CreateGame201Resource extends JsonResource
+final class CreateGame201Resource extends JsonResource
 {
     /**
      * HTTP status code - Hardcoded: 201

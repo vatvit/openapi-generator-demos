@@ -22,7 +22,7 @@ use TictactoeApi\Model\Status;
  * Response: 200 OK
  * Schema: Status
  */
-class PutSquare200Resource extends JsonResource
+final class PutSquare200Resource extends JsonResource
 {
     /**
      * HTTP status code - Hardcoded: 200

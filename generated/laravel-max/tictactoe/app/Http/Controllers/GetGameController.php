@@ -23,7 +23,7 @@ use Illuminate\Http\JsonResponse;
  * OpenAPI Operation: getGame
  * HTTP Method: GET /games/{gameId}
  */
-class GetGameController
+final class GetGameController
 {
     public function __construct(
         private readonly GameplayApiHandlerInterface $handler

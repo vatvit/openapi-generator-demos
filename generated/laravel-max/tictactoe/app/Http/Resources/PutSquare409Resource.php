@@ -22,7 +22,7 @@ use TictactoeApi\Model\Error;
  * Response: 409 Conflict - Square already occupied or game finished
  * Schema: Error
  */
-class PutSquare409Resource extends JsonResource
+final class PutSquare409Resource extends JsonResource
 {
     /**
      * HTTP status code - Hardcoded: 409

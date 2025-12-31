@@ -17,7 +17,7 @@ namespace TictactoeApi\Model;
  * Not found error - resource does not exist
  * 
  */
-class NotFoundError
+final class NotFoundError
 {
     /**
      * Error code

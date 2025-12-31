@@ -17,7 +17,7 @@ namespace TictactoeApi\Model;
  * Unauthorized error - authentication required
  * 
  */
-class UnauthorizedError
+final class UnauthorizedError
 {
     /**
      * Error code

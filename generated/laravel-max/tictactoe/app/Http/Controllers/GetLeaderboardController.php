@@ -23,7 +23,7 @@ use Illuminate\Http\JsonResponse;
  * OpenAPI Operation: getLeaderboard
  * HTTP Method: GET /leaderboard
  */
-class GetLeaderboardController
+final class GetLeaderboardController
 {
     public function __construct(
         private readonly StatisticsApiHandlerInterface $handler

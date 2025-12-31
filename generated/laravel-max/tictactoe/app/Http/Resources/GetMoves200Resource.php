@@ -22,7 +22,7 @@ use TictactoeApi\Model\MoveHistory;
  * Response: 200 Successful response
  * Schema: MoveHistory
  */
-class GetMoves200Resource extends JsonResource
+final class GetMoves200Resource extends JsonResource
 {
     /**
      * HTTP status code - Hardcoded: 200

@@ -15,7 +15,7 @@ namespace TictactoeApi\Model;
  * Auto-generated from OpenAPI schema: squareResponse
  * 
  */
-class SquareResponse
+final class SquareResponse
 {
     /**
      * Board coordinate (1-3)

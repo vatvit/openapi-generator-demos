@@ -15,7 +15,7 @@ namespace TictactoeApi\Model;
  * Auto-generated from OpenAPI schema: validationError
  * 
  */
-class ValidationError
+final class ValidationError
 {
     /**
      * Error code

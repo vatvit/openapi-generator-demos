@@ -15,7 +15,7 @@ namespace TictactoeApi\Model;
  * Auto-generated from OpenAPI schema: leaderboard
  * 
  */
-class Leaderboard
+final class Leaderboard
 {
     public string $timeframe;
     public array $entries;

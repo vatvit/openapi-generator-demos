@@ -15,7 +15,7 @@ namespace TictactoeApi\Model;
  * Auto-generated from OpenAPI schema: game
  * 
  */
-class Game
+final class Game
 {
     /**
      * Unique game identifier

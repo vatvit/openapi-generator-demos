@@ -22,7 +22,7 @@ use TictactoeApi\Model\Leaderboard;
  * Response: 200 Successful response
  * Schema: Leaderboard
  */
-class GetLeaderboard200Resource extends JsonResource
+final class GetLeaderboard200Resource extends JsonResource
 {
     /**
      * HTTP status code - Hardcoded: 200

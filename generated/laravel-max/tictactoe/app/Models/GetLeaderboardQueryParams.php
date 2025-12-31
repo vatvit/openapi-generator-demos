@@ -11,7 +11,7 @@ namespace TictactoeApi\Model;
  * OpenAPI Operation: getLeaderboard
  * HTTP Method: GET /leaderboard
  */
-class GetLeaderboardQueryParams
+final class GetLeaderboardQueryParams
 {
     /**
      * @param ?string $timeframe Timeframe for leaderboard statistics

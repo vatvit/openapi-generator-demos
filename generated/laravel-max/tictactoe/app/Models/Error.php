@@ -15,7 +15,7 @@ namespace TictactoeApi\Model;
  * Auto-generated from OpenAPI schema: error
  * 
  */
-class Error
+final class Error
 {
     /**
      * Error code

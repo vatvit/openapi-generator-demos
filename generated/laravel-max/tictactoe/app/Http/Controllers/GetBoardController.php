@@ -23,7 +23,7 @@ use Illuminate\Http\JsonResponse;
  * OpenAPI Operation: getBoard
  * HTTP Method: GET /games/{gameId}/board
  */
-class GetBoardController
+final class GetBoardController
 {
     public function __construct(
         private readonly TicTacApiHandlerInterface $handler

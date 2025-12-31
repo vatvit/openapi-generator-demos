@@ -15,7 +15,7 @@ namespace TictactoeApi\Model;
  * Auto-generated from OpenAPI schema: leaderboardEntry
  * 
  */
-class LeaderboardEntry
+final class LeaderboardEntry
 {
     /**
      * Leaderboard rank

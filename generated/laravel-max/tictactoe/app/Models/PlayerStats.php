@@ -15,7 +15,7 @@ namespace TictactoeApi\Model;
  * Auto-generated from OpenAPI schema: playerStats
  * 
  */
-class PlayerStats
+final class PlayerStats
 {
     public string $playerId;
     /**

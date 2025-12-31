@@ -17,7 +17,7 @@ namespace TictactoeApi\Model;
  * Forbidden error - insufficient permissions
  * 
  */
-class ForbiddenError
+final class ForbiddenError
 {
     /**
      * Error code

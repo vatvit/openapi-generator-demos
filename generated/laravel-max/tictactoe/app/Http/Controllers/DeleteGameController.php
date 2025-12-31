@@ -23,7 +23,7 @@ use Illuminate\Http\JsonResponse;
  * OpenAPI Operation: deleteGame
  * HTTP Method: DELETE /games/{gameId}
  */
-class DeleteGameController
+final class DeleteGameController
 {
     public function __construct(
         private readonly GameManagementApiHandlerInterface $handler

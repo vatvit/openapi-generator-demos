@@ -15,7 +15,7 @@ namespace TictactoeApi\Model;
  * Auto-generated from OpenAPI schema: gameListResponse
  * 
  */
-class GameListResponse
+final class GameListResponse
 {
     public array $games;
     public \TictactoeApi\Model\Pagination $pagination;

@@ -10,7 +10,7 @@
 
 namespace TictactoeApi\Api\Http\Controllers;
 
-use TictactoeApi\Api\Handlers\StatisticsApiHandler;
+use TictactoeApi\Api\Handlers\StatisticsApiHandlerInterface;
 use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
 
@@ -26,7 +26,7 @@ use Illuminate\Http\JsonResponse;
 class GetLeaderboardController
 {
     public function __construct(
-        private readonly StatisticsApiHandler $handler
+        private readonly StatisticsApiHandlerInterface $handler
     ) {}
 
     /**

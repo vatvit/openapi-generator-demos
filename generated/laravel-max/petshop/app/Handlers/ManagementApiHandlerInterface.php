@@ -14,16 +14,19 @@ use TictactoeApi\Model\NewPet;
 use TictactoeApi\Model\Pet;
 use TictactoeApi\Api\Http\Resources\AddPet200Resource;
 use TictactoeApi\Api\Http\Resources\AddPet0Resource;
+use TictactoeApi\Api\Http\Resources\DeletePet204Resource;
+use TictactoeApi\Api\Http\Resources\DeletePet0Resource;
 
 /**
- * CreationApiHandler
+ * ManagementApiHandler
  *
  * Handler interface - implement this to provide business logic
  * Returns Resources with compile-time type safety via union types
  *
  * Operation: addPet
+ * Operation: deletePet
  */
-interface CreationApiHandler
+interface ManagementApiHandlerInterface
 {
     /**
      * 
@@ -36,5 +39,17 @@ interface CreationApiHandler
     public function addPet(
         \TictactoeApi\Model\NewPet $new_pet
     ): AddPet200Resource|AddPet0Resource;
+
+    /**
+     * 
+     *
+     * deletes a single pet based on the ID supplied
+     *
+     * @param int $id ID of pet to delete
+     * @return DeletePet204Resource|DeletePet0Resource
+     */
+    public function deletePet(
+        int $id
+    ): DeletePet204Resource|DeletePet0Resource;
 
 }

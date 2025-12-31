@@ -42,7 +42,7 @@ use TictactoeApi\Api\Http\Resources\ListGames401Resource;
  * Operation: getGame
  * Operation: listGames
  */
-interface GameManagementApiHandler
+interface GameManagementApiHandlerInterface
 {
     /**
      * Create a new game

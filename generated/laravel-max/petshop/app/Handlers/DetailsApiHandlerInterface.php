@@ -22,7 +22,7 @@ use TictactoeApi\Api\Http\Resources\FindPetById0Resource;
  *
  * Operation: findPetById
  */
-interface DetailsApiHandler
+interface DetailsApiHandlerInterface
 {
     /**
      * 

@@ -10,7 +10,7 @@
 
 namespace TictactoeApi\Api\Http\Controllers;
 
-use TictactoeApi\Api\Handlers\GameManagementApiHandler;
+use TictactoeApi\Api\Handlers\GameManagementApiHandlerInterface;
 use TictactoeApi\Api\Http\Requests\CreateGameFormRequest;
 use TictactoeApi\Model\CreateGameRequest;
 use Illuminate\Http\JsonResponse;
@@ -27,7 +27,7 @@ use Illuminate\Http\JsonResponse;
 class CreateGameController
 {
     public function __construct(
-        private readonly GameManagementApiHandler $handler
+        private readonly GameManagementApiHandlerInterface $handler
     ) {}
 
     /**

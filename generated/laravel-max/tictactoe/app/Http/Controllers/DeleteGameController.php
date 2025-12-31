@@ -10,7 +10,7 @@
 
 namespace TictactoeApi\Api\Http\Controllers;
 
-use TictactoeApi\Api\Handlers\GameManagementApiHandler;
+use TictactoeApi\Api\Handlers\GameManagementApiHandlerInterface;
 use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
 
@@ -26,7 +26,7 @@ use Illuminate\Http\JsonResponse;
 class DeleteGameController
 {
     public function __construct(
-        private readonly GameManagementApiHandler $handler
+        private readonly GameManagementApiHandlerInterface $handler
     ) {}
 
     /**

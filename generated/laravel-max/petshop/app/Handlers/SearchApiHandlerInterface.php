@@ -22,7 +22,7 @@ use TictactoeApi\Api\Http\Resources\FindPets0Resource;
  *
  * Operation: findPets
  */
-interface SearchApiHandler
+interface SearchApiHandlerInterface
 {
     /**
      * 

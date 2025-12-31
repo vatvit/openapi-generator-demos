@@ -21,7 +21,7 @@ use TictactoeApi\Api\Http\Resources\DeletePet0Resource;
  *
  * Operation: deletePet
  */
-interface AdminApiHandler
+interface AdminApiHandlerInterface
 {
     /**
      * 

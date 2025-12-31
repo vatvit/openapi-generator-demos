@@ -10,7 +10,7 @@
 
 namespace TictactoeApi\Api\Http\Controllers;
 
-use TictactoeApi\Api\Handlers\PetsApiHandler;
+use TictactoeApi\Api\Handlers\PetsApiHandlerInterface;
 use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
 
@@ -26,7 +26,7 @@ use Illuminate\Http\JsonResponse;
 class DeletePetController
 {
     public function __construct(
-        private readonly PetsApiHandler $handler
+        private readonly PetsApiHandlerInterface $handler
     ) {}
 
     /**

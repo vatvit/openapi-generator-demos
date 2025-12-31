@@ -15,14 +15,14 @@ use TictactoeApi\Api\Http\Resources\FindPets200Resource;
 use TictactoeApi\Api\Http\Resources\FindPets0Resource;
 
 /**
- * InventoryApiHandler
+ * ReportingApiHandler
  *
  * Handler interface - implement this to provide business logic
  * Returns Resources with compile-time type safety via union types
  *
  * Operation: findPets
  */
-interface InventoryApiHandler
+interface ReportingApiHandlerInterface
 {
     /**
      * 

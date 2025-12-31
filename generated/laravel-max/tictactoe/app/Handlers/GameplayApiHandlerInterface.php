@@ -43,7 +43,7 @@ use TictactoeApi\Api\Http\Resources\PutSquare409Resource;
  * Operation: getSquare
  * Operation: putSquare
  */
-interface GameplayApiHandler
+interface GameplayApiHandlerInterface
 {
     /**
      * Get the game board

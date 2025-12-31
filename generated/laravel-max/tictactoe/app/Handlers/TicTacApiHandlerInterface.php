@@ -22,7 +22,7 @@ use TictactoeApi\Api\Http\Resources\GetBoard404Resource;
  *
  * Operation: getBoard
  */
-interface TicTacApiHandler
+interface TicTacApiHandlerInterface
 {
     /**
      * Get the game board

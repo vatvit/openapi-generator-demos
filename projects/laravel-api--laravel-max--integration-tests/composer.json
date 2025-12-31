@@ -16,7 +16,11 @@
             "TictactoeApi\\Model\\": "../../generated/laravel-max/tictactoe/app/Models/",
             "TictactoeApi\\Api\\Http\\": "../../generated/laravel-max/tictactoe/app/Http/",
             "TictactoeApi\\Api\\Handlers\\": "../../generated/laravel-max/tictactoe/app/Handlers/",
-            "TictactoeApi\\Api\\Security\\": "../../generated/laravel-max/tictactoe/app/Security/"
+            "TictactoeApi\\Api\\Security\\": "../../generated/laravel-max/tictactoe/app/Security/",
+            "PetshopApi\\Model\\": "../../generated/laravel-max/petshop/app/Models/",
+            "PetshopApi\\Api\\Http\\": "../../generated/laravel-max/petshop/app/Http/",
+            "PetshopApi\\Api\\Handlers\\": "../../generated/laravel-max/petshop/app/Handlers/",
+            "PetshopApi\\Api\\Security\\": "../../generated/laravel-max/petshop/app/Security/"
         }
     },
     "autoload-dev": {

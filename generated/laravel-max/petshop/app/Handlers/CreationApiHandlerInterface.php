@@ -16,14 +16,14 @@ use TictactoeApi\Api\Http\Resources\AddPet200Resource;
 use TictactoeApi\Api\Http\Resources\AddPet0Resource;
 
 /**
- * WorkflowApiHandler
+ * CreationApiHandler
  *
  * Handler interface - implement this to provide business logic
  * Returns Resources with compile-time type safety via union types
  *
  * Operation: addPet
  */
-interface WorkflowApiHandler
+interface CreationApiHandlerInterface
 {
     /**
      * 

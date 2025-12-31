@@ -25,7 +25,7 @@ use TictactoeApi\Api\Http\Resources\GetPlayerStats404Resource;
  * Operation: getLeaderboard
  * Operation: getPlayerStats
  */
-interface StatisticsApiHandler
+interface StatisticsApiHandlerInterface
 {
     /**
      * Get leaderboard

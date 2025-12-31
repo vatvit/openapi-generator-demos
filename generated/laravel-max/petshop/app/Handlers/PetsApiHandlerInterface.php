@@ -10,20 +10,66 @@
 namespace TictactoeApi\Api\Handlers;
 
 use TictactoeApi\Model\Error;
+use TictactoeApi\Model\NewPet;
 use TictactoeApi\Model\Pet;
+use TictactoeApi\Api\Http\Resources\AddPet200Resource;
+use TictactoeApi\Api\Http\Resources\AddPet0Resource;
+use TictactoeApi\Api\Http\Resources\DeletePet204Resource;
+use TictactoeApi\Api\Http\Resources\DeletePet0Resource;
+use TictactoeApi\Api\Http\Resources\FindPetById200Resource;
+use TictactoeApi\Api\Http\Resources\FindPetById0Resource;
 use TictactoeApi\Api\Http\Resources\FindPets200Resource;
 use TictactoeApi\Api\Http\Resources\FindPets0Resource;
 
 /**
- * AnalyticsApiHandler
+ * PetsApiHandler
  *
  * Handler interface - implement this to provide business logic
  * Returns Resources with compile-time type safety via union types
  *
+ * Operation: addPet
+ * Operation: deletePet
+ * Operation: findPetById
  * Operation: findPets
  */
-interface AnalyticsApiHandler
+interface PetsApiHandlerInterface
 {
+    /**
+     * 
+     *
+     * Creates a new pet in the store. Duplicates are allowed
+     *
+     * @param \TictactoeApi\Model\NewPet $new_pet Pet to add to the store
+     * @return AddPet200Resource|AddPet0Resource
+     */
+    public function addPet(
+        \TictactoeApi\Model\NewPet $new_pet
+    ): AddPet200Resource|AddPet0Resource;
+
+    /**
+     * 
+     *
+     * deletes a single pet based on the ID supplied
+     *
+     * @param int $id ID of pet to delete
+     * @return DeletePet204Resource|DeletePet0Resource
+     */
+    public function deletePet(
+        int $id
+    ): DeletePet204Resource|DeletePet0Resource;
+
+    /**
+     * 
+     *
+     * Returns a user based on a single ID, if the user does not have access to the pet
+     *
+     * @param int $id ID of pet to fetch
+     * @return FindPetById200Resource|FindPetById0Resource
+     */
+    public function findPetById(
+        int $id
+    ): FindPetById200Resource|FindPetById0Resource;
+
     /**
      * 
      *

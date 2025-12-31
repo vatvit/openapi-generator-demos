@@ -5,7 +5,7 @@ namespace Tests\Feature\Tictactoe;
 use PHPUnit\Framework\TestCase;
 use TictactoeApi\Api\Http\Controllers\CreateGameController;
 use TictactoeApi\Api\Http\Requests\CreateGameFormRequest;
-use TictactoeApi\Api\Handlers\GameManagementApiHandler;
+use TictactoeApi\Api\Handlers\GameManagementApiHandlerInterface;
 
 /**
  * Tests for generated CreateGameController
@@ -58,7 +58,7 @@ class CreateGameControllerTest extends TestCase
         $type = $param->getType();
 
         $this->assertNotNull($type, 'Handler parameter should be typed');
-        $this->assertEquals('TictactoeApi\Api\Handlers\GameManagementApiHandler', $type->getName());
+        $this->assertEquals('TictactoeApi\Api\Handlers\GameManagementApiHandlerInterface', $type->getName());
     }
 
     public function test_return_type_is_json_response(): void

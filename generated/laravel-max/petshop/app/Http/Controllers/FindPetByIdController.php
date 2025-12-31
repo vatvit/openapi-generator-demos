@@ -10,7 +10,7 @@
 
 namespace TictactoeApi\Api\Http\Controllers;
 
-use TictactoeApi\Api\Handlers\RetrievalApiHandler;
+use TictactoeApi\Api\Handlers\RetrievalApiHandlerInterface;
 use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
 
@@ -26,7 +26,7 @@ use Illuminate\Http\JsonResponse;
 class FindPetByIdController
 {
     public function __construct(
-        private readonly RetrievalApiHandler $handler
+        private readonly RetrievalApiHandlerInterface $handler
     ) {}
 
     /**

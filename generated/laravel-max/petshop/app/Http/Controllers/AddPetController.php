@@ -10,7 +10,7 @@
 
 namespace TictactoeApi\Api\Http\Controllers;
 
-use TictactoeApi\Api\Handlers\WorkflowApiHandler;
+use TictactoeApi\Api\Handlers\WorkflowApiHandlerInterface;
 use TictactoeApi\Api\Http\Requests\AddPetFormRequest;
 use TictactoeApi\Model\NewPet;
 use Illuminate\Http\JsonResponse;
@@ -27,7 +27,7 @@ use Illuminate\Http\JsonResponse;
 class AddPetController
 {
     public function __construct(
-        private readonly WorkflowApiHandler $handler
+        private readonly WorkflowApiHandlerInterface $handler
     ) {}
 
     /**

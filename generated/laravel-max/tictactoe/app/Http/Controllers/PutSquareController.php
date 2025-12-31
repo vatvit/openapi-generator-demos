@@ -10,7 +10,7 @@
 
 namespace TictactoeApi\Api\Http\Controllers;
 
-use TictactoeApi\Api\Handlers\GameplayApiHandler;
+use TictactoeApi\Api\Handlers\GameplayApiHandlerInterface;
 use TictactoeApi\Api\Http\Requests\PutSquareFormRequest;
 use TictactoeApi\Model\MoveRequest;
 use Illuminate\Http\JsonResponse;
@@ -27,7 +27,7 @@ use Illuminate\Http\JsonResponse;
 class PutSquareController
 {
     public function __construct(
-        private readonly GameplayApiHandler $handler
+        private readonly GameplayApiHandlerInterface $handler
     ) {}
 
     /**

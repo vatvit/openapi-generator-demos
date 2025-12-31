@@ -10,7 +10,7 @@
 
 namespace TictactoeApi\Api\Http\Controllers;
 
-use TictactoeApi\Api\Handlers\TicTacApiHandler;
+use TictactoeApi\Api\Handlers\TicTacApiHandlerInterface;
 use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
 
@@ -26,7 +26,7 @@ use Illuminate\Http\JsonResponse;
 class GetBoardController
 {
     public function __construct(
-        private readonly TicTacApiHandler $handler
+        private readonly TicTacApiHandlerInterface $handler
     ) {}
 
     /**

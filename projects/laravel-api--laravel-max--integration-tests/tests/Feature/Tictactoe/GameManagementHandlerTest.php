@@ -3,8 +3,8 @@
 namespace Tests\Feature\Tictactoe;
 
 use PHPUnit\Framework\TestCase;
-use App\Handlers\DemoGameManagementHandler;
-use TictactoeApi\Api\Handlers\GameManagementApiHandler;
+use App\Handlers\GameManagementHandler;
+use TictactoeApi\Api\Handlers\GameManagementApiHandlerInterface;
 use TictactoeApi\Model\CreateGameRequest;
 use TictactoeApi\Model\GameMode;
 use TictactoeApi\Api\Http\Resources\CreateGame201Resource;
@@ -14,25 +14,25 @@ use TictactoeApi\Api\Http\Resources\DeleteGame204Resource;
 use TictactoeApi\Api\Http\Resources\DeleteGame404Resource;
 
 /**
- * Tests for Demo Handler Implementation
+ * Tests for GameManagement Handler Implementation
  *
  * Demonstrates how application-level handlers implement generated interfaces
  */
-class DemoHandlerTest extends TestCase
+class GameManagementHandlerTest extends TestCase
 {
-    private DemoGameManagementHandler $handler;
+    private GameManagementHandler $handler;
 
     protected function setUp(): void
     {
-        $this->handler = new DemoGameManagementHandler();
+        $this->handler = new GameManagementHandler();
     }
 
     public function test_handler_implements_interface(): void
     {
         $this->assertInstanceOf(
-            GameManagementApiHandler::class,
+            GameManagementApiHandlerInterface::class,
             $this->handler,
-            'Handler should implement GameManagementApiHandler interface'
+            'Handler should implement GameManagementApiHandlerInterface'
         );
     }
 

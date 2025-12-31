@@ -27,9 +27,6 @@ interface TicTacApiHandlerInterface
      * Get the game board
      *
      * Retrieves the current state of the board and the winner.
-     *
-     * @param string $game_id Unique game identifier
-     * @return GetBoard200Resource|GetBoard404Resource
      */
     public function getBoard(
         string $game_id

@@ -8,12 +8,6 @@
  */
 namespace TictactoeApi\Model;
 
-/**
- * Player DTO
- *
- * Auto-generated from OpenAPI schema: player
- * 
- */
 final class Player
 {
     /**
@@ -33,9 +27,6 @@ final class Player
      */
     public ?string $avatarUrl = null;
 
-    /**
-     * Constructor
-     */
     public function __construct(
         string $id,
         string $username,
@@ -48,12 +39,7 @@ final class Player
         $this->avatarUrl = $avatarUrl;
     }
 
-    /**
-     * Create from array
-     *
-     * @param array<string, mixed> $data
-     * @return self
-     */
+    /** @param array<string, mixed> $data */
     public static function fromArray(array $data): self
     {
         return new self(
@@ -64,11 +50,7 @@ final class Player
         );
     }
 
-    /**
-     * Convert to array
-     *
-     * @return array<string, mixed>
-     */
+    /** @return array<string, mixed> */
     public function toArray(): array
     {
         return [

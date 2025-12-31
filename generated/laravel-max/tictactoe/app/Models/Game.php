@@ -8,12 +8,6 @@
  */
 namespace TictactoeApi\Model;
 
-/**
- * Game DTO
- *
- * Auto-generated from OpenAPI schema: game
- * 
- */
 final class Game
 {
     /**
@@ -49,9 +43,6 @@ final class Game
      */
     public ?\DateTime $completedAt = null;
 
-    /**
-     * Constructor
-     */
     public function __construct(
         string $id,
         \TictactoeApi\Model\GameStatus $status,
@@ -78,12 +69,7 @@ final class Game
         $this->completedAt = $completedAt;
     }
 
-    /**
-     * Create from array
-     *
-     * @param array<string, mixed> $data
-     * @return self
-     */
+    /** @param array<string, mixed> $data */
     public static function fromArray(array $data): self
     {
         return new self(
@@ -101,11 +87,7 @@ final class Game
         );
     }
 
-    /**
-     * Convert to array
-     *
-     * @return array<string, mixed>
-     */
+    /** @return array<string, mixed> */
     public function toArray(): array
     {
         return [

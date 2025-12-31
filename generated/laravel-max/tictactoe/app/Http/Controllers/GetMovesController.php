@@ -10,33 +10,20 @@
 
 namespace TictactoeApi\Api\Http\Controllers;
 
-use TictactoeApi\Api\Handlers\GetMovesApiHandlerInterface;
+use TictactoeApi\Api\Handlers\GameplayApiHandlerInterface;
 use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
 
-/**
- * GetMovesController
- *
- * Auto-generated controller for getMoves operation
- * One controller per operation pattern
- *
- * OpenAPI Operation: getMoves
- * HTTP Method: GET /games/{gameId}/moves
- */
 final class GetMovesController
 {
     public function __construct(
-        private readonly GetMovesApiHandlerInterface $handler
+        private readonly GameplayApiHandlerInterface $handler
     ) {}
 
     /**
      * Get move history
      *
      * Retrieves the complete move history for a game.
-     *
-     * @param Request $request HTTP request
-     * @param string $game_id Unique game identifier
-     * @return JsonResponse
      */
     public function __invoke(
         Request $request,

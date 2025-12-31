@@ -13,28 +13,11 @@ namespace TictactoeApi\Api\Http\Resources;
 use Illuminate\Http\Resources\Json\JsonResource;
 use TictactoeApi\Model\Leaderboard;
 
-/**
- * GetLeaderboard200Resource
- *
- * Auto-generated Laravel Resource for getLeaderboard operation (HTTP 200)
- *
- * OpenAPI Operation: getLeaderboard
- * Response: 200 Successful response
- * Schema: Leaderboard
- */
 final class GetLeaderboard200Resource extends JsonResource
 {
-    /**
-     * HTTP status code - Hardcoded: 200
-     */
     protected int $httpCode = 200;
 
-    /**
-     * Transform the resource into an array.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return array<string, mixed>
-     */
+    /** @return array<string, mixed> */
     public function toArray($request): array
     {
         /** @var Leaderboard|null $model */
@@ -52,16 +35,7 @@ final class GetLeaderboard200Resource extends JsonResource
         ];
     }
 
-    /**
-     * Customize the outgoing response.
-     *
-     * Enforces HTTP 200 status code
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \Illuminate\Http\Response  $response
-     * @return void
-     */
-    public function withResponse($request, $response)
+    public function withResponse($request, $response): void
     {
         // Set hardcoded HTTP 200 status
         $response->setStatusCode($this->httpCode);

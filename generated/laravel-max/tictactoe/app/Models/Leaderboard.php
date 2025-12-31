@@ -8,12 +8,6 @@
  */
 namespace TictactoeApi\Model;
 
-/**
- * Leaderboard DTO
- *
- * Auto-generated from OpenAPI schema: leaderboard
- * 
- */
 final class Leaderboard
 {
     public string $timeframe;
@@ -23,9 +17,6 @@ final class Leaderboard
      */
     public \DateTime $generatedAt;
 
-    /**
-     * Constructor
-     */
     public function __construct(
         string $timeframe,
         array $entries,
@@ -36,12 +27,7 @@ final class Leaderboard
         $this->generatedAt = $generatedAt;
     }
 
-    /**
-     * Create from array
-     *
-     * @param array<string, mixed> $data
-     * @return self
-     */
+    /** @param array<string, mixed> $data */
     public static function fromArray(array $data): self
     {
         return new self(
@@ -51,11 +37,7 @@ final class Leaderboard
         );
     }
 
-    /**
-     * Convert to array
-     *
-     * @return array<string, mixed>
-     */
+    /** @return array<string, mixed> */
     public function toArray(): array
     {
         return [

@@ -8,12 +8,6 @@
  */
 namespace TictactoeApi\Model;
 
-/**
- * MoveRequest DTO
- *
- * Auto-generated from OpenAPI schema: moveRequest
- * 
- */
 final class MoveRequest
 {
     /**
@@ -21,21 +15,13 @@ final class MoveRequest
      */
     public string $mark;
 
-    /**
-     * Constructor
-     */
     public function __construct(
         string $mark,
     ) {
         $this->mark = $mark;
     }
 
-    /**
-     * Create from array
-     *
-     * @param array<string, mixed> $data
-     * @return self
-     */
+    /** @param array<string, mixed> $data */
     public static function fromArray(array $data): self
     {
         return new self(
@@ -43,11 +29,7 @@ final class MoveRequest
         );
     }
 
-    /**
-     * Convert to array
-     *
-     * @return array<string, mixed>
-     */
+    /** @return array<string, mixed> */
     public function toArray(): array
     {
         return [

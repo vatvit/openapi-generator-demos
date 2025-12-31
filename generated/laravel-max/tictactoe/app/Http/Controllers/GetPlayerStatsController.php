@@ -10,33 +10,20 @@
 
 namespace TictactoeApi\Api\Http\Controllers;
 
-use TictactoeApi\Api\Handlers\GetPlayerStatsApiHandlerInterface;
+use TictactoeApi\Api\Handlers\StatisticsApiHandlerInterface;
 use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
 
-/**
- * GetPlayerStatsController
- *
- * Auto-generated controller for getPlayerStats operation
- * One controller per operation pattern
- *
- * OpenAPI Operation: getPlayerStats
- * HTTP Method: GET /players/{playerId}/stats
- */
 final class GetPlayerStatsController
 {
     public function __construct(
-        private readonly GetPlayerStatsApiHandlerInterface $handler
+        private readonly StatisticsApiHandlerInterface $handler
     ) {}
 
     /**
      * Get player statistics
      *
      * Retrieves comprehensive statistics for a player.
-     *
-     * @param Request $request HTTP request
-     * @param string $player_id Unique player identifier
-     * @return JsonResponse
      */
     public function __invoke(
         Request $request,

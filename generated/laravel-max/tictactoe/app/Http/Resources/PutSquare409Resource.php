@@ -13,28 +13,11 @@ namespace TictactoeApi\Api\Http\Resources;
 use Illuminate\Http\Resources\Json\JsonResource;
 use TictactoeApi\Model\Error;
 
-/**
- * PutSquare409Resource
- *
- * Auto-generated Laravel Resource for putSquare operation (HTTP 409)
- *
- * OpenAPI Operation: putSquare
- * Response: 409 Conflict - Square already occupied or game finished
- * Schema: Error
- */
 final class PutSquare409Resource extends JsonResource
 {
-    /**
-     * HTTP status code - Hardcoded: 409
-     */
     protected int $httpCode = 409;
 
-    /**
-     * Transform the resource into an array.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return array<string, mixed>
-     */
+    /** @return array<string, mixed> */
     public function toArray($request): array
     {
         /** @var Error|null $model */
@@ -52,16 +35,7 @@ final class PutSquare409Resource extends JsonResource
         ];
     }
 
-    /**
-     * Customize the outgoing response.
-     *
-     * Enforces HTTP 409 status code
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \Illuminate\Http\Response  $response
-     * @return void
-     */
-    public function withResponse($request, $response)
+    public function withResponse($request, $response): void
     {
         // Set hardcoded HTTP 409 status
         $response->setStatusCode($this->httpCode);

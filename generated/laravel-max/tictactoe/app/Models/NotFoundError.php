@@ -9,12 +9,7 @@
 namespace TictactoeApi\Model;
 
 /**
- * NotFoundError DTO
- *
- * Auto-generated from OpenAPI schema: notFoundError
- * 
  * Not found error - resource does not exist
- * 
  */
 final class NotFoundError
 {
@@ -35,9 +30,6 @@ final class NotFoundError
      */
     public ?string $errorType = null;
 
-    /**
-     * Constructor
-     */
     public function __construct(
         string $code,
         string $message,
@@ -50,12 +42,7 @@ final class NotFoundError
         $this->errorType = $errorType;
     }
 
-    /**
-     * Create from array
-     *
-     * @param array<string, mixed> $data
-     * @return self
-     */
+    /** @param array<string, mixed> $data */
     public static function fromArray(array $data): self
     {
         return new self(
@@ -66,11 +53,7 @@ final class NotFoundError
         );
     }
 
-    /**
-     * Convert to array
-     *
-     * @return array<string, mixed>
-     */
+    /** @return array<string, mixed> */
     public function toArray(): array
     {
         return [

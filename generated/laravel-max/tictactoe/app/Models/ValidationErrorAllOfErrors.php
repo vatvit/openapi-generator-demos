@@ -8,12 +8,6 @@
  */
 namespace TictactoeApi\Model;
 
-/**
- * ValidationErrorAllOfErrors DTO
- *
- * Auto-generated from OpenAPI schema: validationError_allOf_errors
- * 
- */
 final class ValidationErrorAllOfErrors
 {
     /**
@@ -26,9 +20,6 @@ final class ValidationErrorAllOfErrors
     public string $message;
     public mixed $value;
 
-    /**
-     * Constructor
-     */
     public function __construct(
         string $field,
         string $message,
@@ -39,12 +30,7 @@ final class ValidationErrorAllOfErrors
         $this->value = $value;
     }
 
-    /**
-     * Create from array
-     *
-     * @param array<string, mixed> $data
-     * @return self
-     */
+    /** @param array<string, mixed> $data */
     public static function fromArray(array $data): self
     {
         return new self(
@@ -54,11 +40,7 @@ final class ValidationErrorAllOfErrors
         );
     }
 
-    /**
-     * Convert to array
-     *
-     * @return array<string, mixed>
-     */
+    /** @return array<string, mixed> */
     public function toArray(): array
     {
         return [

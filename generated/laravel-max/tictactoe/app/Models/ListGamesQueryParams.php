@@ -2,23 +2,8 @@
 
 namespace TictactoeApi\Model;
 
-/**
- * ListGamesQueryParams
- *
- * Auto-generated Query Parameters DTO for listGames operation
- * Typed query parameters with defaults
- *
- * OpenAPI Operation: listGames
- * HTTP Method: GET /games
- */
 final class ListGamesQueryParams
 {
-    /**
-     * @param ?int $page Page number for pagination
-     * @param ?int $limit Number of items per page
-     * @param ?string $status Filter by game status
-     * @param ?string $player_id Filter games by player ID
-     */
     public function __construct(
         public ?int $page = 1,
         public ?int $limit = 20,
@@ -26,12 +11,7 @@ final class ListGamesQueryParams
         public ?string $player_id = null,
     ) {}
 
-    /**
-     * Create from query parameters array
-     *
-     * @param array<string, mixed> $query Validated query parameters
-     * @return self
-     */
+    /** @param array<string, mixed> $query */
     public static function fromQuery(array $query): self
     {
         return new self(
@@ -41,11 +21,7 @@ final class ListGamesQueryParams
         );
     }
 
-    /**
-     * Convert to array
-     *
-     * @return array<string, mixed>
-     */
+    /** @return array<string, mixed> */
     public function toArray(): array
     {
         return [

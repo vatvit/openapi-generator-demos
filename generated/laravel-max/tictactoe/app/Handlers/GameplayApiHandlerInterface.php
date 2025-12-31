@@ -48,9 +48,6 @@ interface GameplayApiHandlerInterface
      * Get the game board
      *
      * Retrieves the current state of the board and the winner.
-     *
-     * @param string $game_id Unique game identifier
-     * @return GetBoard200Resource|GetBoard404Resource
      */
     public function getBoard(
         string $game_id
@@ -60,9 +57,6 @@ interface GameplayApiHandlerInterface
      * Get game details
      *
      * Retrieves detailed information about a specific game.
-     *
-     * @param string $game_id Unique game identifier
-     * @return GetGame200Resource|GetGame404Resource
      */
     public function getGame(
         string $game_id
@@ -72,9 +66,6 @@ interface GameplayApiHandlerInterface
      * Get move history
      *
      * Retrieves the complete move history for a game.
-     *
-     * @param string $game_id Unique game identifier
-     * @return GetMoves200Resource|GetMoves404Resource
      */
     public function getMoves(
         string $game_id
@@ -84,11 +75,6 @@ interface GameplayApiHandlerInterface
      * Get a single board square
      *
      * Retrieves the requested square.
-     *
-     * @param string $game_id Unique game identifier
-     * @param int $row Board row (vertical coordinate)
-     * @param int $column Board column (horizontal coordinate)
-     * @return GetSquare200Resource|GetSquare400Resource|GetSquare404Resource
      */
     public function getSquare(
         string $game_id,
@@ -100,12 +86,6 @@ interface GameplayApiHandlerInterface
      * Set a single board square
      *
      * Places a mark on the board and retrieves the whole board and the winner (if any).
-     *
-     * @param string $game_id Unique game identifier
-     * @param int $row Board row (vertical coordinate)
-     * @param int $column Board column (horizontal coordinate)
-     * @param \TictactoeApi\Model\MoveRequest $move_request 
-     * @return PutSquare200Resource|PutSquare400Resource|PutSquare404Resource|PutSquare409Resource
      */
     public function putSquare(
         string $game_id,

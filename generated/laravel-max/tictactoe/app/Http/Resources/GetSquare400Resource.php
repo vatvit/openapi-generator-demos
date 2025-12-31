@@ -13,28 +13,11 @@ namespace TictactoeApi\Api\Http\Resources;
 use Illuminate\Http\Resources\Json\JsonResource;
 use TictactoeApi\Model\BadRequestError;
 
-/**
- * GetSquare400Resource
- *
- * Auto-generated Laravel Resource for getSquare operation (HTTP 400)
- *
- * OpenAPI Operation: getSquare
- * Response: 400 Bad Request - Invalid parameters
- * Schema: BadRequestError
- */
 final class GetSquare400Resource extends JsonResource
 {
-    /**
-     * HTTP status code - Hardcoded: 400
-     */
     protected int $httpCode = 400;
 
-    /**
-     * Transform the resource into an array.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return array<string, mixed>
-     */
+    /** @return array<string, mixed> */
     public function toArray($request): array
     {
         /** @var BadRequestError|null $model */
@@ -53,16 +36,7 @@ final class GetSquare400Resource extends JsonResource
         ];
     }
 
-    /**
-     * Customize the outgoing response.
-     *
-     * Enforces HTTP 400 status code
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \Illuminate\Http\Response  $response
-     * @return void
-     */
-    public function withResponse($request, $response)
+    public function withResponse($request, $response): void
     {
         // Set hardcoded HTTP 400 status
         $response->setStatusCode($this->httpCode);

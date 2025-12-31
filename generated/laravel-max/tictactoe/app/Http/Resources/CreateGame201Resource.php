@@ -13,34 +13,13 @@ namespace TictactoeApi\Api\Http\Resources;
 use Illuminate\Http\Resources\Json\JsonResource;
 use TictactoeApi\Model\Game;
 
-/**
- * CreateGame201Resource
- *
- * Auto-generated Laravel Resource for createGame operation (HTTP 201)
- *
- * OpenAPI Operation: createGame
- * Response: 201 Game created successfully
- * Schema: Game
- * Header: Location (REQUIRED)
- */
 final class CreateGame201Resource extends JsonResource
 {
-    /**
-     * HTTP status code - Hardcoded: 201
-     */
     protected int $httpCode = 201;
 
-    /**
-     * Location header (REQUIRED)
-     */
     public ?string $location = null;
 
-    /**
-     * Transform the resource into an array.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return array<string, mixed>
-     */
+    /** @return array<string, mixed> */
     public function toArray($request): array
     {
         /** @var Game|null $model */
@@ -66,16 +45,7 @@ final class CreateGame201Resource extends JsonResource
         ];
     }
 
-    /**
-     * Customize the outgoing response.
-     *
-     * Enforces HTTP 201 status code and headers
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \Illuminate\Http\Response  $response
-     * @return void
-     */
-    public function withResponse($request, $response)
+    public function withResponse($request, $response): void
     {
         // Set hardcoded HTTP 201 status
         $response->setStatusCode($this->httpCode);

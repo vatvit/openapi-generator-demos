@@ -10,33 +10,20 @@
 
 namespace TictactoeApi\Api\Http\Controllers;
 
-use TictactoeApi\Api\Handlers\DeleteGameApiHandlerInterface;
+use TictactoeApi\Api\Handlers\GameManagementApiHandlerInterface;
 use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
 
-/**
- * DeleteGameController
- *
- * Auto-generated controller for deleteGame operation
- * One controller per operation pattern
- *
- * OpenAPI Operation: deleteGame
- * HTTP Method: DELETE /games/{gameId}
- */
 final class DeleteGameController
 {
     public function __construct(
-        private readonly DeleteGameApiHandlerInterface $handler
+        private readonly GameManagementApiHandlerInterface $handler
     ) {}
 
     /**
      * Delete a game
      *
      * Deletes a game. Only allowed for game creators or admins.
-     *
-     * @param Request $request HTTP request
-     * @param string $game_id Unique game identifier
-     * @return JsonResponse
      */
     public function __invoke(
         Request $request,

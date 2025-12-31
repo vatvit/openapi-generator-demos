@@ -13,32 +13,20 @@ namespace TictactoeApi\Api\Http\Resources;
 use Illuminate\Http\Resources\Json\JsonResource;
 use TictactoeApi\Model\Error;
 
-/**
- * FindPets0Resource
- *
- * Auto-generated Laravel Resource for findPets operation (HTTP 0)
- *
- * OpenAPI Operation: findPets
- * Response: 0 unexpected error
- * Schema: Error
- */
-class FindPets0Resource extends JsonResource
+final class FindPets0Resource extends JsonResource
 {
-    /**
-     * HTTP status code - Hardcoded: 0
-     */
     protected int $httpCode = 0;
 
-    /**
-     * Transform the resource into an array.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return array<string, mixed>
-     */
+    /** @return array<string, mixed> */
     public function toArray($request): array
     {
-        /** @var Error $model */
+        /** @var Error|null $model */
         $model = $this->resource;
+
+        // Handle null resource (empty response or error response)
+        if ($model === null) {
+            return [];
+        }
 
         return [
             'code' => $model->code,
@@ -46,16 +34,7 @@ class FindPets0Resource extends JsonResource
         ];
     }
 
-    /**
-     * Customize the outgoing response.
-     *
-     * Enforces HTTP 0 status code
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \Illuminate\Http\Response  $response
-     * @return void
-     */
-    public function withResponse($request, $response)
+    public function withResponse($request, $response): void
     {
         // Set hardcoded HTTP 0 status
         $response->setStatusCode($this->httpCode);

@@ -13,40 +13,15 @@ namespace TictactoeApi\Api\Http\Resources;
 use Illuminate\Http\Resources\Json\JsonResource;
 use TictactoeApi\Model\GameListResponse;
 
-/**
- * ListGames200Resource
- *
- * Auto-generated Laravel Resource for listGames operation (HTTP 200)
- *
- * OpenAPI Operation: listGames
- * Response: 200 Successful response
- * Schema: GameListResponse
- * Header: X-Total-Count (REQUIRED)
- * Header: X-Page-Number (optional)
- */
 final class ListGames200Resource extends JsonResource
 {
-    /**
-     * HTTP status code - Hardcoded: 200
-     */
     protected int $httpCode = 200;
 
-    /**
-     * X-Total-Count header (REQUIRED)
-     */
     public ?string $xTotalCount = null;
 
-    /**
-     * X-Page-Number header 
-     */
     public ?string $xPageNumber = null;
 
-    /**
-     * Transform the resource into an array.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return array<string, mixed>
-     */
+    /** @return array<string, mixed> */
     public function toArray($request): array
     {
         /** @var GameListResponse|null $model */
@@ -63,16 +38,7 @@ final class ListGames200Resource extends JsonResource
         ];
     }
 
-    /**
-     * Customize the outgoing response.
-     *
-     * Enforces HTTP 200 status code and headers
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \Illuminate\Http\Response  $response
-     * @return void
-     */
-    public function withResponse($request, $response)
+    public function withResponse($request, $response): void
     {
         // Set hardcoded HTTP 200 status
         $response->setStatusCode($this->httpCode);

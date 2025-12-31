@@ -13,28 +13,11 @@ namespace TictactoeApi\Api\Http\Resources;
 use Illuminate\Http\Resources\Json\JsonResource;
 use TictactoeApi\Model\UnauthorizedError;
 
-/**
- * ListGames401Resource
- *
- * Auto-generated Laravel Resource for listGames operation (HTTP 401)
- *
- * OpenAPI Operation: listGames
- * Response: 401 Unauthorized - Authentication required
- * Schema: UnauthorizedError
- */
 final class ListGames401Resource extends JsonResource
 {
-    /**
-     * HTTP status code - Hardcoded: 401
-     */
     protected int $httpCode = 401;
 
-    /**
-     * Transform the resource into an array.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return array<string, mixed>
-     */
+    /** @return array<string, mixed> */
     public function toArray($request): array
     {
         /** @var UnauthorizedError|null $model */
@@ -53,16 +36,7 @@ final class ListGames401Resource extends JsonResource
         ];
     }
 
-    /**
-     * Customize the outgoing response.
-     *
-     * Enforces HTTP 401 status code
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \Illuminate\Http\Response  $response
-     * @return void
-     */
-    public function withResponse($request, $response)
+    public function withResponse($request, $response): void
     {
         // Set hardcoded HTTP 401 status
         $response->setStatusCode($this->httpCode);

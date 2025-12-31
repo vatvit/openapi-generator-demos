@@ -8,12 +8,6 @@
  */
 namespace TictactoeApi\Model;
 
-/**
- * Pagination DTO
- *
- * Auto-generated from OpenAPI schema: pagination
- * 
- */
 final class Pagination
 {
     /**
@@ -37,9 +31,6 @@ final class Pagination
      */
     public ?bool $hasPrevious = null;
 
-    /**
-     * Constructor
-     */
     public function __construct(
         int $page,
         int $limit,
@@ -54,12 +45,7 @@ final class Pagination
         $this->hasPrevious = $hasPrevious;
     }
 
-    /**
-     * Create from array
-     *
-     * @param array<string, mixed> $data
-     * @return self
-     */
+    /** @param array<string, mixed> $data */
     public static function fromArray(array $data): self
     {
         return new self(
@@ -71,11 +57,7 @@ final class Pagination
         );
     }
 
-    /**
-     * Convert to array
-     *
-     * @return array<string, mixed>
-     */
+    /** @return array<string, mixed> */
     public function toArray(): array
     {
         return [

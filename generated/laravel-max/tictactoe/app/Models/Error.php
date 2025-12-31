@@ -8,12 +8,6 @@
  */
 namespace TictactoeApi\Model;
 
-/**
- * Error DTO
- *
- * Auto-generated from OpenAPI schema: error
- * 
- */
 final class Error
 {
     /**
@@ -29,9 +23,6 @@ final class Error
      */
     public ?array $details = null;
 
-    /**
-     * Constructor
-     */
     public function __construct(
         string $code,
         string $message,
@@ -42,12 +33,7 @@ final class Error
         $this->details = $details;
     }
 
-    /**
-     * Create from array
-     *
-     * @param array<string, mixed> $data
-     * @return self
-     */
+    /** @param array<string, mixed> $data */
     public static function fromArray(array $data): self
     {
         return new self(
@@ -57,11 +43,7 @@ final class Error
         );
     }
 
-    /**
-     * Convert to array
-     *
-     * @return array<string, mixed>
-     */
+    /** @return array<string, mixed> */
     public function toArray(): array
     {
         return [

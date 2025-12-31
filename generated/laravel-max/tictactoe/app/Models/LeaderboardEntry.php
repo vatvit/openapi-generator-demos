@@ -8,12 +8,6 @@
  */
 namespace TictactoeApi\Model;
 
-/**
- * LeaderboardEntry DTO
- *
- * Auto-generated from OpenAPI schema: leaderboardEntry
- * 
- */
 final class LeaderboardEntry
 {
     /**
@@ -28,9 +22,6 @@ final class LeaderboardEntry
     public int $wins;
     public ?int $gamesPlayed = null;
 
-    /**
-     * Constructor
-     */
     public function __construct(
         int $rank,
         \TictactoeApi\Model\Player $player,
@@ -45,12 +36,7 @@ final class LeaderboardEntry
         $this->gamesPlayed = $gamesPlayed;
     }
 
-    /**
-     * Create from array
-     *
-     * @param array<string, mixed> $data
-     * @return self
-     */
+    /** @param array<string, mixed> $data */
     public static function fromArray(array $data): self
     {
         return new self(
@@ -62,11 +48,7 @@ final class LeaderboardEntry
         );
     }
 
-    /**
-     * Convert to array
-     *
-     * @return array<string, mixed>
-     */
+    /** @return array<string, mixed> */
     public function toArray(): array
     {
         return [

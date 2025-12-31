@@ -13,32 +13,20 @@ namespace TictactoeApi\Api\Http\Resources;
 use Illuminate\Http\Resources\Json\JsonResource;
 use TictactoeApi\Model\Pet;
 
-/**
- * FindPets200Resource
- *
- * Auto-generated Laravel Resource for findPets operation (HTTP 200)
- *
- * OpenAPI Operation: findPets
- * Response: 200 pet response
- * Schema: Pet
- */
-class FindPets200Resource extends JsonResource
+final class FindPets200Resource extends JsonResource
 {
-    /**
-     * HTTP status code - Hardcoded: 200
-     */
     protected int $httpCode = 200;
 
-    /**
-     * Transform the resource into an array.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return array<string, mixed>
-     */
+    /** @return array<string, mixed> */
     public function toArray($request): array
     {
-        /** @var Pet $model */
+        /** @var Pet|null $model */
         $model = $this->resource;
+
+        // Handle null resource (empty response or error response)
+        if ($model === null) {
+            return [];
+        }
 
         return [
             'name' => $model->name,
@@ -47,16 +35,7 @@ class FindPets200Resource extends JsonResource
         ];
     }
 
-    /**
-     * Customize the outgoing response.
-     *
-     * Enforces HTTP 200 status code
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \Illuminate\Http\Response  $response
-     * @return void
-     */
-    public function withResponse($request, $response)
+    public function withResponse($request, $response): void
     {
         // Set hardcoded HTTP 200 status
         $response->setStatusCode($this->httpCode);

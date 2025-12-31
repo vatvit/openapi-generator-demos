@@ -10,32 +10,20 @@
 
 namespace TictactoeApi\Api\Http\Controllers;
 
-use TictactoeApi\Api\Handlers\GetLeaderboardApiHandlerInterface;
+use TictactoeApi\Api\Handlers\StatisticsApiHandlerInterface;
 use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
 
-/**
- * GetLeaderboardController
- *
- * Auto-generated controller for getLeaderboard operation
- * One controller per operation pattern
- *
- * OpenAPI Operation: getLeaderboard
- * HTTP Method: GET /leaderboard
- */
 final class GetLeaderboardController
 {
     public function __construct(
-        private readonly GetLeaderboardApiHandlerInterface $handler
+        private readonly StatisticsApiHandlerInterface $handler
     ) {}
 
     /**
      * Get leaderboard
      *
      * Retrieves the global leaderboard with top players.
-     *
-     * @param Request $request HTTP request
-     * @return JsonResponse
      */
     public function __invoke(
         Request $request

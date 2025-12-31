@@ -1,13 +1,7 @@
-app/Handlers/CreateGameApiHandlerInterface.php
-app/Handlers/DeleteGameApiHandlerInterface.php
-app/Handlers/GetBoardApiHandlerInterface.php
-app/Handlers/GetGameApiHandlerInterface.php
-app/Handlers/GetLeaderboardApiHandlerInterface.php
-app/Handlers/GetMovesApiHandlerInterface.php
-app/Handlers/GetPlayerStatsApiHandlerInterface.php
-app/Handlers/GetSquareApiHandlerInterface.php
-app/Handlers/ListGamesApiHandlerInterface.php
-app/Handlers/PutSquareApiHandlerInterface.php
+app/Handlers/GameManagementApiHandlerInterface.php
+app/Handlers/GameplayApiHandlerInterface.php
+app/Handlers/StatisticsApiHandlerInterface.php
+app/Handlers/TicTacApiHandlerInterface.php
 app/Models/BadRequestError.php
 app/Models/CreateGameRequest.php
 app/Models/Error.php

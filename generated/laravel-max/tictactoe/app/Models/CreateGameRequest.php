@@ -8,12 +8,6 @@
  */
 namespace TictactoeApi\Model;
 
-/**
- * CreateGameRequest DTO
- *
- * Auto-generated from OpenAPI schema: createGameRequest
- * 
- */
 final class CreateGameRequest
 {
     public \TictactoeApi\Model\GameMode $mode;
@@ -30,9 +24,6 @@ final class CreateGameRequest
      */
     public ?array $metadata = null;
 
-    /**
-     * Constructor
-     */
     public function __construct(
         \TictactoeApi\Model\GameMode $mode,
         ?string $opponentId = null,
@@ -45,12 +36,7 @@ final class CreateGameRequest
         $this->metadata = $metadata;
     }
 
-    /**
-     * Create from array
-     *
-     * @param array<string, mixed> $data
-     * @return self
-     */
+    /** @param array<string, mixed> $data */
     public static function fromArray(array $data): self
     {
         return new self(
@@ -61,11 +47,7 @@ final class CreateGameRequest
         );
     }
 
-    /**
-     * Convert to array
-     *
-     * @return array<string, mixed>
-     */
+    /** @return array<string, mixed> */
     public function toArray(): array
     {
         return [

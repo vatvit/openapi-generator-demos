@@ -13,28 +13,11 @@ namespace TictactoeApi\Api\Http\Resources;
 use Illuminate\Http\Resources\Json\JsonResource;
 use TictactoeApi\Model\NotFoundError;
 
-/**
- * PutSquare404Resource
- *
- * Auto-generated Laravel Resource for putSquare operation (HTTP 404)
- *
- * OpenAPI Operation: putSquare
- * Response: 404 Not Found - Resource does not exist
- * Schema: NotFoundError
- */
 final class PutSquare404Resource extends JsonResource
 {
-    /**
-     * HTTP status code - Hardcoded: 404
-     */
     protected int $httpCode = 404;
 
-    /**
-     * Transform the resource into an array.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return array<string, mixed>
-     */
+    /** @return array<string, mixed> */
     public function toArray($request): array
     {
         /** @var NotFoundError|null $model */
@@ -53,16 +36,7 @@ final class PutSquare404Resource extends JsonResource
         ];
     }
 
-    /**
-     * Customize the outgoing response.
-     *
-     * Enforces HTTP 404 status code
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \Illuminate\Http\Response  $response
-     * @return void
-     */
-    public function withResponse($request, $response)
+    public function withResponse($request, $response): void
     {
         // Set hardcoded HTTP 404 status
         $response->setStatusCode($this->httpCode);

@@ -8,12 +8,6 @@
  */
 namespace TictactoeApi\Model;
 
-/**
- * PlayerStats DTO
- *
- * Auto-generated from OpenAPI schema: playerStats
- * 
- */
 final class PlayerStats
 {
     public string $playerId;
@@ -47,9 +41,6 @@ final class PlayerStats
      */
     public ?int $longestWinStreak = null;
 
-    /**
-     * Constructor
-     */
     public function __construct(
         string $playerId,
         int $gamesPlayed,
@@ -72,12 +63,7 @@ final class PlayerStats
         $this->longestWinStreak = $longestWinStreak;
     }
 
-    /**
-     * Create from array
-     *
-     * @param array<string, mixed> $data
-     * @return self
-     */
+    /** @param array<string, mixed> $data */
     public static function fromArray(array $data): self
     {
         return new self(
@@ -93,11 +79,7 @@ final class PlayerStats
         );
     }
 
-    /**
-     * Convert to array
-     *
-     * @return array<string, mixed>
-     */
+    /** @return array<string, mixed> */
     public function toArray(): array
     {
         return [

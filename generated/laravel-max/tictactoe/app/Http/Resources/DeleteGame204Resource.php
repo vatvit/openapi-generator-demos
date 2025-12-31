@@ -12,43 +12,17 @@ namespace TictactoeApi\Api\Http\Resources;
 
 use Illuminate\Http\Resources\Json\JsonResource;
 
-/**
- * DeleteGame204Resource
- *
- * Auto-generated Laravel Resource for deleteGame operation (HTTP 204)
- *
- * OpenAPI Operation: deleteGame
- * Response: 204 Game deleted successfully
- * Schema: mixed
- */
 final class DeleteGame204Resource extends JsonResource
 {
-    /**
-     * HTTP status code - Hardcoded: 204
-     */
     protected int $httpCode = 204;
 
-    /**
-     * Transform the resource into an array.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return array<string, mixed>
-     */
+    /** @return array<string, mixed> */
     public function toArray($request): array
     {
         return [];
     }
 
-    /**
-     * Customize the outgoing response.
-     *
-     * Enforces HTTP 204 status code
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \Illuminate\Http\Response  $response
-     * @return void
-     */
-    public function withResponse($request, $response)
+    public function withResponse($request, $response): void
     {
         // Set hardcoded HTTP 204 status
         $response->setStatusCode($this->httpCode);

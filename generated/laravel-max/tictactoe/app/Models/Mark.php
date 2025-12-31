@@ -9,12 +9,7 @@
 namespace TictactoeApi\Model;
 
 /**
- * Mark Enum
- *
- * Auto-generated from OpenAPI schema: mark
- * 
  * Possible values for a board square. &#x60;.&#x60; means empty square.
- * 
  */
 enum Mark: string
 {

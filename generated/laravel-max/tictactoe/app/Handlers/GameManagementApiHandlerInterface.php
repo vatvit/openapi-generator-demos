@@ -47,9 +47,6 @@ interface GameManagementApiHandlerInterface
      * Create a new game
      *
      * Creates a new TicTacToe game with specified configuration.
-     *
-     * @param \TictactoeApi\Model\CreateGameRequest $create_game_request 
-     * @return CreateGame201Resource|CreateGame400Resource|CreateGame401Resource|CreateGame422Resource
      */
     public function createGame(
         \TictactoeApi\Model\CreateGameRequest $create_game_request
@@ -59,9 +56,6 @@ interface GameManagementApiHandlerInterface
      * Delete a game
      *
      * Deletes a game. Only allowed for game creators or admins.
-     *
-     * @param string $game_id Unique game identifier
-     * @return DeleteGame204Resource|DeleteGame403Resource|DeleteGame404Resource
      */
     public function deleteGame(
         string $game_id
@@ -71,9 +65,6 @@ interface GameManagementApiHandlerInterface
      * Get game details
      *
      * Retrieves detailed information about a specific game.
-     *
-     * @param string $game_id Unique game identifier
-     * @return GetGame200Resource|GetGame404Resource
      */
     public function getGame(
         string $game_id
@@ -83,18 +74,12 @@ interface GameManagementApiHandlerInterface
      * List all games
      *
      * Retrieves a paginated list of games with optional filtering.
-     *
-     * @param int $page Page number for pagination
-     * @param int $limit Number of items per page
-     * @param \TictactoeApi\Model\GameStatus $status Filter by game status
-     * @param string $player_id Filter games by player ID
-     * @return ListGames200Resource|ListGames400Resource|ListGames401Resource
      */
     public function listGames(
-        int $page,
-        int $limit,
-        \TictactoeApi\Model\GameStatus $status,
-        string $player_id
+        int|null $page = null,
+        int|null $limit = null,
+        \TictactoeApi\Model\GameStatus|null $status = null,
+        string|null $player_id = null
     ): ListGames200Resource|ListGames400Resource|ListGames401Resource;
 
 }

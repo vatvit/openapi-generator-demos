@@ -9,12 +9,7 @@
 namespace TictactoeApi\Model;
 
 /**
- * GameMode Enum
- *
- * Auto-generated from OpenAPI schema: gameMode
- * 
  * Game mode - Player vs Player or AI difficulty
- * 
  */
 enum GameMode: string
 {

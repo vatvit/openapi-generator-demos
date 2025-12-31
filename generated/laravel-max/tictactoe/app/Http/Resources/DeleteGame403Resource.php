@@ -13,28 +13,11 @@ namespace TictactoeApi\Api\Http\Resources;
 use Illuminate\Http\Resources\Json\JsonResource;
 use TictactoeApi\Model\ForbiddenError;
 
-/**
- * DeleteGame403Resource
- *
- * Auto-generated Laravel Resource for deleteGame operation (HTTP 403)
- *
- * OpenAPI Operation: deleteGame
- * Response: 403 Forbidden - Insufficient permissions
- * Schema: ForbiddenError
- */
 final class DeleteGame403Resource extends JsonResource
 {
-    /**
-     * HTTP status code - Hardcoded: 403
-     */
     protected int $httpCode = 403;
 
-    /**
-     * Transform the resource into an array.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return array<string, mixed>
-     */
+    /** @return array<string, mixed> */
     public function toArray($request): array
     {
         /** @var ForbiddenError|null $model */
@@ -53,16 +36,7 @@ final class DeleteGame403Resource extends JsonResource
         ];
     }
 
-    /**
-     * Customize the outgoing response.
-     *
-     * Enforces HTTP 403 status code
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \Illuminate\Http\Response  $response
-     * @return void
-     */
-    public function withResponse($request, $response)
+    public function withResponse($request, $response): void
     {
         // Set hardcoded HTTP 403 status
         $response->setStatusCode($this->httpCode);

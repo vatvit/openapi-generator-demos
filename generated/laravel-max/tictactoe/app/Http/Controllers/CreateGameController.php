@@ -10,33 +10,21 @@
 
 namespace TictactoeApi\Api\Http\Controllers;
 
-use TictactoeApi\Api\Handlers\CreateGameApiHandlerInterface;
+use TictactoeApi\Api\Handlers\GameManagementApiHandlerInterface;
 use TictactoeApi\Api\Http\Requests\CreateGameFormRequest;
 use TictactoeApi\Model\CreateGameRequest;
 use Illuminate\Http\JsonResponse;
 
-/**
- * CreateGameController
- *
- * Auto-generated controller for createGame operation
- * One controller per operation pattern
- *
- * OpenAPI Operation: createGame
- * HTTP Method: POST /games
- */
 final class CreateGameController
 {
     public function __construct(
-        private readonly CreateGameApiHandlerInterface $handler
+        private readonly GameManagementApiHandlerInterface $handler
     ) {}
 
     /**
      * Create a new game
      *
      * Creates a new TicTacToe game with specified configuration.
-     *
-     * @param CreateGameFormRequest $request Validated request with body data
-     * @return JsonResponse
      */
     public function __invoke(
         CreateGameFormRequest $request

@@ -9,12 +9,7 @@
 namespace TictactoeApi\Model;
 
 /**
- * GameStatus Enum
- *
- * Auto-generated from OpenAPI schema: gameStatus
- * 
  * Current status of the game
- * 
  */
 enum GameStatus: string
 {

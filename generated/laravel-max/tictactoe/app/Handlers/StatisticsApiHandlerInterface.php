@@ -30,23 +30,16 @@ interface StatisticsApiHandlerInterface
      * Get leaderboard
      *
      * Retrieves the global leaderboard with top players.
-     *
-     * @param string $timeframe Timeframe for leaderboard statistics
-     * @param int $limit Number of top players to return
-     * @return GetLeaderboard200Resource
      */
     public function getLeaderboard(
-        string $timeframe,
-        int $limit
+        string|null $timeframe = null,
+        int|null $limit = null
     ): GetLeaderboard200Resource;
 
     /**
      * Get player statistics
      *
      * Retrieves comprehensive statistics for a player.
-     *
-     * @param string $player_id Unique player identifier
-     * @return GetPlayerStats200Resource|GetPlayerStats404Resource
      */
     public function getPlayerStats(
         string $player_id

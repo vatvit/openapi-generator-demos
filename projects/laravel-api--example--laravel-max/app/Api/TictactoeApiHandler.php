@@ -4,17 +4,11 @@ declare(strict_types=1);
 
 namespace App\Api;
 
-// Per-operation Handler Interfaces
-use TictactoeApi\Api\Handlers\CreateGameApiHandlerInterface;
-use TictactoeApi\Api\Handlers\DeleteGameApiHandlerInterface;
-use TictactoeApi\Api\Handlers\GetBoardApiHandlerInterface;
-use TictactoeApi\Api\Handlers\GetGameApiHandlerInterface;
-use TictactoeApi\Api\Handlers\GetLeaderboardApiHandlerInterface;
-use TictactoeApi\Api\Handlers\GetMovesApiHandlerInterface;
-use TictactoeApi\Api\Handlers\GetPlayerStatsApiHandlerInterface;
-use TictactoeApi\Api\Handlers\GetSquareApiHandlerInterface;
-use TictactoeApi\Api\Handlers\ListGamesApiHandlerInterface;
-use TictactoeApi\Api\Handlers\PutSquareApiHandlerInterface;
+// Per-tag Handler Interfaces
+use TictactoeApi\Api\Handlers\GameManagementApiHandlerInterface;
+use TictactoeApi\Api\Handlers\GameplayApiHandlerInterface;
+use TictactoeApi\Api\Handlers\StatisticsApiHandlerInterface;
+use TictactoeApi\Api\Handlers\TicTacApiHandlerInterface;
 
 use TictactoeApi\Model\CreateGameRequest;
 use TictactoeApi\Model\Game;
@@ -61,20 +55,14 @@ use TictactoeApi\Api\Http\Resources\PutSquare409Resource;
 /**
  * TictactoeApiHandler
  *
- * Unified handler implementing all TicTacToe API per-operation interfaces.
+ * Unified handler implementing all TicTacToe API per-tag interfaces.
  * This is a demo implementation for testing purposes.
  */
 class TictactoeApiHandler implements
-    CreateGameApiHandlerInterface,
-    DeleteGameApiHandlerInterface,
-    GetBoardApiHandlerInterface,
-    GetGameApiHandlerInterface,
-    GetLeaderboardApiHandlerInterface,
-    GetMovesApiHandlerInterface,
-    GetPlayerStatsApiHandlerInterface,
-    GetSquareApiHandlerInterface,
-    ListGamesApiHandlerInterface,
-    PutSquareApiHandlerInterface
+    GameManagementApiHandlerInterface,
+    GameplayApiHandlerInterface,
+    StatisticsApiHandlerInterface,
+    TicTacApiHandlerInterface
 {
     // =========================================================================
     // Game Management

@@ -9,12 +9,7 @@
 namespace TictactoeApi\Model;
 
 /**
- * Status DTO
- *
- * Auto-generated from OpenAPI schema: status
- * 
  * Current game status including board state and winner
- * 
  */
 final class Status
 {
@@ -24,9 +19,6 @@ final class Status
      */
     public array $board;
 
-    /**
-     * Constructor
-     */
     public function __construct(
         \TictactoeApi\Model\Winner $winner,
         array $board,
@@ -35,12 +27,7 @@ final class Status
         $this->board = $board;
     }
 
-    /**
-     * Create from array
-     *
-     * @param array<string, mixed> $data
-     * @return self
-     */
+    /** @param array<string, mixed> $data */
     public static function fromArray(array $data): self
     {
         return new self(
@@ -49,11 +36,7 @@ final class Status
         );
     }
 
-    /**
-     * Convert to array
-     *
-     * @return array<string, mixed>
-     */
+    /** @return array<string, mixed> */
     public function toArray(): array
     {
         return [

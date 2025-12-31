@@ -12,27 +12,14 @@ namespace TictactoeApi\Api\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-/**
- * AddPetFormRequest
- *
- * Auto-generated FormRequest for addPet operation
- * Validation rules extracted from OpenAPI schema
- */
-class AddPetFormRequest extends FormRequest
+final class AddPetFormRequest extends FormRequest
 {
-    /**
-     * Determine if the user is authorized to make this request.
-     */
     public function authorize(): bool
     {
         return true;  // Authorization logic should be implemented in middleware
     }
 
-    /**
-     * Get the validation rules that apply to the request.
-     *
-     * @return array<string, \Illuminate\Contracts\Validation\ValidationRule|array<mixed>|string>
-     */
+    /** @return array<string, \Illuminate\Contracts\Validation\ValidationRule|array<mixed>|string> */
     public function rules(): array
     {
         return [

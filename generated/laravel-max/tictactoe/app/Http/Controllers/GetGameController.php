@@ -10,33 +10,20 @@
 
 namespace TictactoeApi\Api\Http\Controllers;
 
-use TictactoeApi\Api\Handlers\GetGameApiHandlerInterface;
+use TictactoeApi\Api\Handlers\GameplayApiHandlerInterface;
 use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
 
-/**
- * GetGameController
- *
- * Auto-generated controller for getGame operation
- * One controller per operation pattern
- *
- * OpenAPI Operation: getGame
- * HTTP Method: GET /games/{gameId}
- */
 final class GetGameController
 {
     public function __construct(
-        private readonly GetGameApiHandlerInterface $handler
+        private readonly GameplayApiHandlerInterface $handler
     ) {}
 
     /**
      * Get game details
      *
      * Retrieves detailed information about a specific game.
-     *
-     * @param Request $request HTTP request
-     * @param string $game_id Unique game identifier
-     * @return JsonResponse
      */
     public function __invoke(
         Request $request,

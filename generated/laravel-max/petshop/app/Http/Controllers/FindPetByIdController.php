@@ -14,16 +14,7 @@ use TictactoeApi\Api\Handlers\RetrievalApiHandlerInterface;
 use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
 
-/**
- * FindPetByIdController
- *
- * Auto-generated controller for findPetById operation
- * One controller per operation pattern
- *
- * OpenAPI Operation: findPetById
- * HTTP Method: GET /pets/{id}
- */
-class FindPetByIdController
+final class FindPetByIdController
 {
     public function __construct(
         private readonly RetrievalApiHandlerInterface $handler
@@ -31,16 +22,13 @@ class FindPetByIdController
 
     /**
      * Returns a user based on a single ID, if the user does not have access to the pet
-     *
-     * @param int $id ID of pet to fetch
-     * @return JsonResponse
      */
     public function __invoke(
         Request $request,
         int $id
     ): JsonResponse
     {
-        // Delegate to Handler
+        // Delegate to Handler (arguments match HandlerInterface order: path → query → body)
         $resource = $this->handler->findPetById(
             $id
         );

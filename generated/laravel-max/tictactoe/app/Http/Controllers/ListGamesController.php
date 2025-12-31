@@ -10,32 +10,20 @@
 
 namespace TictactoeApi\Api\Http\Controllers;
 
-use TictactoeApi\Api\Handlers\ListGamesApiHandlerInterface;
+use TictactoeApi\Api\Handlers\GameManagementApiHandlerInterface;
 use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
 
-/**
- * ListGamesController
- *
- * Auto-generated controller for listGames operation
- * One controller per operation pattern
- *
- * OpenAPI Operation: listGames
- * HTTP Method: GET /games
- */
 final class ListGamesController
 {
     public function __construct(
-        private readonly ListGamesApiHandlerInterface $handler
+        private readonly GameManagementApiHandlerInterface $handler
     ) {}
 
     /**
      * List all games
      *
      * Retrieves a paginated list of games with optional filtering.
-     *
-     * @param Request $request HTTP request
-     * @return JsonResponse
      */
     public function __invoke(
         Request $request

@@ -8,20 +8,11 @@
  */
 namespace TictactoeApi\Model;
 
-/**
- * GameListResponse DTO
- *
- * Auto-generated from OpenAPI schema: gameListResponse
- * 
- */
 final class GameListResponse
 {
     public array $games;
     public \TictactoeApi\Model\Pagination $pagination;
 
-    /**
-     * Constructor
-     */
     public function __construct(
         array $games,
         \TictactoeApi\Model\Pagination $pagination,
@@ -30,12 +21,7 @@ final class GameListResponse
         $this->pagination = $pagination;
     }
 
-    /**
-     * Create from array
-     *
-     * @param array<string, mixed> $data
-     * @return self
-     */
+    /** @param array<string, mixed> $data */
     public static function fromArray(array $data): self
     {
         return new self(
@@ -44,11 +30,7 @@ final class GameListResponse
         );
     }
 
-    /**
-     * Convert to array
-     *
-     * @return array<string, mixed>
-     */
+    /** @return array<string, mixed> */
     public function toArray(): array
     {
         return [

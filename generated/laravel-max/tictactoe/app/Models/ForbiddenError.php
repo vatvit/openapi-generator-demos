@@ -9,12 +9,7 @@
 namespace TictactoeApi\Model;
 
 /**
- * ForbiddenError DTO
- *
- * Auto-generated from OpenAPI schema: forbiddenError
- * 
  * Forbidden error - insufficient permissions
- * 
  */
 final class ForbiddenError
 {
@@ -35,9 +30,6 @@ final class ForbiddenError
      */
     public ?string $errorType = null;
 
-    /**
-     * Constructor
-     */
     public function __construct(
         string $code,
         string $message,
@@ -50,12 +42,7 @@ final class ForbiddenError
         $this->errorType = $errorType;
     }
 
-    /**
-     * Create from array
-     *
-     * @param array<string, mixed> $data
-     * @return self
-     */
+    /** @param array<string, mixed> $data */
     public static function fromArray(array $data): self
     {
         return new self(
@@ -66,11 +53,7 @@ final class ForbiddenError
         );
     }
 
-    /**
-     * Convert to array
-     *
-     * @return array<string, mixed>
-     */
+    /** @return array<string, mixed> */
     public function toArray(): array
     {
         return [

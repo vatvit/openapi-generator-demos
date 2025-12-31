@@ -10,36 +10,21 @@
 
 namespace TictactoeApi\Api\Http\Controllers;
 
-use TictactoeApi\Api\Handlers\PutSquareApiHandlerInterface;
+use TictactoeApi\Api\Handlers\GameplayApiHandlerInterface;
 use TictactoeApi\Api\Http\Requests\PutSquareFormRequest;
 use TictactoeApi\Model\MoveRequest;
 use Illuminate\Http\JsonResponse;
 
-/**
- * PutSquareController
- *
- * Auto-generated controller for putSquare operation
- * One controller per operation pattern
- *
- * OpenAPI Operation: putSquare
- * HTTP Method: PUT /games/{gameId}/board/{row}/{column}
- */
 final class PutSquareController
 {
     public function __construct(
-        private readonly PutSquareApiHandlerInterface $handler
+        private readonly GameplayApiHandlerInterface $handler
     ) {}
 
     /**
      * Set a single board square
      *
      * Places a mark on the board and retrieves the whole board and the winner (if any).
-     *
-     * @param PutSquareFormRequest $request Validated request with body data
-     * @param string $game_id Unique game identifier
-     * @param int $row Board row (vertical coordinate)
-     * @param int $column Board column (horizontal coordinate)
-     * @return JsonResponse
      */
     public function __invoke(
         PutSquareFormRequest $request,

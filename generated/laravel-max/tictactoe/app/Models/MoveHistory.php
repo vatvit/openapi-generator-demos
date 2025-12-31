@@ -8,20 +8,11 @@
  */
 namespace TictactoeApi\Model;
 
-/**
- * MoveHistory DTO
- *
- * Auto-generated from OpenAPI schema: moveHistory
- * 
- */
 final class MoveHistory
 {
     public string $gameId;
     public array $moves;
 
-    /**
-     * Constructor
-     */
     public function __construct(
         string $gameId,
         array $moves,
@@ -30,12 +21,7 @@ final class MoveHistory
         $this->moves = $moves;
     }
 
-    /**
-     * Create from array
-     *
-     * @param array<string, mixed> $data
-     * @return self
-     */
+    /** @param array<string, mixed> $data */
     public static function fromArray(array $data): self
     {
         return new self(
@@ -44,11 +30,7 @@ final class MoveHistory
         );
     }
 
-    /**
-     * Convert to array
-     *
-     * @return array<string, mixed>
-     */
+    /** @return array<string, mixed> */
     public function toArray(): array
     {
         return [

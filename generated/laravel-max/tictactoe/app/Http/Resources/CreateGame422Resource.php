@@ -13,28 +13,11 @@ namespace TictactoeApi\Api\Http\Resources;
 use Illuminate\Http\Resources\Json\JsonResource;
 use TictactoeApi\Model\ValidationError;
 
-/**
- * CreateGame422Resource
- *
- * Auto-generated Laravel Resource for createGame operation (HTTP 422)
- *
- * OpenAPI Operation: createGame
- * Response: 422 Validation Error - Request body validation failed
- * Schema: ValidationError
- */
 final class CreateGame422Resource extends JsonResource
 {
-    /**
-     * HTTP status code - Hardcoded: 422
-     */
     protected int $httpCode = 422;
 
-    /**
-     * Transform the resource into an array.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return array<string, mixed>
-     */
+    /** @return array<string, mixed> */
     public function toArray($request): array
     {
         /** @var ValidationError|null $model */
@@ -53,16 +36,7 @@ final class CreateGame422Resource extends JsonResource
         ];
     }
 
-    /**
-     * Customize the outgoing response.
-     *
-     * Enforces HTTP 422 status code
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \Illuminate\Http\Response  $response
-     * @return void
-     */
-    public function withResponse($request, $response)
+    public function withResponse($request, $response): void
     {
         // Set hardcoded HTTP 422 status
         $response->setStatusCode($this->httpCode);

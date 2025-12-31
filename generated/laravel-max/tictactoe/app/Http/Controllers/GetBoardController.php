@@ -10,33 +10,20 @@
 
 namespace TictactoeApi\Api\Http\Controllers;
 
-use TictactoeApi\Api\Handlers\GetBoardApiHandlerInterface;
+use TictactoeApi\Api\Handlers\TicTacApiHandlerInterface;
 use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
 
-/**
- * GetBoardController
- *
- * Auto-generated controller for getBoard operation
- * One controller per operation pattern
- *
- * OpenAPI Operation: getBoard
- * HTTP Method: GET /games/{gameId}/board
- */
 final class GetBoardController
 {
     public function __construct(
-        private readonly GetBoardApiHandlerInterface $handler
+        private readonly TicTacApiHandlerInterface $handler
     ) {}
 
     /**
      * Get the game board
      *
      * Retrieves the current state of the board and the winner.
-     *
-     * @param Request $request HTTP request
-     * @param string $game_id Unique game identifier
-     * @return JsonResponse
      */
     public function __invoke(
         Request $request,

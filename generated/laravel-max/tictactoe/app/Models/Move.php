@@ -8,12 +8,6 @@
  */
 namespace TictactoeApi\Model;
 
-/**
- * Move DTO
- *
- * Auto-generated from OpenAPI schema: move
- * 
- */
 final class Move
 {
     /**
@@ -38,9 +32,6 @@ final class Move
      */
     public \DateTime $timestamp;
 
-    /**
-     * Constructor
-     */
     public function __construct(
         int $moveNumber,
         string $playerId,
@@ -57,12 +48,7 @@ final class Move
         $this->timestamp = $timestamp;
     }
 
-    /**
-     * Create from array
-     *
-     * @param array<string, mixed> $data
-     * @return self
-     */
+    /** @param array<string, mixed> $data */
     public static function fromArray(array $data): self
     {
         return new self(
@@ -75,11 +61,7 @@ final class Move
         );
     }
 
-    /**
-     * Convert to array
-     *
-     * @return array<string, mixed>
-     */
+    /** @return array<string, mixed> */
     public function toArray(): array
     {
         return [

@@ -14,16 +14,7 @@ use TictactoeApi\Api\Handlers\PetsApiHandlerInterface;
 use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
 
-/**
- * DeletePetController
- *
- * Auto-generated controller for deletePet operation
- * One controller per operation pattern
- *
- * OpenAPI Operation: deletePet
- * HTTP Method: DELETE /pets/{id}
- */
-class DeletePetController
+final class DeletePetController
 {
     public function __construct(
         private readonly PetsApiHandlerInterface $handler
@@ -31,16 +22,13 @@ class DeletePetController
 
     /**
      * deletes a single pet based on the ID supplied
-     *
-     * @param int $id ID of pet to delete
-     * @return JsonResponse
      */
     public function __invoke(
         Request $request,
         int $id
     ): JsonResponse
     {
-        // Delegate to Handler
+        // Delegate to Handler (arguments match HandlerInterface order: path → query → body)
         $resource = $this->handler->deletePet(
             $id
         );

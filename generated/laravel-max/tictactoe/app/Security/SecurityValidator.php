@@ -43,13 +43,13 @@ class SecurityValidator
     private static array $operationSecurity = [
         'createGame' => ['bearerHttpAuthentication'],
         'deleteGame' => ['bearerHttpAuthentication'],
-        'getBoard' => ['defaultApiKey', 'app2AppOauth'],
         'getGame' => ['bearerHttpAuthentication'],
-        'getMoves' => ['bearerHttpAuthentication'],
-        'getPlayerStats' => ['bearerHttpAuthentication'],
-        'getSquare' => ['bearerHttpAuthentication', 'user2AppOauth'],
         'listGames' => ['bearerHttpAuthentication'],
+        'getBoard' => ['defaultApiKey', 'app2AppOauth'],
+        'getMoves' => ['bearerHttpAuthentication'],
+        'getSquare' => ['bearerHttpAuthentication', 'user2AppOauth'],
         'putSquare' => ['bearerHttpAuthentication', 'user2AppOauth'],
+        'getPlayerStats' => ['bearerHttpAuthentication'],
     ];
 
     /**

@@ -10,35 +10,20 @@
 
 namespace TictactoeApi\Api\Http\Controllers;
 
-use TictactoeApi\Api\Handlers\GetSquareApiHandlerInterface;
+use TictactoeApi\Api\Handlers\GameplayApiHandlerInterface;
 use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
 
-/**
- * GetSquareController
- *
- * Auto-generated controller for getSquare operation
- * One controller per operation pattern
- *
- * OpenAPI Operation: getSquare
- * HTTP Method: GET /games/{gameId}/board/{row}/{column}
- */
 final class GetSquareController
 {
     public function __construct(
-        private readonly GetSquareApiHandlerInterface $handler
+        private readonly GameplayApiHandlerInterface $handler
     ) {}
 
     /**
      * Get a single board square
      *
      * Retrieves the requested square.
-     *
-     * @param Request $request HTTP request
-     * @param string $game_id Unique game identifier
-     * @param int $row Board row (vertical coordinate)
-     * @param int $column Board column (horizontal coordinate)
-     * @return JsonResponse
      */
     public function __invoke(
         Request $request,

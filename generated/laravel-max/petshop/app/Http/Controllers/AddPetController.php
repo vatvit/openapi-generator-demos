@@ -15,16 +15,7 @@ use TictactoeApi\Api\Http\Requests\AddPetFormRequest;
 use TictactoeApi\Model\NewPet;
 use Illuminate\Http\JsonResponse;
 
-/**
- * AddPetController
- *
- * Auto-generated controller for addPet operation
- * One controller per operation pattern
- *
- * OpenAPI Operation: addPet
- * HTTP Method: POST /pets
- */
-class AddPetController
+final class AddPetController
 {
     public function __construct(
         private readonly WorkflowApiHandlerInterface $handler
@@ -32,9 +23,6 @@ class AddPetController
 
     /**
      * Creates a new pet in the store. Duplicates are allowed
-     *
-     * @param \TictactoeApi\Model\NewPet $new_pet Pet to add to the store
-     * @return JsonResponse
      */
     public function __invoke(
         AddPetFormRequest $request
@@ -43,7 +31,7 @@ class AddPetController
         // Convert validated data to DTO
         $dto = \TictactoeApi\Model\NewPet::fromArray($request->validated());
 
-        // Delegate to Handler
+        // Delegate to Handler (arguments match HandlerInterface order: path → query → body)
         $resource = $this->handler->addPet(
             $dto
         );

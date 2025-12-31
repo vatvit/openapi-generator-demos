@@ -8,12 +8,6 @@
  */
 namespace TictactoeApi\Model;
 
-/**
- * SquareResponse DTO
- *
- * Auto-generated from OpenAPI schema: squareResponse
- * 
- */
 final class SquareResponse
 {
     /**
@@ -26,9 +20,6 @@ final class SquareResponse
     public int $column;
     public \TictactoeApi\Model\Mark $mark;
 
-    /**
-     * Constructor
-     */
     public function __construct(
         int $row,
         int $column,
@@ -39,12 +30,7 @@ final class SquareResponse
         $this->mark = $mark;
     }
 
-    /**
-     * Create from array
-     *
-     * @param array<string, mixed> $data
-     * @return self
-     */
+    /** @param array<string, mixed> $data */
     public static function fromArray(array $data): self
     {
         return new self(
@@ -54,11 +40,7 @@ final class SquareResponse
         );
     }
 
-    /**
-     * Convert to array
-     *
-     * @return array<string, mixed>
-     */
+    /** @return array<string, mixed> */
     public function toArray(): array
     {
         return [

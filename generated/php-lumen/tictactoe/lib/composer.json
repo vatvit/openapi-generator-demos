@@ -1,0 +1,36 @@
+{
+    "name": "vatvit/vatvit/tictactoe-lumen-laravel",
+    "version": "1.0.0",
+    "description": "This API allows writing down marks on a Tic Tac Toe board and requesting the state of the board or of individual squares.",
+    "keywords": [
+        "openapi",
+        "php",
+        "laravel",
+        "api",
+        "server",
+        "library"
+    ],
+    "homepage": "https://openapi-generator.tech",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "OpenAPI Generator",
+            "homepage": "https://openapi-generator.tech"
+        }
+    ],
+    "type": "library",
+    "require": {
+        "php": "^8.1",
+        "laravel/framework": "^10.0|^11.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "TicTacToeApiV2\\Server\\": ""
+        }
+    },
+    "config": {
+        "sort-packages": true
+    },
+    "minimum-stability": "dev",
+    "prefer-stable": true
+}

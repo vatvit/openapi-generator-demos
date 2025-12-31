@@ -1,0 +1,16 @@
+.openapi-generator-ignore
+app/Handlers/AdminApiHandler.php
+app/Handlers/AnalyticsApiHandler.php
+app/Handlers/CreationApiHandler.php
+app/Handlers/DetailsApiHandler.php
+app/Handlers/InventoryApiHandler.php
+app/Handlers/ManagementApiHandler.php
+app/Handlers/PetsApiHandler.php
+app/Handlers/PublicApiHandler.php
+app/Handlers/ReportingApiHandler.php
+app/Handlers/RetrievalApiHandler.php
+app/Handlers/SearchApiHandler.php
+app/Handlers/WorkflowApiHandler.php
+app/Models/Error.php
+app/Models/NewPet.php
+app/Models/Pet.php

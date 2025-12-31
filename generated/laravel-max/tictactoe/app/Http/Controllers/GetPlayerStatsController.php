@@ -10,7 +10,7 @@
 
 namespace TictactoeApi\Api\Http\Controllers;
 
-use TictactoeApi\Api\Handlers\StatisticsApiHandlerInterface;
+use TictactoeApi\Api\Handlers\GetPlayerStatsApiHandlerInterface;
 use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
 
@@ -26,7 +26,7 @@ use Illuminate\Http\JsonResponse;
 final class GetPlayerStatsController
 {
     public function __construct(
-        private readonly StatisticsApiHandlerInterface $handler
+        private readonly GetPlayerStatsApiHandlerInterface $handler
     ) {}
 
     /**
@@ -34,6 +34,7 @@ final class GetPlayerStatsController
      *
      * Retrieves comprehensive statistics for a player.
      *
+     * @param Request $request HTTP request
      * @param string $player_id Unique player identifier
      * @return JsonResponse
      */
@@ -42,7 +43,7 @@ final class GetPlayerStatsController
         string $player_id
     ): JsonResponse
     {
-        // Delegate to Handler
+        // Delegate to Handler (arguments match HandlerInterface order: path → query → body)
         $resource = $this->handler->getPlayerStats(
             $player_id
         );

@@ -37,11 +37,16 @@ final class GetMoves200Resource extends JsonResource
      */
     public function toArray($request): array
     {
-        /** @var MoveHistory $model */
+        /** @var MoveHistory|null $model */
         $model = $this->resource;
 
+        // Handle null resource (empty response or error response)
+        if ($model === null) {
+            return [];
+        }
+
         return [
-            'gameId' => $model->game_id,
+            'gameId' => $model->gameId,
             'moves' => $model->moves,
         ];
     }

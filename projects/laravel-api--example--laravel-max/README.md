@@ -2,6 +2,15 @@
 
 This is an example Laravel project that demonstrates using the `laravel-max` generated library from OpenAPI specifications.
 
+## Requirements
+
+| Dependency | Version |
+|------------|---------|
+| PHP | 8.4+ |
+| Laravel | 12.x |
+| OpenAPI Generator | 7.18.0 |
+| Java | 11+ (for generator) |
+
 ## Purpose
 
 This project shows:
@@ -40,13 +49,13 @@ laravel-api--example--laravel-max/
     "autoload": {
         "psr-4": {
             "App\\": "app/",
-            "LaravelMaxApi\\": "../../examples/laravel-max/"
+            "TictactoeApi\\": "../../generated/laravel-max/tictactoe/app/"
         }
     }
 }
 ```
 
-The generated library is autoloaded under the `LaravelMaxApi\` namespace from `examples/laravel-max/`.
+The generated library is autoloaded under the `TictactoeApi\` namespace from `generated/laravel-max/tictactoe/`.
 This unique namespace prevents conflicts with the application's own `App\` namespace.
 
 **Why a unique namespace?**
@@ -73,11 +82,15 @@ This satisfies the security middleware validation from the library.
 ```php
 public function register(): void
 {
-    // Bind generated API interfaces to implementations
-    $this->app->bind(GameApi::class, GameApiHandler::class);
+    // Bind per-operation handler interfaces to implementation
+    $this->app->bind(CreateGameApiHandlerInterface::class, TictactoeApiHandler::class);
+    $this->app->bind(DeleteGameApiHandlerInterface::class, TictactoeApiHandler::class);
+    $this->app->bind(GetBoardApiHandlerInterface::class, TictactoeApiHandler::class);
+    // ... and so on for each operation
 }
 ```
 
+The generator creates one handler interface per operation. Bind each to your implementation class.
 Laravel's dependency injection will automatically inject the handler into controllers.
 
 ### 4. Route Registration (routes/api.php)
@@ -86,7 +99,7 @@ Laravel's dependency injection will automatically inject the handler into contro
 Route::group(['middleware' => ['api']], function ($router) {
     // Include generated routes from laravel-max library
     // Routes are included WITHOUT prefix to match OpenAPI spec exactly
-    require base_path('../../examples/laravel-max/routes/api.php');
+    require base_path('../../generated/laravel-max/tictactoe/routes/api.php');
 });
 ```
 
@@ -209,28 +222,19 @@ This is the **proof** that the library works correctly! 🎉
 
 ## Test Results
 
-All 12 PHPUnit tests pass successfully:
+All 25 PHPUnit tests pass successfully:
 
 ```
-✔ Routes are registered
-✔ Create game returns 201 with location header
-✔ Create game validates required fields
-✔ Create game validates mode enum
-✔ Create game requires player o for two player mode
-✔ Create game allows single player without player o
-✔ Get game returns 200
-✔ Get game has no location header
-✔ Create game location header points to get game
-✔ Health check endpoint
-✔ Get game returns 422 for not found
-✔ Get game returns 422 for invalid id
-
-OK (12 tests, 56 assertions)
+OK (25 tests, 66 assertions)
 ```
+
+Tests cover:
+- Game Management (create, get, list, delete)
+- Gameplay (board, moves, squares)
+- Statistics (leaderboard, player stats)
+- Error handling (404, 400, 409 responses)
 
 **Requirements:**
 - PHP 8.4+ (tests run via Docker with `php:8.4-cli`)
-- Laravel 11
+- Laravel 12.x
 - Composer dependencies installed via `make install`
-
-**Note:** Security middleware validation warnings appear in debug mode but don't affect functionality.

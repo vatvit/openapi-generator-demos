@@ -10,7 +10,7 @@
 
 namespace TictactoeApi\Api\Http\Controllers;
 
-use TictactoeApi\Api\Handlers\TicTacApiHandlerInterface;
+use TictactoeApi\Api\Handlers\GetBoardApiHandlerInterface;
 use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
 
@@ -26,7 +26,7 @@ use Illuminate\Http\JsonResponse;
 final class GetBoardController
 {
     public function __construct(
-        private readonly TicTacApiHandlerInterface $handler
+        private readonly GetBoardApiHandlerInterface $handler
     ) {}
 
     /**
@@ -34,6 +34,7 @@ final class GetBoardController
      *
      * Retrieves the current state of the board and the winner.
      *
+     * @param Request $request HTTP request
      * @param string $game_id Unique game identifier
      * @return JsonResponse
      */
@@ -42,7 +43,7 @@ final class GetBoardController
         string $game_id
     ): JsonResponse
     {
-        // Delegate to Handler
+        // Delegate to Handler (arguments match HandlerInterface order: path → query → body)
         $resource = $this->handler->getBoard(
             $game_id
         );

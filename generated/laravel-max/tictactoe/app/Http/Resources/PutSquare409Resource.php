@@ -37,8 +37,13 @@ final class PutSquare409Resource extends JsonResource
      */
     public function toArray($request): array
     {
-        /** @var Error $model */
+        /** @var Error|null $model */
         $model = $this->resource;
+
+        // Handle null resource (empty response or error response)
+        if ($model === null) {
+            return [];
+        }
 
         return [
             'code' => $model->code,

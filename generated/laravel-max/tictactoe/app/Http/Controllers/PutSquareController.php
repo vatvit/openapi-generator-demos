@@ -10,7 +10,7 @@
 
 namespace TictactoeApi\Api\Http\Controllers;
 
-use TictactoeApi\Api\Handlers\GameplayApiHandlerInterface;
+use TictactoeApi\Api\Handlers\PutSquareApiHandlerInterface;
 use TictactoeApi\Api\Http\Requests\PutSquareFormRequest;
 use TictactoeApi\Model\MoveRequest;
 use Illuminate\Http\JsonResponse;
@@ -27,7 +27,7 @@ use Illuminate\Http\JsonResponse;
 final class PutSquareController
 {
     public function __construct(
-        private readonly GameplayApiHandlerInterface $handler
+        private readonly PutSquareApiHandlerInterface $handler
     ) {}
 
     /**
@@ -35,10 +35,10 @@ final class PutSquareController
      *
      * Places a mark on the board and retrieves the whole board and the winner (if any).
      *
+     * @param PutSquareFormRequest $request Validated request with body data
      * @param string $game_id Unique game identifier
      * @param int $row Board row (vertical coordinate)
      * @param int $column Board column (horizontal coordinate)
-     * @param \TictactoeApi\Model\MoveRequest $move_request
      * @return JsonResponse
      */
     public function __invoke(
@@ -51,12 +51,12 @@ final class PutSquareController
         // Convert validated data to DTO
         $dto = \TictactoeApi\Model\MoveRequest::fromArray($request->validated());
 
-        // Delegate to Handler
+        // Delegate to Handler (arguments match HandlerInterface order: path → query → body)
         $resource = $this->handler->putSquare(
-            $dto,
             $game_id,
             $row,
-            $column
+            $column,
+            $dto
         );
 
         // Resource enforces HTTP code and headers

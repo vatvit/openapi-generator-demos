@@ -10,7 +10,7 @@
 
 namespace TictactoeApi\Api\Http\Controllers;
 
-use TictactoeApi\Api\Handlers\GameplayApiHandlerInterface;
+use TictactoeApi\Api\Handlers\GetGameApiHandlerInterface;
 use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
 
@@ -26,7 +26,7 @@ use Illuminate\Http\JsonResponse;
 final class GetGameController
 {
     public function __construct(
-        private readonly GameplayApiHandlerInterface $handler
+        private readonly GetGameApiHandlerInterface $handler
     ) {}
 
     /**
@@ -34,6 +34,7 @@ final class GetGameController
      *
      * Retrieves detailed information about a specific game.
      *
+     * @param Request $request HTTP request
      * @param string $game_id Unique game identifier
      * @return JsonResponse
      */
@@ -42,7 +43,7 @@ final class GetGameController
         string $game_id
     ): JsonResponse
     {
-        // Delegate to Handler
+        // Delegate to Handler (arguments match HandlerInterface order: path → query → body)
         $resource = $this->handler->getGame(
             $game_id
         );

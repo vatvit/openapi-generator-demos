@@ -37,8 +37,13 @@ final class PutSquare200Resource extends JsonResource
      */
     public function toArray($request): array
     {
-        /** @var Status $model */
+        /** @var Status|null $model */
         $model = $this->resource;
+
+        // Handle null resource (empty response or error response)
+        if ($model === null) {
+            return [];
+        }
 
         return [
             'winner' => $model->winner,

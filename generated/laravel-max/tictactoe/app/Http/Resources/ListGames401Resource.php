@@ -37,14 +37,19 @@ final class ListGames401Resource extends JsonResource
      */
     public function toArray($request): array
     {
-        /** @var UnauthorizedError $model */
+        /** @var UnauthorizedError|null $model */
         $model = $this->resource;
+
+        // Handle null resource (empty response or error response)
+        if ($model === null) {
+            return [];
+        }
 
         return [
             'code' => $model->code,
             'message' => $model->message,
             'details' => $model->details,
-            'errorType' => $model->error_type,
+            'errorType' => $model->errorType,
         ];
     }
 

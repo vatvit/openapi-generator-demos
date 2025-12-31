@@ -37,13 +37,18 @@ final class GetLeaderboard200Resource extends JsonResource
      */
     public function toArray($request): array
     {
-        /** @var Leaderboard $model */
+        /** @var Leaderboard|null $model */
         $model = $this->resource;
+
+        // Handle null resource (empty response or error response)
+        if ($model === null) {
+            return [];
+        }
 
         return [
             'timeframe' => $model->timeframe,
             'entries' => $model->entries,
-            'generatedAt' => $model->generated_at,
+            'generatedAt' => $model->generatedAt,
         ];
     }
 

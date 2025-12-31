@@ -37,8 +37,13 @@ final class GetSquare200Resource extends JsonResource
      */
     public function toArray($request): array
     {
-        /** @var SquareResponse $model */
+        /** @var SquareResponse|null $model */
         $model = $this->resource;
+
+        // Handle null resource (empty response or error response)
+        if ($model === null) {
+            return [];
+        }
 
         return [
             'row' => $model->row,

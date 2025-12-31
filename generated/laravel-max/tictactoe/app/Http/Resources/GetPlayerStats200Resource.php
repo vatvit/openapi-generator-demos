@@ -37,19 +37,24 @@ final class GetPlayerStats200Resource extends JsonResource
      */
     public function toArray($request): array
     {
-        /** @var PlayerStats $model */
+        /** @var PlayerStats|null $model */
         $model = $this->resource;
 
+        // Handle null resource (empty response or error response)
+        if ($model === null) {
+            return [];
+        }
+
         return [
-            'playerId' => $model->player_id,
-            'gamesPlayed' => $model->games_played,
+            'playerId' => $model->playerId,
+            'gamesPlayed' => $model->gamesPlayed,
             'wins' => $model->wins,
             'losses' => $model->losses,
             'draws' => $model->draws,
             'player' => $model->player,
-            'winRate' => $model->win_rate,
-            'currentStreak' => $model->current_streak,
-            'longestWinStreak' => $model->longest_win_streak,
+            'winRate' => $model->winRate,
+            'currentStreak' => $model->currentStreak,
+            'longestWinStreak' => $model->longestWinStreak,
         ];
     }
 

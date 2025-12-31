@@ -37,14 +37,19 @@ final class DeleteGame404Resource extends JsonResource
      */
     public function toArray($request): array
     {
-        /** @var NotFoundError $model */
+        /** @var NotFoundError|null $model */
         $model = $this->resource;
+
+        // Handle null resource (empty response or error response)
+        if ($model === null) {
+            return [];
+        }
 
         return [
             'code' => $model->code,
             'message' => $model->message,
             'details' => $model->details,
-            'errorType' => $model->error_type,
+            'errorType' => $model->errorType,
         ];
     }
 

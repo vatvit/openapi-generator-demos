@@ -43,21 +43,26 @@ final class CreateGame201Resource extends JsonResource
      */
     public function toArray($request): array
     {
-        /** @var Game $model */
+        /** @var Game|null $model */
         $model = $this->resource;
+
+        // Handle null resource (empty response or error response)
+        if ($model === null) {
+            return [];
+        }
 
         return [
             'id' => $model->id,
             'status' => $model->status,
             'mode' => $model->mode,
             'board' => $model->board,
-            'createdAt' => $model->created_at,
-            'playerX' => $model->player_x,
-            'playerO' => $model->player_o,
-            'currentTurn' => $model->current_turn,
+            'createdAt' => $model->createdAt,
+            'playerX' => $model->playerX,
+            'playerO' => $model->playerO,
+            'currentTurn' => $model->currentTurn,
             'winner' => $model->winner,
-            'updatedAt' => $model->updated_at,
-            'completedAt' => $model->completed_at,
+            'updatedAt' => $model->updatedAt,
+            'completedAt' => $model->completedAt,
         ];
     }
 

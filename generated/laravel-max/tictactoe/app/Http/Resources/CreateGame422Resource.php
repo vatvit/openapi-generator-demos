@@ -37,8 +37,13 @@ final class CreateGame422Resource extends JsonResource
      */
     public function toArray($request): array
     {
-        /** @var ValidationError $model */
+        /** @var ValidationError|null $model */
         $model = $this->resource;
+
+        // Handle null resource (empty response or error response)
+        if ($model === null) {
+            return [];
+        }
 
         return [
             'code' => $model->code,

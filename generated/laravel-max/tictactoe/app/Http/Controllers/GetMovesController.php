@@ -10,7 +10,7 @@
 
 namespace TictactoeApi\Api\Http\Controllers;
 
-use TictactoeApi\Api\Handlers\GameplayApiHandlerInterface;
+use TictactoeApi\Api\Handlers\GetMovesApiHandlerInterface;
 use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
 
@@ -26,7 +26,7 @@ use Illuminate\Http\JsonResponse;
 final class GetMovesController
 {
     public function __construct(
-        private readonly GameplayApiHandlerInterface $handler
+        private readonly GetMovesApiHandlerInterface $handler
     ) {}
 
     /**
@@ -34,6 +34,7 @@ final class GetMovesController
      *
      * Retrieves the complete move history for a game.
      *
+     * @param Request $request HTTP request
      * @param string $game_id Unique game identifier
      * @return JsonResponse
      */
@@ -42,7 +43,7 @@ final class GetMovesController
         string $game_id
     ): JsonResponse
     {
-        // Delegate to Handler
+        // Delegate to Handler (arguments match HandlerInterface order: path → query → body)
         $resource = $this->handler->getMoves(
             $game_id
         );

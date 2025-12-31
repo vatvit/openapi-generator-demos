@@ -10,7 +10,7 @@
 
 namespace TictactoeApi\Api\Http\Controllers;
 
-use TictactoeApi\Api\Handlers\GameManagementApiHandlerInterface;
+use TictactoeApi\Api\Handlers\DeleteGameApiHandlerInterface;
 use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
 
@@ -26,7 +26,7 @@ use Illuminate\Http\JsonResponse;
 final class DeleteGameController
 {
     public function __construct(
-        private readonly GameManagementApiHandlerInterface $handler
+        private readonly DeleteGameApiHandlerInterface $handler
     ) {}
 
     /**
@@ -34,6 +34,7 @@ final class DeleteGameController
      *
      * Deletes a game. Only allowed for game creators or admins.
      *
+     * @param Request $request HTTP request
      * @param string $game_id Unique game identifier
      * @return JsonResponse
      */
@@ -42,7 +43,7 @@ final class DeleteGameController
         string $game_id
     ): JsonResponse
     {
-        // Delegate to Handler
+        // Delegate to Handler (arguments match HandlerInterface order: path → query → body)
         $resource = $this->handler->deleteGame(
             $game_id
         );

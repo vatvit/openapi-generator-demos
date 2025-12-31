@@ -10,7 +10,7 @@
 
 namespace TictactoeApi\Api\Http\Controllers;
 
-use TictactoeApi\Api\Handlers\GameplayApiHandlerInterface;
+use TictactoeApi\Api\Handlers\GetSquareApiHandlerInterface;
 use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
 
@@ -26,7 +26,7 @@ use Illuminate\Http\JsonResponse;
 final class GetSquareController
 {
     public function __construct(
-        private readonly GameplayApiHandlerInterface $handler
+        private readonly GetSquareApiHandlerInterface $handler
     ) {}
 
     /**
@@ -34,6 +34,7 @@ final class GetSquareController
      *
      * Retrieves the requested square.
      *
+     * @param Request $request HTTP request
      * @param string $game_id Unique game identifier
      * @param int $row Board row (vertical coordinate)
      * @param int $column Board column (horizontal coordinate)
@@ -46,7 +47,7 @@ final class GetSquareController
         int $column
     ): JsonResponse
     {
-        // Delegate to Handler
+        // Delegate to Handler (arguments match HandlerInterface order: path → query → body)
         $resource = $this->handler->getSquare(
             $game_id,
             $row,

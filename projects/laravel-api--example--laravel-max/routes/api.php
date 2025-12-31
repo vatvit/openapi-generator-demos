@@ -11,7 +11,7 @@ use Illuminate\Support\Facades\Route;
 Route::group(['middleware' => ['api']], function ($router) {
     // Include generated routes from laravel-max library
     // Routes are included WITHOUT prefix to match OpenAPI spec exactly
-    require base_path('../../examples/laravel-max/routes/api.php');
+    require base_path('../../generated/laravel-max/tictactoe/routes/api.php');
 });
 
 // Health check endpoint

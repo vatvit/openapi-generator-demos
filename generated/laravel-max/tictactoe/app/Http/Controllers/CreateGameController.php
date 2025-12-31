@@ -10,7 +10,7 @@
 
 namespace TictactoeApi\Api\Http\Controllers;
 
-use TictactoeApi\Api\Handlers\GameManagementApiHandlerInterface;
+use TictactoeApi\Api\Handlers\CreateGameApiHandlerInterface;
 use TictactoeApi\Api\Http\Requests\CreateGameFormRequest;
 use TictactoeApi\Model\CreateGameRequest;
 use Illuminate\Http\JsonResponse;
@@ -27,7 +27,7 @@ use Illuminate\Http\JsonResponse;
 final class CreateGameController
 {
     public function __construct(
-        private readonly GameManagementApiHandlerInterface $handler
+        private readonly CreateGameApiHandlerInterface $handler
     ) {}
 
     /**
@@ -35,7 +35,7 @@ final class CreateGameController
      *
      * Creates a new TicTacToe game with specified configuration.
      *
-     * @param \TictactoeApi\Model\CreateGameRequest $create_game_request
+     * @param CreateGameFormRequest $request Validated request with body data
      * @return JsonResponse
      */
     public function __invoke(
@@ -45,7 +45,7 @@ final class CreateGameController
         // Convert validated data to DTO
         $dto = \TictactoeApi\Model\CreateGameRequest::fromArray($request->validated());
 
-        // Delegate to Handler
+        // Delegate to Handler (arguments match HandlerInterface order: path → query → body)
         $resource = $this->handler->createGame(
             $dto
         );

@@ -3,21 +3,16 @@
          xsi:noNamespaceSchemaLocation="vendor/phpunit/phpunit/phpunit.xsd"
          bootstrap="vendor/autoload.php"
          colors="true"
+         cacheDirectory=".phpunit.cache"
 >
     <testsuites>
         <testsuite name="Feature">
-            <directory>tests/Feature</directory>
+            <directory suffix="Test.php">./tests/Feature</directory>
         </testsuite>
     </testsuites>
     <source>
         <include>
-            <directory>app</directory>
+            <directory suffix=".php">../../generated/laravel-max/tictactoe/app</directory>
         </include>
     </source>
-    <php>
-        <env name="APP_ENV" value="testing"/>
-        <env name="APP_KEY" value="base64:2fl3IfhRfBrtGcXhOx9KcZjzRX2WGYudhDsLHO8JJz4="/>
-        <env name="CACHE_DRIVER" value="array"/>
-        <env name="SESSION_DRIVER" value="array"/>
-    </php>
 </phpunit>

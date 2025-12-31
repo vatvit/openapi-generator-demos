@@ -1,6 +1,6 @@
 {
-    "name": "openapi-generator/laravel-max-integration-test",
-    "description": "Integration test for laravel-max generator",
+    "name": "openapi-generator/laravel-max-integration-tests",
+    "description": "Integration tests for laravel-max generator",
     "type": "project",
     "require": {
         "php": "^8.2",
@@ -26,10 +26,7 @@
     },
     "scripts": {
         "lint": "find ../../generated/laravel-max/tictactoe -name '*.php' -exec php -l {} \\;",
-        "test": [
-            "@lint",
-            "phpunit"
-        ]
+        "test": "phpunit"
     },
     "minimum-stability": "stable",
     "prefer-stable": true,

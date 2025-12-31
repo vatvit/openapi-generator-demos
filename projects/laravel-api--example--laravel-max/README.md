@@ -40,13 +40,13 @@ laravel-api--example--laravel-max/
     "autoload": {
         "psr-4": {
             "App\\": "app/",
-            "LaravelMaxApi\\": "../../generated-examples/laravel-max/"
+            "LaravelMaxApi\\": "../../examples/laravel-max/"
         }
     }
 }
 ```
 
-The generated library is autoloaded under the `LaravelMaxApi\` namespace from `generated-examples/laravel-max/`.
+The generated library is autoloaded under the `LaravelMaxApi\` namespace from `examples/laravel-max/`.
 This unique namespace prevents conflicts with the application's own `App\` namespace.
 
 **Why a unique namespace?**
@@ -86,7 +86,7 @@ Laravel's dependency injection will automatically inject the handler into contro
 Route::group(['middleware' => ['api']], function ($router) {
     // Include generated routes from laravel-max library
     // Routes are included WITHOUT prefix to match OpenAPI spec exactly
-    require base_path('../../generated-examples/laravel-max/routes/api.php');
+    require base_path('../../examples/laravel-max/routes/api.php');
 });
 ```
 

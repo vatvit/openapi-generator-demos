@@ -1,0 +1,12 @@
+[2025-12-31 10:33:15] testing.ERROR: Cannot redeclare class TictactoeApi\Api\Http\Controllers\CreateGameController (previously declared in /generated/laravel-max/tictactoe/app/Http/Controllers/CreateGameController.php:27) {"exception":"[object] (Symfony\\Component\\ErrorHandler\\Error\\FatalError(code: 0): Cannot redeclare class TictactoeApi\\Api\\Http\\Controllers\\CreateGameController (previously declared in /generated/laravel-max/tictactoe/app/Http/Controllers/CreateGameController.php:27) at /generated/laravel-max/tictactoe/app/Http/Controllers/CreateGameController.php:27)
+[stacktrace]
+#0 {main}
+"} 
+[2025-12-31 10:33:15] testing.ERROR: Cannot redeclare class TictactoeApi\Api\Http\Controllers\CreateGameController (previously declared in /generated/laravel-max/tictactoe/app/Http/Controllers/CreateGameController.php:27) {"exception":"[object] (Symfony\\Component\\ErrorHandler\\Error\\FatalError(code: 0): Cannot redeclare class TictactoeApi\\Api\\Http\\Controllers\\CreateGameController (previously declared in /generated/laravel-max/tictactoe/app/Http/Controllers/CreateGameController.php:27) at /generated/laravel-max/tictactoe/app/Http/Controllers/CreateGameController.php:27)
+[stacktrace]
+#0 {main}
+"} 
+[2025-12-31 10:33:15] testing.ERROR: Cannot redeclare class TictactoeApi\Api\Http\Controllers\CreateGameController (previously declared in /generated/laravel-max/tictactoe/app/Http/Controllers/CreateGameController.php:27) {"exception":"[object] (Symfony\\Component\\ErrorHandler\\Error\\FatalError(code: 0): Cannot redeclare class TictactoeApi\\Api\\Http\\Controllers\\CreateGameController (previously declared in /generated/laravel-max/tictactoe/app/Http/Controllers/CreateGameController.php:27) at /generated/laravel-max/tictactoe/app/Http/Controllers/CreateGameController.php:27)
+[stacktrace]
+#0 {main}
+"} 

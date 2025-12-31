@@ -1,4 +1,0 @@
-/vendor/
-/bootstrap/cache/
-.phpunit.result.cache
-composer.lock

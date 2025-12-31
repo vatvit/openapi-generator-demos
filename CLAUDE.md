@@ -26,7 +26,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ### Reference Implementation (ETALON)
 
-**📌 `generated-examples/laravel-max/`** - **THE IDEAL REFERENCE IMPLEMENTATION**
+**📌 `examples/laravel-max/`** - **THE IDEAL REFERENCE IMPLEMENTATION**
 
 This is the **etalon (standard)** - the maximum quality solution that demonstrates:
 - ✅ All patterns from `GOAL_MAX.md` implemented correctly
@@ -37,8 +37,8 @@ This is the **etalon (standard)** - the maximum quality solution that demonstrat
 - ✅ Full documentation
 
 **Key files in laravel-max:**
-- **`generated-examples/laravel-max/README.md`** - Overview and quick start
-- **`generated-examples/laravel-max/ARCHITECTURE.md`** - Complete architecture documentation
+- **`examples/laravel-max/README.md`** - Overview and quick start
+- **`examples/laravel-max/ARCHITECTURE.md`** - Complete architecture documentation
   - Controller patterns (one per operation)
   - Library vs Application separation (critical architectural decision)
   - Request/response flow
@@ -71,6 +71,57 @@ This is the **etalon (standard)** - the maximum quality solution that demonstrat
 - Reference `GENERATORS-COMMON.md` to avoid duplicating common concepts
 - **Compare against `GOAL_MAX.md` and `laravel-max` reference implementation**
 - Document gaps between generator capabilities and ideal solution
+
+---
+
+## 🎫 Working with Tickets (MDT - Markdown Ticket)
+
+This project uses **Markdown Ticket (MDT)** system via MCP server `mdt-all` for task tracking.
+
+### Session Workflow
+
+**Starting a session:**
+```
+1. mcp__mdt-all__list_crs(project="GENDE") → See all tickets
+2. mcp__mdt-all__get_cr(project="GENDE", key="GENDE-001") → Read ticket
+3. Read "Current State" section → Know exactly where we are
+4. Start working
+```
+
+**Ending a session:**
+```
+1. mcp__mdt-all__manage_cr_sections → Update "Current State" section
+2. Update: Last Updated date, Build Status, Known Issues, Next Actions
+```
+
+### Ticket Structure (Keep Updated)
+
+The **"Current State"** section in each ticket MUST be kept current:
+
+| Field | Purpose |
+|-------|---------|
+| **Artifact Locations** | Paths to generator, templates, generated lib, tests |
+| **Build Status** | What's built, generated, test results |
+| **Known Issues** | Current blocking bugs with root causes |
+| **Completed Phases** | What's done (historical summary) |
+| **Next Actions** | Clear list of what to do next |
+
+### MCP Commands Reference
+
+```
+mcp__mdt-all__list_projects()                    # List all projects
+mcp__mdt-all__list_crs(project="GENDE")          # List tickets in project
+mcp__mdt-all__get_cr(project, key, mode="full")  # Read full ticket
+mcp__mdt-all__manage_cr_sections(project, key, operation, section, content)
+  - operation: "list" | "get" | "replace" | "append" | "prepend"
+mcp__mdt-all__update_cr_status(project, key, status)
+mcp__mdt-all__update_cr_attrs(project, key, attributes)
+```
+
+### Key Principle
+
+> **The ticket is the source of truth.** Historical docs (PHASE_*.md) are reference only.
+> The ticket's "Current State" section must always reflect actual current state.
 
 ---
 
@@ -407,7 +458,7 @@ openapi-generator-demos/
 │   ├── openapi-generator-server-php-laravel/        # php-laravel custom templates
 │   ├── openapi-generator-server-php-lumen-package/  # php-lumen custom templates
 │   └── openapi-generator-server-php-lumen-default/  # php-lumen default (for reference)
-├── generated-examples/                   # Reference implementations (committed to git)
+├── examples/                   # Reference implementations (committed to git)
 │   └── laravel-max/                      # 🏆 ETALON - Ideal Laravel library reference
 │                                         # Shows maximum quality expected from generators
 │                                         # All patterns from GOAL_MAX.md implemented
@@ -416,8 +467,8 @@ openapi-generator-demos/
     └── laravel-api--example--laravel-max/ # Example app using laravel-max library
 ```
 
-**IMPORTANT: generated-examples/ vs generated/ (deprecated)**
-- **`generated-examples/`** - Reference implementations committed to git (like `laravel-max`)
+**IMPORTANT: examples/ vs generated/ (deprecated)**
+- **`examples/`** - Reference implementations committed to git (like `laravel-max`)
 - **`generated/`** - (Deprecated) Was used for temporary generation output, now gitignored
 - Future: Generated libraries will be published to Composer repository/artifactory
 

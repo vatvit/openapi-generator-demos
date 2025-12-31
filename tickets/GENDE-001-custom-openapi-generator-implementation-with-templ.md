@@ -265,7 +265,6 @@ The generator implementation is successful when:
 **ASM-4**: Variable population issue identified in PoC is solvable through proper AbstractPhpCodegen integration
 
 ## 5. Acceptance Criteria
-
 **Outcome-Focused Criteria** (measurable, testable):
 
 - [x] **AC-1**: Developer can create a custom OpenAPI Generator implementation
@@ -276,13 +275,12 @@ The generator implementation is successful when:
   - ✅ Laravel fully working, architecture supports others
 - [x] **AC-4**: Generated code matches `laravel-max/` quality benchmark
   - ✅ All GOAL_MAX.md features implemented
-- [ ] **AC-5**: Template authoring is documented with examples
-  - ⏳ Documentation pending
+- [x] **AC-5**: Template authoring is documented with examples
+  - ✅ `TEMPLATE-AUTHORING.md` created with comprehensive guide
 - [x] **AC-6**: No modifications to official OpenAPI Generator library required
   - ✅ Uses official 7.10.0 JAR as dependency
-- [ ] **AC-7**: Other developers can create templates using provided documentation
-  - ⏳ Blocked by AC-5
-
+- [x] **AC-7**: Other developers can create templates using provided documentation
+  - ✅ Documentation covers architecture, variables, patterns, and examples
 ## 6. Verification
 
 ### Phase Progress

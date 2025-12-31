@@ -47,7 +47,7 @@ Generate a **complete PHP library** from the OpenAPI spec that:
 
 ## Reference Implementation
 
-**📌 `generated-examples/laravel-max/`** - **THE ETALON (Standard)**
+**📌 `examples/laravel-max/`** - **THE ETALON (Standard)**
 
 This directory contains the **ideal reference implementation** - a hand-crafted example showing exactly what we want generators to produce:
 
@@ -58,7 +58,7 @@ This directory contains the **ideal reference implementation** - a hand-crafted 
 - ✅ Comprehensive documentation and tests
 - ✅ **Use this as the benchmark when evaluating generators**
 
-See `generated-examples/laravel-max/README.md` for complete documentation.
+See `examples/laravel-max/README.md` for complete documentation.
 
 ---
 

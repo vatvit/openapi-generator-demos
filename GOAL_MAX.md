@@ -6,7 +6,7 @@ This document defines the **ideal solution** - the maximum set of features and c
 
 **See also:**
 - [GOAL.md](GOAL.md) for main objective and success criteria
-- **`generated-examples/laravel-max/`** for reference implementation (etalon) showing all patterns below implemented correctly
+- **`examples/laravel-max/`** for reference implementation (etalon) showing all patterns below implemented correctly
 
 ---
 

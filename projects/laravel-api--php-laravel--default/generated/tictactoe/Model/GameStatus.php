@@ -21,7 +21,7 @@
 /**
  * GameStatus
  */
-namespace TicTacToeApi\TicTacToeApi\Model;
+namespace TicTacToeApi\Model;
 
 /**
  * GameStatus

@@ -21,7 +21,7 @@
 /**
  * NoContent204
  */
-namespace PetShopApi\PetShopApi\Model;
+namespace PetShopApi\Model;
 
 /**
  * NoContent204

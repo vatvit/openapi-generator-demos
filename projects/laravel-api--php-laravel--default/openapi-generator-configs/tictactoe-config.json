@@ -1,7 +1,7 @@
 {
   "invokerPackage": "TicTacToeApi",
-  "apiPackage": "TicTacToeApi\\Api",
-  "modelPackage": "TicTacToeApi\\Model",
+  "apiPackage": "Api",
+  "modelPackage": "Model",
   "controllerPackage": "TicTacToeApi\\Http\\Controllers",
   "variableNamingConvention": "camelCase"
 }

@@ -21,7 +21,7 @@
 /**
  * GameMode
  */
-namespace TicTacToeApi\TicTacToeApi\Model;
+namespace TicTacToeApi\Model;
 
 /**
  * GameMode

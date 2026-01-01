@@ -21,7 +21,7 @@
 /**
  * ValidationError
  */
-namespace TicTacToeApi\TicTacToeApi\Model;
+namespace TicTacToeApi\Model;
 
 /**
  * ValidationError
@@ -44,7 +44,7 @@ class ValidationError
     * @param array<string,mixed> $details
     *
     * 
-    * @param \TicTacToeApi\TicTacToeApi\Model\ValidationErrorAllOfErrors[] $errors
+    * @param \TicTacToeApi\Model\ValidationErrorAllOfErrors[] $errors
     */
 
     public function __construct(

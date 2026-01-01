@@ -21,7 +21,7 @@
 /**
  * ForbiddenError
  */
-namespace TicTacToeApi\TicTacToeApi\Model;
+namespace TicTacToeApi\Model;
 
 /**
  * ForbiddenError
@@ -45,14 +45,14 @@ class ForbiddenError
     * @param array<string,mixed> $details
     *
     * 
-    * @param \TicTacToeApi\TicTacToeApi\Model\ForbiddenErrorAllOfErrorType $errorType
+    * @param \TicTacToeApi\Model\ForbiddenErrorAllOfErrorType $errorType
     */
 
     public function __construct(
         public string $code,
         public string $message,
         public array $details,
-        public \TicTacToeApi\TicTacToeApi\Model\ForbiddenErrorAllOfErrorType $errorType,
+        public \TicTacToeApi\Model\ForbiddenErrorAllOfErrorType $errorType,
     ) {}
 }
 

@@ -18,7 +18,7 @@
  */
 
 
-namespace TicTacToeApi\TicTacToeApi\Api;
+namespace TicTacToeApi\Api;
 
 
 interface GameManagementApiInterface {
@@ -28,16 +28,16 @@ interface GameManagementApiInterface {
      * Operation createGame
      *
      * Create a new game
-     * @param \TicTacToeApi\TicTacToeApi\Model\CreateGameRequest $createGameRequest
-     * @return \TicTacToeApi\TicTacToeApi\Model\Game | \TicTacToeApi\TicTacToeApi\Model\BadRequestError | \TicTacToeApi\TicTacToeApi\Model\UnauthorizedError | \TicTacToeApi\TicTacToeApi\Model\ValidationError
+     * @param \TicTacToeApi\Model\CreateGameRequest $createGameRequest
+     * @return \TicTacToeApi\Model\Game | \TicTacToeApi\Model\BadRequestError | \TicTacToeApi\Model\UnauthorizedError | \TicTacToeApi\Model\ValidationError
      */
     public function createGame(
-            \TicTacToeApi\TicTacToeApi\Model\CreateGameRequest $createGameRequest,
+            \TicTacToeApi\Model\CreateGameRequest $createGameRequest,
     ):
-        \TicTacToeApi\TicTacToeApi\Model\Game | 
-        \TicTacToeApi\TicTacToeApi\Model\BadRequestError | 
-        \TicTacToeApi\TicTacToeApi\Model\UnauthorizedError | 
-        \TicTacToeApi\TicTacToeApi\Model\ValidationError
+        \TicTacToeApi\Model\Game | 
+        \TicTacToeApi\Model\BadRequestError | 
+        \TicTacToeApi\Model\UnauthorizedError | 
+        \TicTacToeApi\Model\ValidationError
     ;
 
 
@@ -46,14 +46,14 @@ interface GameManagementApiInterface {
      *
      * Delete a game
      * @param string $gameId
-     * @return \TicTacToeApi\TicTacToeApi\Model\NoContent204 | \TicTacToeApi\TicTacToeApi\Model\ForbiddenError | \TicTacToeApi\TicTacToeApi\Model\NotFoundError
+     * @return \TicTacToeApi\Model\NoContent204 | \TicTacToeApi\Model\ForbiddenError | \TicTacToeApi\Model\NotFoundError
      */
     public function deleteGame(
             string $gameId,
     ):
-        \TicTacToeApi\TicTacToeApi\Model\NoContent204 | 
-        \TicTacToeApi\TicTacToeApi\Model\ForbiddenError | 
-        \TicTacToeApi\TicTacToeApi\Model\NotFoundError
+        \TicTacToeApi\Model\NoContent204 | 
+        \TicTacToeApi\Model\ForbiddenError | 
+        \TicTacToeApi\Model\NotFoundError
     ;
 
 
@@ -62,13 +62,13 @@ interface GameManagementApiInterface {
      *
      * Get game details
      * @param string $gameId
-     * @return \TicTacToeApi\TicTacToeApi\Model\Game | \TicTacToeApi\TicTacToeApi\Model\NotFoundError
+     * @return \TicTacToeApi\Model\Game | \TicTacToeApi\Model\NotFoundError
      */
     public function getGame(
             string $gameId,
     ):
-        \TicTacToeApi\TicTacToeApi\Model\Game | 
-        \TicTacToeApi\TicTacToeApi\Model\NotFoundError
+        \TicTacToeApi\Model\Game | 
+        \TicTacToeApi\Model\NotFoundError
     ;
 
 
@@ -78,19 +78,19 @@ interface GameManagementApiInterface {
      * List all games
      * @param null | int $page
      * @param null | int $limit
-     * @param null | \TicTacToeApi\TicTacToeApi\Model\GameStatus $status
+     * @param null | \TicTacToeApi\Model\GameStatus $status
      * @param null | string $playerId
-     * @return \TicTacToeApi\TicTacToeApi\Model\GameListResponse | \TicTacToeApi\TicTacToeApi\Model\BadRequestError | \TicTacToeApi\TicTacToeApi\Model\UnauthorizedError
+     * @return \TicTacToeApi\Model\GameListResponse | \TicTacToeApi\Model\BadRequestError | \TicTacToeApi\Model\UnauthorizedError
      */
     public function listGames(
             ?int $page,
             ?int $limit,
-            ?\TicTacToeApi\TicTacToeApi\Model\GameStatus $status,
+            ?\TicTacToeApi\Model\GameStatus $status,
             ?string $playerId,
     ):
-        \TicTacToeApi\TicTacToeApi\Model\GameListResponse | 
-        \TicTacToeApi\TicTacToeApi\Model\BadRequestError | 
-        \TicTacToeApi\TicTacToeApi\Model\UnauthorizedError
+        \TicTacToeApi\Model\GameListResponse | 
+        \TicTacToeApi\Model\BadRequestError | 
+        \TicTacToeApi\Model\UnauthorizedError
     ;
 
 }

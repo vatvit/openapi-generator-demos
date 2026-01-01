@@ -27,7 +27,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 
 
-use TicTacToeApi\TicTacToeApi\Api\TicTacApiInterface;
+use TicTacToeApi\Api\TicTacApiInterface;
 
 class TicTacController extends Controller
 {
@@ -76,11 +76,11 @@ class TicTacController extends Controller
             return response()->json(['error' => $exception->getMessage()], 500);
         }
 
-        if ($apiResult instanceof \TicTacToeApi\TicTacToeApi\Model\Status) {
+        if ($apiResult instanceof \TicTacToeApi\Model\Status) {
             return response()->json($this->serde->serialize($apiResult, format: 'array'), 200);
         }
 
-        if ($apiResult instanceof \TicTacToeApi\TicTacToeApi\Model\NotFoundError) {
+        if ($apiResult instanceof \TicTacToeApi\Model\NotFoundError) {
             return response()->json($this->serde->serialize($apiResult, format: 'array'), 404);
         }
 

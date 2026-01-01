@@ -27,7 +27,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 
 
-use TicTacToeApi\TicTacToeApi\Api\GameManagementApiInterface;
+use TicTacToeApi\Api\GameManagementApiInterface;
 
 class GameManagementController extends Controller
 {
@@ -64,7 +64,7 @@ class GameManagementController extends Controller
             return response()->json(['error' => 'Invalid input'], 400);
         }
 
-        $createGameRequest = $this->serde->deserialize($request->getContent(), from: 'json', to: \TicTacToeApi\TicTacToeApi\Model\CreateGameRequest::class);
+        $createGameRequest = $this->serde->deserialize($request->getContent(), from: 'json', to: \TicTacToeApi\Model\CreateGameRequest::class);
 
         try {
             $apiResult = $this->api->createGame($createGameRequest);
@@ -73,19 +73,19 @@ class GameManagementController extends Controller
             return response()->json(['error' => $exception->getMessage()], 500);
         }
 
-        if ($apiResult instanceof \TicTacToeApi\TicTacToeApi\Model\Game) {
+        if ($apiResult instanceof \TicTacToeApi\Model\Game) {
             return response()->json($this->serde->serialize($apiResult, format: 'array'), 201);
         }
 
-        if ($apiResult instanceof \TicTacToeApi\TicTacToeApi\Model\BadRequestError) {
+        if ($apiResult instanceof \TicTacToeApi\Model\BadRequestError) {
             return response()->json($this->serde->serialize($apiResult, format: 'array'), 400);
         }
 
-        if ($apiResult instanceof \TicTacToeApi\TicTacToeApi\Model\UnauthorizedError) {
+        if ($apiResult instanceof \TicTacToeApi\Model\UnauthorizedError) {
             return response()->json($this->serde->serialize($apiResult, format: 'array'), 401);
         }
 
-        if ($apiResult instanceof \TicTacToeApi\TicTacToeApi\Model\ValidationError) {
+        if ($apiResult instanceof \TicTacToeApi\Model\ValidationError) {
             return response()->json($this->serde->serialize($apiResult, format: 'array'), 422);
         }
 
@@ -128,15 +128,15 @@ class GameManagementController extends Controller
             return response()->json(['error' => $exception->getMessage()], 500);
         }
 
-        if ($apiResult instanceof \TicTacToeApi\TicTacToeApi\Model\NoContent204) {
+        if ($apiResult instanceof \TicTacToeApi\Model\NoContent204) {
             return response()->json($this->serde->serialize($apiResult, format: 'array'), 204);
         }
 
-        if ($apiResult instanceof \TicTacToeApi\TicTacToeApi\Model\ForbiddenError) {
+        if ($apiResult instanceof \TicTacToeApi\Model\ForbiddenError) {
             return response()->json($this->serde->serialize($apiResult, format: 'array'), 403);
         }
 
-        if ($apiResult instanceof \TicTacToeApi\TicTacToeApi\Model\NotFoundError) {
+        if ($apiResult instanceof \TicTacToeApi\Model\NotFoundError) {
             return response()->json($this->serde->serialize($apiResult, format: 'array'), 404);
         }
 
@@ -179,11 +179,11 @@ class GameManagementController extends Controller
             return response()->json(['error' => $exception->getMessage()], 500);
         }
 
-        if ($apiResult instanceof \TicTacToeApi\TicTacToeApi\Model\Game) {
+        if ($apiResult instanceof \TicTacToeApi\Model\Game) {
             return response()->json($this->serde->serialize($apiResult, format: 'array'), 200);
         }
 
-        if ($apiResult instanceof \TicTacToeApi\TicTacToeApi\Model\NotFoundError) {
+        if ($apiResult instanceof \TicTacToeApi\Model\NotFoundError) {
             return response()->json($this->serde->serialize($apiResult, format: 'array'), 404);
         }
 
@@ -232,7 +232,7 @@ class GameManagementController extends Controller
 
         $limit = $request->integer('limit');
 
-        $status = $this->serde->deserialize($request->getContent(), from: 'json', to: \TicTacToeApi\TicTacToeApi\Model\GameStatus::class);
+        $status = $this->serde->deserialize($request->getContent(), from: 'json', to: \TicTacToeApi\Model\GameStatus::class);
 
         $playerId = $request->string('playerId')->value();
 
@@ -243,15 +243,15 @@ class GameManagementController extends Controller
             return response()->json(['error' => $exception->getMessage()], 500);
         }
 
-        if ($apiResult instanceof \TicTacToeApi\TicTacToeApi\Model\GameListResponse) {
+        if ($apiResult instanceof \TicTacToeApi\Model\GameListResponse) {
             return response()->json($this->serde->serialize($apiResult, format: 'array'), 200);
         }
 
-        if ($apiResult instanceof \TicTacToeApi\TicTacToeApi\Model\BadRequestError) {
+        if ($apiResult instanceof \TicTacToeApi\Model\BadRequestError) {
             return response()->json($this->serde->serialize($apiResult, format: 'array'), 400);
         }
 
-        if ($apiResult instanceof \TicTacToeApi\TicTacToeApi\Model\UnauthorizedError) {
+        if ($apiResult instanceof \TicTacToeApi\Model\UnauthorizedError) {
             return response()->json($this->serde->serialize($apiResult, format: 'array'), 401);
         }
 

@@ -105,10 +105,10 @@ class GameManagementHandler implements GameManagementApiHandlerInterface
      * List all games
      */
     public function listGames(
-        int $page,
-        int $limit,
-        GameStatus $status,
-        string $player_id
+        ?int $page = null,
+        ?int $limit = null,
+        ?GameStatus $status = null,
+        ?string $player_id = null
     ): ListGames200Resource|ListGames400Resource|ListGames401Resource {
         $games = [
             new Game(

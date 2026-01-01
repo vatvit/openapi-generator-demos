@@ -21,7 +21,7 @@
 /**
  * MoveMark
  */
-namespace TicTacToeApi\TicTacToeApi\Model;
+namespace TicTacToeApi\Model;
 
 /**
  * MoveMark

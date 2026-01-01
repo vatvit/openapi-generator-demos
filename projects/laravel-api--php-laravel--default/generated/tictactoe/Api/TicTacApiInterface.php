@@ -18,7 +18,7 @@
  */
 
 
-namespace TicTacToeApi\TicTacToeApi\Api;
+namespace TicTacToeApi\Api;
 
 
 interface TicTacApiInterface {
@@ -29,13 +29,13 @@ interface TicTacApiInterface {
      *
      * Get the game board
      * @param string $gameId
-     * @return \TicTacToeApi\TicTacToeApi\Model\Status | \TicTacToeApi\TicTacToeApi\Model\NotFoundError
+     * @return \TicTacToeApi\Model\Status | \TicTacToeApi\Model\NotFoundError
      */
     public function getBoard(
             string $gameId,
     ):
-        \TicTacToeApi\TicTacToeApi\Model\Status | 
-        \TicTacToeApi\TicTacToeApi\Model\NotFoundError
+        \TicTacToeApi\Model\Status | 
+        \TicTacToeApi\Model\NotFoundError
     ;
 
 }

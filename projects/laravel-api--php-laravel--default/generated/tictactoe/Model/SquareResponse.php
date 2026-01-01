@@ -21,7 +21,7 @@
 /**
  * SquareResponse
  */
-namespace TicTacToeApi\TicTacToeApi\Model;
+namespace TicTacToeApi\Model;
 
 /**
  * SquareResponse
@@ -41,13 +41,13 @@ class SquareResponse
     * @param int $column
     *
     * 
-    * @param \TicTacToeApi\TicTacToeApi\Model\Mark $mark
+    * @param \TicTacToeApi\Model\Mark $mark
     */
 
     public function __construct(
         public int $row,
         public int $column,
-        public \TicTacToeApi\TicTacToeApi\Model\Mark $mark,
+        public \TicTacToeApi\Model\Mark $mark,
     ) {}
 }
 

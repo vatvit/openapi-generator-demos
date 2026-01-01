@@ -18,7 +18,7 @@
  */
 
 
-namespace PetShopApi\PetShopApi\Api;
+namespace PetShopApi\Api;
 
 
 interface WorkflowApiInterface {
@@ -26,14 +26,14 @@ interface WorkflowApiInterface {
 
     /**
      * Operation addPet
-     * @param \PetShopApi\PetShopApi\Model\NewPet $newPet
-     * @return \PetShopApi\PetShopApi\Model\Pet | \PetShopApi\PetShopApi\Model\Error
+     * @param \PetShopApi\Model\NewPet $newPet
+     * @return \PetShopApi\Model\Pet | \PetShopApi\Model\Error
      */
     public function addPet(
-            \PetShopApi\PetShopApi\Model\NewPet $newPet,
+            \PetShopApi\Model\NewPet $newPet,
     ):
-        \PetShopApi\PetShopApi\Model\Pet | 
-        \PetShopApi\PetShopApi\Model\Error
+        \PetShopApi\Model\Pet | 
+        \PetShopApi\Model\Error
     ;
 
 }

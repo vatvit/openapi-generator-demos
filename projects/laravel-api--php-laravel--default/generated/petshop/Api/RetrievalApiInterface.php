@@ -18,7 +18,7 @@
  */
 
 
-namespace PetShopApi\PetShopApi\Api;
+namespace PetShopApi\Api;
 
 
 interface RetrievalApiInterface {
@@ -27,13 +27,13 @@ interface RetrievalApiInterface {
     /**
      * Operation findPetById
      * @param int $id
-     * @return \PetShopApi\PetShopApi\Model\Pet | \PetShopApi\PetShopApi\Model\Error
+     * @return \PetShopApi\Model\Pet | \PetShopApi\Model\Error
      */
     public function findPetById(
             int $id,
     ):
-        \PetShopApi\PetShopApi\Model\Pet | 
-        \PetShopApi\PetShopApi\Model\Error
+        \PetShopApi\Model\Pet | 
+        \PetShopApi\Model\Error
     ;
 
 }

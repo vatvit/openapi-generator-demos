@@ -18,7 +18,7 @@
  */
 
 
-namespace PetShopApi\PetShopApi\Api;
+namespace PetShopApi\Api;
 
 
 interface ReportingApiInterface {
@@ -28,14 +28,14 @@ interface ReportingApiInterface {
      * Operation findPets
      * @param null | string[] $tags
      * @param null | int $limit
-     * @return \PetShopApi\PetShopApi\Model\Pet[] | \PetShopApi\PetShopApi\Model\Error
+     * @return \PetShopApi\Model\Pet[] | \PetShopApi\Model\Error
      */
     public function findPets(
             ?array $tags,
             ?int $limit,
     ):
         array | 
-        \PetShopApi\PetShopApi\Model\Error
+        \PetShopApi\Model\Error
     ;
 
 }

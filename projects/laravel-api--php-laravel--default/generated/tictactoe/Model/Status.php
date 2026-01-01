@@ -21,7 +21,7 @@
 /**
  * Status
  */
-namespace TicTacToeApi\TicTacToeApi\Model;
+namespace TicTacToeApi\Model;
 
 /**
  * Status
@@ -36,14 +36,14 @@ class Status
     /**
     *
     * 
-    * @param \TicTacToeApi\TicTacToeApi\Model\Winner $winner
+    * @param \TicTacToeApi\Model\Winner $winner
     *
     * 3x3 game board represented as nested arrays
-    * @param \TicTacToeApi\TicTacToeApi\Model\Mark[][] $board
+    * @param \TicTacToeApi\Model\Mark[][] $board
     */
 
     public function __construct(
-        public \TicTacToeApi\TicTacToeApi\Model\Winner $winner,
+        public \TicTacToeApi\Model\Winner $winner,
         public array $board,
     ) {}
 }

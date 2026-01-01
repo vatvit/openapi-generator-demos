@@ -21,7 +21,7 @@
 /**
  * LeaderboardTimeframe
  */
-namespace TicTacToeApi\TicTacToeApi\Model;
+namespace TicTacToeApi\Model;
 
 /**
  * LeaderboardTimeframe

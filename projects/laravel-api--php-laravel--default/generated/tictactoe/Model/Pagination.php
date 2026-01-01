@@ -21,7 +21,7 @@
 /**
  * Pagination
  */
-namespace TicTacToeApi\TicTacToeApi\Model;
+namespace TicTacToeApi\Model;
 
 /**
  * Pagination

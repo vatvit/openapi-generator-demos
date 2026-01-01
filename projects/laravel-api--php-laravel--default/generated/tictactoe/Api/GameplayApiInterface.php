@@ -18,7 +18,7 @@
  */
 
 
-namespace TicTacToeApi\TicTacToeApi\Api;
+namespace TicTacToeApi\Api;
 
 
 interface GameplayApiInterface {
@@ -29,13 +29,13 @@ interface GameplayApiInterface {
      *
      * Get the game board
      * @param string $gameId
-     * @return \TicTacToeApi\TicTacToeApi\Model\Status | \TicTacToeApi\TicTacToeApi\Model\NotFoundError
+     * @return \TicTacToeApi\Model\Status | \TicTacToeApi\Model\NotFoundError
      */
     public function getBoard(
             string $gameId,
     ):
-        \TicTacToeApi\TicTacToeApi\Model\Status | 
-        \TicTacToeApi\TicTacToeApi\Model\NotFoundError
+        \TicTacToeApi\Model\Status | 
+        \TicTacToeApi\Model\NotFoundError
     ;
 
 
@@ -44,13 +44,13 @@ interface GameplayApiInterface {
      *
      * Get game details
      * @param string $gameId
-     * @return \TicTacToeApi\TicTacToeApi\Model\Game | \TicTacToeApi\TicTacToeApi\Model\NotFoundError
+     * @return \TicTacToeApi\Model\Game | \TicTacToeApi\Model\NotFoundError
      */
     public function getGame(
             string $gameId,
     ):
-        \TicTacToeApi\TicTacToeApi\Model\Game | 
-        \TicTacToeApi\TicTacToeApi\Model\NotFoundError
+        \TicTacToeApi\Model\Game | 
+        \TicTacToeApi\Model\NotFoundError
     ;
 
 
@@ -59,13 +59,13 @@ interface GameplayApiInterface {
      *
      * Get move history
      * @param string $gameId
-     * @return \TicTacToeApi\TicTacToeApi\Model\MoveHistory | \TicTacToeApi\TicTacToeApi\Model\NotFoundError
+     * @return \TicTacToeApi\Model\MoveHistory | \TicTacToeApi\Model\NotFoundError
      */
     public function getMoves(
             string $gameId,
     ):
-        \TicTacToeApi\TicTacToeApi\Model\MoveHistory | 
-        \TicTacToeApi\TicTacToeApi\Model\NotFoundError
+        \TicTacToeApi\Model\MoveHistory | 
+        \TicTacToeApi\Model\NotFoundError
     ;
 
 
@@ -76,16 +76,16 @@ interface GameplayApiInterface {
      * @param string $gameId
      * @param int $row
      * @param int $column
-     * @return \TicTacToeApi\TicTacToeApi\Model\SquareResponse | \TicTacToeApi\TicTacToeApi\Model\BadRequestError | \TicTacToeApi\TicTacToeApi\Model\NotFoundError
+     * @return \TicTacToeApi\Model\SquareResponse | \TicTacToeApi\Model\BadRequestError | \TicTacToeApi\Model\NotFoundError
      */
     public function getSquare(
             string $gameId,
             int $row,
             int $column,
     ):
-        \TicTacToeApi\TicTacToeApi\Model\SquareResponse | 
-        \TicTacToeApi\TicTacToeApi\Model\BadRequestError | 
-        \TicTacToeApi\TicTacToeApi\Model\NotFoundError
+        \TicTacToeApi\Model\SquareResponse | 
+        \TicTacToeApi\Model\BadRequestError | 
+        \TicTacToeApi\Model\NotFoundError
     ;
 
 
@@ -96,19 +96,19 @@ interface GameplayApiInterface {
      * @param string $gameId
      * @param int $row
      * @param int $column
-     * @param \TicTacToeApi\TicTacToeApi\Model\MoveRequest $moveRequest
-     * @return \TicTacToeApi\TicTacToeApi\Model\Status | \TicTacToeApi\TicTacToeApi\Model\BadRequestError | \TicTacToeApi\TicTacToeApi\Model\NotFoundError | \TicTacToeApi\TicTacToeApi\Model\Error
+     * @param \TicTacToeApi\Model\MoveRequest $moveRequest
+     * @return \TicTacToeApi\Model\Status | \TicTacToeApi\Model\BadRequestError | \TicTacToeApi\Model\NotFoundError | \TicTacToeApi\Model\Error
      */
     public function putSquare(
             string $gameId,
             int $row,
             int $column,
-            \TicTacToeApi\TicTacToeApi\Model\MoveRequest $moveRequest,
+            \TicTacToeApi\Model\MoveRequest $moveRequest,
     ):
-        \TicTacToeApi\TicTacToeApi\Model\Status | 
-        \TicTacToeApi\TicTacToeApi\Model\BadRequestError | 
-        \TicTacToeApi\TicTacToeApi\Model\NotFoundError | 
-        \TicTacToeApi\TicTacToeApi\Model\Error
+        \TicTacToeApi\Model\Status | 
+        \TicTacToeApi\Model\BadRequestError | 
+        \TicTacToeApi\Model\NotFoundError | 
+        \TicTacToeApi\Model\Error
     ;
 
 }

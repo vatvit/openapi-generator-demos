@@ -24,7 +24,7 @@ class GameManagementHandler implements GameManagementApiInterface
         // Stub implementation - return mock data
         return new Game(
             id: 'game-' . uniqid(),
-            status: GameStatus::InProgress,
+            status: GameStatus::IN_PROGRESS,
         );
     }
 
@@ -39,7 +39,7 @@ class GameManagementHandler implements GameManagementApiInterface
         // Stub implementation
         return new Game(
             id: $gameId,
-            status: GameStatus::InProgress,
+            status: GameStatus::IN_PROGRESS,
         );
     }
 

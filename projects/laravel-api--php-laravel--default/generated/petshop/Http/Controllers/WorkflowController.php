@@ -27,7 +27,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 
 
-use PetShopApi\PetShopApi\Api\WorkflowApiInterface;
+use PetShopApi\Api\WorkflowApiInterface;
 
 class WorkflowController extends Controller
 {
@@ -64,7 +64,7 @@ class WorkflowController extends Controller
             return response()->json(['error' => 'Invalid input'], 400);
         }
 
-        $newPet = $this->serde->deserialize($request->getContent(), from: 'json', to: \PetShopApi\PetShopApi\Model\NewPet::class);
+        $newPet = $this->serde->deserialize($request->getContent(), from: 'json', to: \PetShopApi\Model\NewPet::class);
 
         try {
             $apiResult = $this->api->addPet($newPet);
@@ -73,11 +73,11 @@ class WorkflowController extends Controller
             return response()->json(['error' => $exception->getMessage()], 500);
         }
 
-        if ($apiResult instanceof \PetShopApi\PetShopApi\Model\Pet) {
+        if ($apiResult instanceof \PetShopApi\Model\Pet) {
             return response()->json($this->serde->serialize($apiResult, format: 'array'), 200);
         }
 
-        if ($apiResult instanceof \PetShopApi\PetShopApi\Model\Error) {
+        if ($apiResult instanceof \PetShopApi\Model\Error) {
             return response()->json($this->serde->serialize($apiResult, format: 'array'), 0);
         }
 

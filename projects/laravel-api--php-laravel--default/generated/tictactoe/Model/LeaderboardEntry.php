@@ -21,7 +21,7 @@
 /**
  * LeaderboardEntry
  */
-namespace TicTacToeApi\TicTacToeApi\Model;
+namespace TicTacToeApi\Model;
 
 /**
  * LeaderboardEntry
@@ -38,7 +38,7 @@ class LeaderboardEntry
     * @param int $rank
     *
     * 
-    * @param \TicTacToeApi\TicTacToeApi\Model\Player $player
+    * @param \TicTacToeApi\Model\Player $player
     *
     * Total score
     * @param int $score
@@ -52,7 +52,7 @@ class LeaderboardEntry
 
     public function __construct(
         public int $rank,
-        public \TicTacToeApi\TicTacToeApi\Model\Player $player,
+        public \TicTacToeApi\Model\Player $player,
         public int $score,
         public int $wins,
         public int $gamesPlayed,

@@ -21,7 +21,7 @@
 /**
  * NotFoundError
  */
-namespace TicTacToeApi\TicTacToeApi\Model;
+namespace TicTacToeApi\Model;
 
 /**
  * NotFoundError
@@ -45,14 +45,14 @@ class NotFoundError
     * @param array<string,mixed> $details
     *
     * 
-    * @param \TicTacToeApi\TicTacToeApi\Model\NotFoundErrorAllOfErrorType $errorType
+    * @param \TicTacToeApi\Model\NotFoundErrorAllOfErrorType $errorType
     */
 
     public function __construct(
         public string $code,
         public string $message,
         public array $details,
-        public \TicTacToeApi\TicTacToeApi\Model\NotFoundErrorAllOfErrorType $errorType,
+        public \TicTacToeApi\Model\NotFoundErrorAllOfErrorType $errorType,
     ) {}
 }
 

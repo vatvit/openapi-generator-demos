@@ -1,0 +1,7 @@
+{
+  "invokerPackage": "PetShopApi",
+  "apiPackage": "Api",
+  "modelPackage": "Model",
+  "bundleName": "PetShopApiBundle",
+  "variableNamingConvention": "camelCase"
+}

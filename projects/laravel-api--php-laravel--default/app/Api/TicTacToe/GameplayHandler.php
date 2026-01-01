@@ -29,7 +29,7 @@ class GameplayHandler implements GameplayApiInterface
     {
         return new Game(
             id: $gameId,
-            status: GameStatus::InProgress,
+            status: GameStatus::IN_PROGRESS,
         );
     }
 

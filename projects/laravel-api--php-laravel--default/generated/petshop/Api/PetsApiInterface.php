@@ -18,7 +18,7 @@
  */
 
 
-namespace PetShopApi\PetShopApi\Api;
+namespace PetShopApi\Api;
 
 
 interface PetsApiInterface {
@@ -26,40 +26,40 @@ interface PetsApiInterface {
 
     /**
      * Operation addPet
-     * @param \PetShopApi\PetShopApi\Model\NewPet $newPet
-     * @return \PetShopApi\PetShopApi\Model\Pet | \PetShopApi\PetShopApi\Model\Error
+     * @param \PetShopApi\Model\NewPet $newPet
+     * @return \PetShopApi\Model\Pet | \PetShopApi\Model\Error
      */
     public function addPet(
-            \PetShopApi\PetShopApi\Model\NewPet $newPet,
+            \PetShopApi\Model\NewPet $newPet,
     ):
-        \PetShopApi\PetShopApi\Model\Pet | 
-        \PetShopApi\PetShopApi\Model\Error
+        \PetShopApi\Model\Pet | 
+        \PetShopApi\Model\Error
     ;
 
 
     /**
      * Operation deletePet
      * @param int $id
-     * @return \PetShopApi\PetShopApi\Model\NoContent204 | \PetShopApi\PetShopApi\Model\Error
+     * @return \PetShopApi\Model\NoContent204 | \PetShopApi\Model\Error
      */
     public function deletePet(
             int $id,
     ):
-        \PetShopApi\PetShopApi\Model\NoContent204 | 
-        \PetShopApi\PetShopApi\Model\Error
+        \PetShopApi\Model\NoContent204 | 
+        \PetShopApi\Model\Error
     ;
 
 
     /**
      * Operation findPetById
      * @param int $id
-     * @return \PetShopApi\PetShopApi\Model\Pet | \PetShopApi\PetShopApi\Model\Error
+     * @return \PetShopApi\Model\Pet | \PetShopApi\Model\Error
      */
     public function findPetById(
             int $id,
     ):
-        \PetShopApi\PetShopApi\Model\Pet | 
-        \PetShopApi\PetShopApi\Model\Error
+        \PetShopApi\Model\Pet | 
+        \PetShopApi\Model\Error
     ;
 
 
@@ -67,14 +67,14 @@ interface PetsApiInterface {
      * Operation findPets
      * @param null | string[] $tags
      * @param null | int $limit
-     * @return \PetShopApi\PetShopApi\Model\Pet[] | \PetShopApi\PetShopApi\Model\Error
+     * @return \PetShopApi\Model\Pet[] | \PetShopApi\Model\Error
      */
     public function findPets(
             ?array $tags,
             ?int $limit,
     ):
         array | 
-        \PetShopApi\PetShopApi\Model\Error
+        \PetShopApi\Model\Error
     ;
 
 }

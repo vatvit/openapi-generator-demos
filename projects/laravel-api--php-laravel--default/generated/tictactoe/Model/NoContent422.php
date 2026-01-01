@@ -21,7 +21,7 @@
 /**
  * NoContent422
  */
-namespace TicTacToeApi\TicTacToeApi\Model;
+namespace TicTacToeApi\Model;
 
 /**
  * NoContent422

@@ -21,7 +21,7 @@
 /**
  * NotFoundErrorAllOfErrorType
  */
-namespace TicTacToeApi\TicTacToeApi\Model;
+namespace TicTacToeApi\Model;
 
 /**
  * NotFoundErrorAllOfErrorType

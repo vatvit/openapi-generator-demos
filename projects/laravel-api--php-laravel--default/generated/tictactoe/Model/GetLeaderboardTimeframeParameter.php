@@ -21,7 +21,7 @@
 /**
  * GetLeaderboardTimeframeParameter
  */
-namespace TicTacToeApi\TicTacToeApi\Model;
+namespace TicTacToeApi\Model;
 
 /**
  * GetLeaderboardTimeframeParameter

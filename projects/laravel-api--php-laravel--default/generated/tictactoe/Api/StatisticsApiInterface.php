@@ -18,7 +18,7 @@
  */
 
 
-namespace TicTacToeApi\TicTacToeApi\Api;
+namespace TicTacToeApi\Api;
 
 
 interface StatisticsApiInterface {
@@ -28,15 +28,15 @@ interface StatisticsApiInterface {
      * Operation getLeaderboard
      *
      * Get leaderboard
-     * @param null | \TicTacToeApi\TicTacToeApi\Model\GetLeaderboardTimeframeParameter $timeframe
+     * @param null | \TicTacToeApi\Model\GetLeaderboardTimeframeParameter $timeframe
      * @param null | int $limit
-     * @return \TicTacToeApi\TicTacToeApi\Model\Leaderboard
+     * @return \TicTacToeApi\Model\Leaderboard
      */
     public function getLeaderboard(
-            ?\TicTacToeApi\TicTacToeApi\Model\GetLeaderboardTimeframeParameter $timeframe,
+            ?\TicTacToeApi\Model\GetLeaderboardTimeframeParameter $timeframe,
             ?int $limit,
     ):
-        \TicTacToeApi\TicTacToeApi\Model\Leaderboard
+        \TicTacToeApi\Model\Leaderboard
     ;
 
 
@@ -45,13 +45,13 @@ interface StatisticsApiInterface {
      *
      * Get player statistics
      * @param string $playerId
-     * @return \TicTacToeApi\TicTacToeApi\Model\PlayerStats | \TicTacToeApi\TicTacToeApi\Model\NotFoundError
+     * @return \TicTacToeApi\Model\PlayerStats | \TicTacToeApi\Model\NotFoundError
      */
     public function getPlayerStats(
             string $playerId,
     ):
-        \TicTacToeApi\TicTacToeApi\Model\PlayerStats | 
-        \TicTacToeApi\TicTacToeApi\Model\NotFoundError
+        \TicTacToeApi\Model\PlayerStats | 
+        \TicTacToeApi\Model\NotFoundError
     ;
 
 }

@@ -21,7 +21,7 @@
 /**
  * UnauthorizedErrorAllOfErrorType
  */
-namespace TicTacToeApi\TicTacToeApi\Model;
+namespace TicTacToeApi\Model;
 
 /**
  * UnauthorizedErrorAllOfErrorType

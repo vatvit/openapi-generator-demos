@@ -27,7 +27,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 
 
-use PetShopApi\PetShopApi\Api\RetrievalApiInterface;
+use PetShopApi\Api\RetrievalApiInterface;
 
 class RetrievalController extends Controller
 {
@@ -76,11 +76,11 @@ class RetrievalController extends Controller
             return response()->json(['error' => $exception->getMessage()], 500);
         }
 
-        if ($apiResult instanceof \PetShopApi\PetShopApi\Model\Pet) {
+        if ($apiResult instanceof \PetShopApi\Model\Pet) {
             return response()->json($this->serde->serialize($apiResult, format: 'array'), 200);
         }
 
-        if ($apiResult instanceof \PetShopApi\PetShopApi\Model\Error) {
+        if ($apiResult instanceof \PetShopApi\Model\Error) {
             return response()->json($this->serde->serialize($apiResult, format: 'array'), 0);
         }
 

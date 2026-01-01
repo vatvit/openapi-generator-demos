@@ -1,0 +1,75 @@
+# yaml-language-server: $schema=../vendor/symfony/dependency-injection/Loader/schema/services.schema.json
+
+# This file is the entry point to configure your own services.
+# Files in the packages/ subdirectory configure your dependencies.
+# See also https://symfony.com/doc/current/service_container/import.html
+
+# Put parameters here that don't need to change on each machine where the app is deployed
+# https://symfony.com/doc/current/best_practices.html#use-parameters-for-application-configuration
+parameters:
+
+imports:
+    - { resource: '../generated/tictactoe/Resources/config/services.yaml' }
+    - { resource: '../generated/petshop/Resources/config/services.yaml' }
+
+services:
+    # default configuration for services in *this* file
+    _defaults:
+        autowire: true      # Automatically injects dependencies in your services.
+        autoconfigure: true # Automatically registers your services as commands, event subscribers, etc.
+
+    # makes classes in src/ available to be used as services
+    # this creates a service per class whose id is the fully-qualified class name
+    App\:
+        resource: '../src/'
+
+    # Bind handler implementations to API interfaces
+    # TicTacToe API handlers
+    TicTacToeApi\TicTacToeApi\Api\GameManagementApiInterface:
+        class: App\Handler\TicTacToe\GameManagementHandler
+
+    TicTacToeApi\TicTacToeApi\Api\GameplayApiInterface:
+        class: App\Handler\TicTacToe\GameplayHandler
+
+    TicTacToeApi\TicTacToeApi\Api\StatisticsApiInterface:
+        class: App\Handler\TicTacToe\StatisticsHandler
+
+    TicTacToeApi\TicTacToeApi\Api\TicTacApiInterface:
+        class: App\Handler\TicTacToe\TicTacHandler
+
+    # PetShop API handlers (sample - implementing only Pets for demo)
+    PetShopApi\PetShopApi\Api\PetsApiInterface:
+        class: App\Handler\PetShop\PetsHandler
+
+    PetShopApi\PetShopApi\Api\CreationApiInterface:
+        class: App\Handler\PetShop\CreationHandler
+
+    PetShopApi\PetShopApi\Api\DetailsApiInterface:
+        class: App\Handler\PetShop\DetailsHandler
+
+    PetShopApi\PetShopApi\Api\SearchApiInterface:
+        class: App\Handler\PetShop\SearchHandler
+
+    PetShopApi\PetShopApi\Api\ManagementApiInterface:
+        class: App\Handler\PetShop\ManagementHandler
+
+    PetShopApi\PetShopApi\Api\InventoryApiInterface:
+        class: App\Handler\PetShop\InventoryHandler
+
+    PetShopApi\PetShopApi\Api\WorkflowApiInterface:
+        class: App\Handler\PetShop\WorkflowHandler
+
+    PetShopApi\PetShopApi\Api\RetrievalApiInterface:
+        class: App\Handler\PetShop\RetrievalHandler
+
+    PetShopApi\PetShopApi\Api\ReportingApiInterface:
+        class: App\Handler\PetShop\ReportingHandler
+
+    PetShopApi\PetShopApi\Api\AnalyticsApiInterface:
+        class: App\Handler\PetShop\AnalyticsHandler
+
+    PetShopApi\PetShopApi\Api\AdminApiInterface:
+        class: App\Handler\PetShop\AdminHandler
+
+    PetShopApi\PetShopApi\Api\PublicApiInterface:
+        class: App\Handler\PetShop\PublicHandler

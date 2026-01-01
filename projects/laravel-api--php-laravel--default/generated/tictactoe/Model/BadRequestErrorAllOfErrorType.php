@@ -21,7 +21,7 @@
 /**
  * BadRequestErrorAllOfErrorType
  */
-namespace TicTacToeApi\TicTacToeApi\Model;
+namespace TicTacToeApi\Model;
 
 /**
  * BadRequestErrorAllOfErrorType

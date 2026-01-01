@@ -1,6 +1,6 @@
 ---
 code: GENDE-013
-status: Proposed
+status: Implemented
 dateCreated: 2026-01-01T14:07:32.824Z
 type: Feature Enhancement
 priority: Low

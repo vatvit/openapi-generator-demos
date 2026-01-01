@@ -18,7 +18,7 @@
  */
 
 
-namespace PetShopApi\PetShopApi\Api;
+namespace PetShopApi\Api;
 
 
 interface AdminApiInterface {
@@ -27,13 +27,13 @@ interface AdminApiInterface {
     /**
      * Operation deletePet
      * @param int $id
-     * @return \PetShopApi\PetShopApi\Model\NoContent204 | \PetShopApi\PetShopApi\Model\Error
+     * @return \PetShopApi\Model\NoContent204 | \PetShopApi\Model\Error
      */
     public function deletePet(
             int $id,
     ):
-        \PetShopApi\PetShopApi\Model\NoContent204 | 
-        \PetShopApi\PetShopApi\Model\Error
+        \PetShopApi\Model\NoContent204 | 
+        \PetShopApi\Model\Error
     ;
 
 }

@@ -56,8 +56,8 @@ class StatisticsHandler implements StatisticsApiHandlerInterface
      * Get leaderboard
      */
     public function getLeaderboard(
-        string $timeframe,
-        int $limit
+        ?string $timeframe = null,
+        ?int $limit = null
     ): GetLeaderboard200Resource {
         $entries = [];
         $rank = 1;

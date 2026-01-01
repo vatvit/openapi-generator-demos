@@ -27,7 +27,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 
 
-use TicTacToeApi\TicTacToeApi\Api\GameplayApiInterface;
+use TicTacToeApi\Api\GameplayApiInterface;
 
 class GameplayController extends Controller
 {
@@ -76,11 +76,11 @@ class GameplayController extends Controller
             return response()->json(['error' => $exception->getMessage()], 500);
         }
 
-        if ($apiResult instanceof \TicTacToeApi\TicTacToeApi\Model\Status) {
+        if ($apiResult instanceof \TicTacToeApi\Model\Status) {
             return response()->json($this->serde->serialize($apiResult, format: 'array'), 200);
         }
 
-        if ($apiResult instanceof \TicTacToeApi\TicTacToeApi\Model\NotFoundError) {
+        if ($apiResult instanceof \TicTacToeApi\Model\NotFoundError) {
             return response()->json($this->serde->serialize($apiResult, format: 'array'), 404);
         }
 
@@ -123,11 +123,11 @@ class GameplayController extends Controller
             return response()->json(['error' => $exception->getMessage()], 500);
         }
 
-        if ($apiResult instanceof \TicTacToeApi\TicTacToeApi\Model\Game) {
+        if ($apiResult instanceof \TicTacToeApi\Model\Game) {
             return response()->json($this->serde->serialize($apiResult, format: 'array'), 200);
         }
 
-        if ($apiResult instanceof \TicTacToeApi\TicTacToeApi\Model\NotFoundError) {
+        if ($apiResult instanceof \TicTacToeApi\Model\NotFoundError) {
             return response()->json($this->serde->serialize($apiResult, format: 'array'), 404);
         }
 
@@ -170,11 +170,11 @@ class GameplayController extends Controller
             return response()->json(['error' => $exception->getMessage()], 500);
         }
 
-        if ($apiResult instanceof \TicTacToeApi\TicTacToeApi\Model\MoveHistory) {
+        if ($apiResult instanceof \TicTacToeApi\Model\MoveHistory) {
             return response()->json($this->serde->serialize($apiResult, format: 'array'), 200);
         }
 
-        if ($apiResult instanceof \TicTacToeApi\TicTacToeApi\Model\NotFoundError) {
+        if ($apiResult instanceof \TicTacToeApi\Model\NotFoundError) {
             return response()->json($this->serde->serialize($apiResult, format: 'array'), 404);
         }
 
@@ -231,15 +231,15 @@ class GameplayController extends Controller
             return response()->json(['error' => $exception->getMessage()], 500);
         }
 
-        if ($apiResult instanceof \TicTacToeApi\TicTacToeApi\Model\SquareResponse) {
+        if ($apiResult instanceof \TicTacToeApi\Model\SquareResponse) {
             return response()->json($this->serde->serialize($apiResult, format: 'array'), 200);
         }
 
-        if ($apiResult instanceof \TicTacToeApi\TicTacToeApi\Model\BadRequestError) {
+        if ($apiResult instanceof \TicTacToeApi\Model\BadRequestError) {
             return response()->json($this->serde->serialize($apiResult, format: 'array'), 400);
         }
 
-        if ($apiResult instanceof \TicTacToeApi\TicTacToeApi\Model\NotFoundError) {
+        if ($apiResult instanceof \TicTacToeApi\Model\NotFoundError) {
             return response()->json($this->serde->serialize($apiResult, format: 'array'), 404);
         }
 
@@ -273,7 +273,7 @@ class GameplayController extends Controller
 
 
 
-        $moveRequest = $this->serde->deserialize($request->getContent(), from: 'json', to: \TicTacToeApi\TicTacToeApi\Model\MoveRequest::class);
+        $moveRequest = $this->serde->deserialize($request->getContent(), from: 'json', to: \TicTacToeApi\Model\MoveRequest::class);
 
         try {
             $apiResult = $this->api->putSquare($gameId, $row, $column, $moveRequest);
@@ -282,19 +282,19 @@ class GameplayController extends Controller
             return response()->json(['error' => $exception->getMessage()], 500);
         }
 
-        if ($apiResult instanceof \TicTacToeApi\TicTacToeApi\Model\Status) {
+        if ($apiResult instanceof \TicTacToeApi\Model\Status) {
             return response()->json($this->serde->serialize($apiResult, format: 'array'), 200);
         }
 
-        if ($apiResult instanceof \TicTacToeApi\TicTacToeApi\Model\BadRequestError) {
+        if ($apiResult instanceof \TicTacToeApi\Model\BadRequestError) {
             return response()->json($this->serde->serialize($apiResult, format: 'array'), 400);
         }
 
-        if ($apiResult instanceof \TicTacToeApi\TicTacToeApi\Model\NotFoundError) {
+        if ($apiResult instanceof \TicTacToeApi\Model\NotFoundError) {
             return response()->json($this->serde->serialize($apiResult, format: 'array'), 404);
         }
 
-        if ($apiResult instanceof \TicTacToeApi\TicTacToeApi\Model\Error) {
+        if ($apiResult instanceof \TicTacToeApi\Model\Error) {
             return response()->json($this->serde->serialize($apiResult, format: 'array'), 409);
         }
 

@@ -19,7 +19,16 @@ final class DeletePet204Resource extends JsonResource
     /** @return array<string, mixed> */
     public function toArray($request): array
     {
-        return [];
+        /** @var mixed|null $model */
+        $model = $this->resource;
+
+        // Handle null resource (empty response or error response)
+        if ($model === null) {
+            return [];
+        }
+
+        return [
+        ];
     }
 
     public function withResponse($request, $response): void

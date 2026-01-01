@@ -21,7 +21,7 @@
 /**
  * BadRequestError
  */
-namespace TicTacToeApi\TicTacToeApi\Model;
+namespace TicTacToeApi\Model;
 
 /**
  * BadRequestError
@@ -45,14 +45,14 @@ class BadRequestError
     * @param array<string,mixed> $details
     *
     * 
-    * @param \TicTacToeApi\TicTacToeApi\Model\BadRequestErrorAllOfErrorType $errorType
+    * @param \TicTacToeApi\Model\BadRequestErrorAllOfErrorType $errorType
     */
 
     public function __construct(
         public string $code,
         public string $message,
         public array $details,
-        public \TicTacToeApi\TicTacToeApi\Model\BadRequestErrorAllOfErrorType $errorType,
+        public \TicTacToeApi\Model\BadRequestErrorAllOfErrorType $errorType,
     ) {}
 }
 

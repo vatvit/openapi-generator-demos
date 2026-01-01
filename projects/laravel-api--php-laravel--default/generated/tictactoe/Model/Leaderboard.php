@@ -21,7 +21,7 @@
 /**
  * Leaderboard
  */
-namespace TicTacToeApi\TicTacToeApi\Model;
+namespace TicTacToeApi\Model;
 
 /**
  * Leaderboard
@@ -35,17 +35,17 @@ class Leaderboard
     /**
     *
     * 
-    * @param \TicTacToeApi\TicTacToeApi\Model\LeaderboardTimeframe $timeframe
+    * @param \TicTacToeApi\Model\LeaderboardTimeframe $timeframe
     *
     * 
-    * @param \TicTacToeApi\TicTacToeApi\Model\LeaderboardEntry[] $entries
+    * @param \TicTacToeApi\Model\LeaderboardEntry[] $entries
     *
     * When this leaderboard was generated
     * @param \DateTime $generatedAt
     */
 
     public function __construct(
-        public \TicTacToeApi\TicTacToeApi\Model\LeaderboardTimeframe $timeframe,
+        public \TicTacToeApi\Model\LeaderboardTimeframe $timeframe,
         public array $entries,
         public \DateTime $generatedAt,
     ) {}

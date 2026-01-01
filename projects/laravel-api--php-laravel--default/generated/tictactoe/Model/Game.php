@@ -21,7 +21,7 @@
 /**
  * Game
  */
-namespace TicTacToeApi\TicTacToeApi\Model;
+namespace TicTacToeApi\Model;
 
 /**
  * Game
@@ -38,25 +38,25 @@ class Game
     * @param string $id
     *
     * 
-    * @param \TicTacToeApi\TicTacToeApi\Model\GameStatus $status
+    * @param \TicTacToeApi\Model\GameStatus $status
     *
     * 
-    * @param \TicTacToeApi\TicTacToeApi\Model\GameMode $mode
+    * @param \TicTacToeApi\Model\GameMode $mode
     *
     * Player assigned to X marks
-    * @param \TicTacToeApi\TicTacToeApi\Model\Player $playerX
+    * @param \TicTacToeApi\Model\Player $playerX
     *
     * Player assigned to O marks
-    * @param \TicTacToeApi\TicTacToeApi\Model\Player $playerO
+    * @param \TicTacToeApi\Model\Player $playerO
     *
     * 
-    * @param \TicTacToeApi\TicTacToeApi\Model\Mark $currentTurn
+    * @param \TicTacToeApi\Model\Mark $currentTurn
     *
     * 
-    * @param \TicTacToeApi\TicTacToeApi\Model\Winner $winner
+    * @param \TicTacToeApi\Model\Winner $winner
     *
     * 3x3 game board represented as nested arrays
-    * @param \TicTacToeApi\TicTacToeApi\Model\Mark[][] $board
+    * @param \TicTacToeApi\Model\Mark[][] $board
     *
     * Game creation timestamp
     * @param \DateTime $createdAt
@@ -70,12 +70,12 @@ class Game
 
     public function __construct(
         public string $id,
-        public \TicTacToeApi\TicTacToeApi\Model\GameStatus $status,
-        public \TicTacToeApi\TicTacToeApi\Model\GameMode $mode,
-        public \TicTacToeApi\TicTacToeApi\Model\Player $playerX,
-        public \TicTacToeApi\TicTacToeApi\Model\Player $playerO,
-        public \TicTacToeApi\TicTacToeApi\Model\Mark $currentTurn,
-        public \TicTacToeApi\TicTacToeApi\Model\Winner $winner,
+        public \TicTacToeApi\Model\GameStatus $status,
+        public \TicTacToeApi\Model\GameMode $mode,
+        public \TicTacToeApi\Model\Player $playerX,
+        public \TicTacToeApi\Model\Player $playerO,
+        public \TicTacToeApi\Model\Mark $currentTurn,
+        public \TicTacToeApi\Model\Winner $winner,
         public array $board,
         public \DateTime $createdAt,
         public \DateTime $updatedAt,

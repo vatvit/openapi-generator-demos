@@ -27,7 +27,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 
 
-use PetShopApi\PetShopApi\Api\ReportingApiInterface;
+use PetShopApi\Api\ReportingApiInterface;
 
 class ReportingController extends Controller
 {
@@ -86,7 +86,7 @@ class ReportingController extends Controller
             return response()->json($serialized, 200);
         }
 
-        if ($apiResult instanceof \PetShopApi\PetShopApi\Model\Error) {
+        if ($apiResult instanceof \PetShopApi\Model\Error) {
             return response()->json($this->serde->serialize($apiResult, format: 'array'), 0);
         }
 

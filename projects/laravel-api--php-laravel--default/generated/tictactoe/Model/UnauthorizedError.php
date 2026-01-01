@@ -21,7 +21,7 @@
 /**
  * UnauthorizedError
  */
-namespace TicTacToeApi\TicTacToeApi\Model;
+namespace TicTacToeApi\Model;
 
 /**
  * UnauthorizedError
@@ -45,14 +45,14 @@ class UnauthorizedError
     * @param array<string,mixed> $details
     *
     * 
-    * @param \TicTacToeApi\TicTacToeApi\Model\UnauthorizedErrorAllOfErrorType $errorType
+    * @param \TicTacToeApi\Model\UnauthorizedErrorAllOfErrorType $errorType
     */
 
     public function __construct(
         public string $code,
         public string $message,
         public array $details,
-        public \TicTacToeApi\TicTacToeApi\Model\UnauthorizedErrorAllOfErrorType $errorType,
+        public \TicTacToeApi\Model\UnauthorizedErrorAllOfErrorType $errorType,
     ) {}
 }
 

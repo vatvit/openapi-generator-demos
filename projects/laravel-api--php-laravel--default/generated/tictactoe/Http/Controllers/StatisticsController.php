@@ -27,7 +27,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 
 
-use TicTacToeApi\TicTacToeApi\Api\StatisticsApiInterface;
+use TicTacToeApi\Api\StatisticsApiInterface;
 
 class StatisticsController extends Controller
 {
@@ -71,7 +71,7 @@ class StatisticsController extends Controller
             return response()->json(['error' => 'Invalid input'], 400);
         }
 
-        $timeframe = $this->serde->deserialize($request->getContent(), from: 'json', to: \TicTacToeApi\TicTacToeApi\Model\GetLeaderboardTimeframeParameter::class);
+        $timeframe = $this->serde->deserialize($request->getContent(), from: 'json', to: \TicTacToeApi\Model\GetLeaderboardTimeframeParameter::class);
 
         $limit = $request->integer('limit');
 
@@ -82,7 +82,7 @@ class StatisticsController extends Controller
             return response()->json(['error' => $exception->getMessage()], 500);
         }
 
-        if ($apiResult instanceof \TicTacToeApi\TicTacToeApi\Model\Leaderboard) {
+        if ($apiResult instanceof \TicTacToeApi\Model\Leaderboard) {
             return response()->json($this->serde->serialize($apiResult, format: 'array'), 200);
         }
 
@@ -125,11 +125,11 @@ class StatisticsController extends Controller
             return response()->json(['error' => $exception->getMessage()], 500);
         }
 
-        if ($apiResult instanceof \TicTacToeApi\TicTacToeApi\Model\PlayerStats) {
+        if ($apiResult instanceof \TicTacToeApi\Model\PlayerStats) {
             return response()->json($this->serde->serialize($apiResult, format: 'array'), 200);
         }
 
-        if ($apiResult instanceof \TicTacToeApi\TicTacToeApi\Model\NotFoundError) {
+        if ($apiResult instanceof \TicTacToeApi\Model\NotFoundError) {
             return response()->json($this->serde->serialize($apiResult, format: 'array'), 404);
         }
 

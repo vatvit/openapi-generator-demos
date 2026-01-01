@@ -21,7 +21,7 @@
 /**
  * Error
  */
-namespace PetShopApi\PetShopApi\Model;
+namespace PetShopApi\Model;
 
 /**
  * Error

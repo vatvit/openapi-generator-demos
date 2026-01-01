@@ -21,7 +21,7 @@
 /**
  * Pet
  */
-namespace PetShopApi\PetShopApi\Model;
+namespace PetShopApi\Model;
 
 /**
  * Pet

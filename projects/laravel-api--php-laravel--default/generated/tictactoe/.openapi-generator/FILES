@@ -1,5 +1,4 @@
 .gitignore
-.openapi-generator-ignore
 Api/GameManagementApiInterface.php
 Api/GameplayApiInterface.php
 Api/StatisticsApiInterface.php

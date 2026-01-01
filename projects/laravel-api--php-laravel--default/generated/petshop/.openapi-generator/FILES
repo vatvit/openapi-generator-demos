@@ -1,5 +1,4 @@
 .gitignore
-.openapi-generator-ignore
 Api/AdminApiInterface.php
 Api/AnalyticsApiInterface.php
 Api/CreationApiInterface.php

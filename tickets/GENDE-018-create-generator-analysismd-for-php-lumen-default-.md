@@ -1,6 +1,6 @@
 ---
 code: GENDE-018
-status: Proposed
+status: Implemented
 dateCreated: 2026-01-01T14:59:09.159Z
 type: Documentation
 priority: Low

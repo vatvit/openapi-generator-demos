@@ -1,6 +1,6 @@
 ---
 code: GENDE-003
-status: Proposed
+status: Implemented
 dateCreated: 2025-12-30T21:56:04.186Z
 type: Architecture
 priority: Low
@@ -11,24 +11,31 @@ priority: Low
 > ⚠️ **STATUS: NEEDS CLARIFICATION** - This is a research/investigation ticket. Scope and goals need refinement.
 
 ## 1. Description
-
 ### Problem Statement
-Currently, the project focuses on Laravel library generation. There may be demand or benefit in supporting Symfony framework as well, leveraging the existing generator infrastructure.
 
-### Research Question
-Is it possible to adjust the existing generator (laravel-max or OpenAPI Generator templates) to generate Symfony-compatible libraries that follow the same quality standards?
+The project goal is to find solutions for generating **high-quality, contract-enforced API libraries** for different PHP frameworks (see GOAL.md). Currently, only Laravel is supported via `laravel-max` generator.
 
-### Current State
-- `laravel-max` generator produces high-quality Laravel libraries
-- OpenAPI Generator has a `php-symfony` generator available (not yet evaluated)
-- No Symfony-specific templates or generators in this project
+OpenAPI Generator includes a `php-symfony` generator that may serve as a foundation for Symfony framework support.
 
-### Desired Outcome
-Clear understanding of:
-1. Feasibility of Symfony library generation
-2. Effort required
-3. Recommended approach (if feasible)
+### Goal
 
+Extract and analyze the default `php-symfony` generator to understand:
+1. What it generates out of the box
+2. How it compares to GOAL_MAX.md quality requirements
+3. Capabilities and limitations
+
+### Scope
+
+- Extract default templates from OpenAPI Generator's `php-symfony`
+- Create `GENERATOR-ANALYSIS.md` documenting capabilities
+- Score against GOAL_MAX.md criteria
+- Identify gaps and limitations
+
+### Out of Scope
+
+- Laravel-to-Symfony mapping (GENDE-007)
+- Feasibility assessment and approach decision (GENDE-008)
+- Implementation (GENDE-009)
 ## 2. Rationale
 
 - **Broader Adoption**: Symfony is a major PHP framework with significant market share
@@ -94,37 +101,73 @@ Clear understanding of:
 *Approach to be selected after investigation.*
 
 ## 4. Implementation Specification
+### Steps
 
-### Phase 1: Research (This Ticket)
-
-1. **Extract and Analyze php-symfony Generator**
+1. **Extract default php-symfony templates**
    ```bash
-   make extract-symfony-templates  # To be created
+   docker run --rm -v "$(pwd):/local" openapitools/openapi-generator-cli:v7.12.0 \
+     author template -g php-symfony -o /local/openapi-generator-server-php-symfony-default
    ```
-   - Create `GENERATOR-ANALYSIS.md` for php-symfony
-   - Score against GOAL_MAX.md criteria
 
-2. **Document Symfony Equivalents**
-   - Map all laravel-max components to Symfony patterns
-   - Identify gaps and challenges
+2. **Generate sample output** using TicTacToe spec
+   ```bash
+   docker run --rm -v "$(pwd):/local" openapitools/openapi-generator-cli:v7.12.0 generate \
+     -g php-symfony -i /local/specs/tictactoe.json -o /local/output
+   ```
 
-3. **Effort Estimation**
-   - Estimate for each approach
-   - Recommend go/no-go decision
+3. **Analyze generated code** against GOAL_MAX.md:
+   - Routes/Controllers structure
+   - Request validation
+   - Response handling
+   - DTOs/Models
+   - Security middleware support
+   - Type safety
 
-4. **Deliverable: Investigation Report**
-   - Feasibility assessment
-   - Recommended approach (if feasible)
-   - Rough implementation plan
-
-### Phase 2: Implementation (Future Ticket)
-*To be created if investigation shows feasibility and there's interest.*
-
+4. **Create GENERATOR-ANALYSIS.md** with:
+   - Overview of generated structure
+   - Scoring table (like php-laravel analysis)
+   - Identified gaps
+   - Raw capabilities summary
 ## 5. Acceptance Criteria
+- [x] Default `php-symfony` templates extracted to `openapi-generator-server-templates/openapi-generator-server-php-symfony-default/`
+- [x] `GENERATOR-ANALYSIS.md` created for php-symfony generator
+- [x] Capabilities scored against GOAL_MAX.md requirements (Overall: 54%)
+- [x] Gaps and limitations documented
 
-- [ ] `php-symfony` default templates extracted to `openapi-generator-server-templates/openapi-generator-server-php-symfony-default/`
-- [ ] `GENERATOR-ANALYSIS.md` created for php-symfony generator
-- [ ] Laravel-to-Symfony component mapping documented
-- [ ] Feasibility assessment completed with clear recommendation
-- [ ] Effort estimate provided for recommended approach
-- [ ] Go/no-go decision documented with rationale
+## 6. Current State
+
+**Last Updated:** 2026-01-01
+
+### Artifact Locations
+- Templates: `openapi-generator-server-templates/openapi-generator-server-php-symfony-default/`
+- Generated sample: `generated/php-symfony/tictactoe/`
+- Analysis: `openapi-generator-server-templates/openapi-generator-server-php-symfony-default/GENERATOR-ANALYSIS.md`
+
+### Key Findings
+
+**Overall Score: 54%** against GOAL_MAX.md
+
+**Strengths:**
+- Routes (YAML config): 90%
+- Validators (Symfony Assert): 85%
+- DTOs/Models: 85%
+- Documentation: 80%
+- API Interfaces: 70%
+
+**Major Gaps:**
+- Controllers: 60% - One per tag, not per operation
+- Middleware: 20% - No middleware concept
+- Security: 30% - Method-based, not middleware
+- Response Classes: 20% - No response DTOs
+- Response Factories: 0% - Not generated
+
+**Critical Limitations for GOAL_MAX.md:**
+1. Cannot generate per-operation files (requires custom Java generator)
+2. Return type `array|object|null` provides no contract enforcement
+3. Response code/headers by reference (awkward pattern)
+4. Security via method injection, not proper middleware
+5. Uses JMS Serializer (legacy) instead of Symfony Serializer
+
+### Conclusion
+
+The `php-symfony` generator has similar fundamental limitations as `php-laravel` - it cannot generate per-operation files without a custom Java generator. For Symfony support matching laravel-max quality, a `symfony-max` custom generator would likely be needed.

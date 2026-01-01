@@ -1,6 +1,6 @@
 ---
 code: GENDE-005
-status: Proposed
+status: Implemented
 dateCreated: 2025-12-31T20:31:29.624Z
 type: Architecture
 priority: Medium
@@ -9,7 +9,6 @@ priority: Medium
 # POC: Marker-Based File Splitting for php-laravel Generator
 
 ## 1. Description
-
 ### Problem Statement
 
 OpenAPI Generator's `files` configuration mechanism only supports three granularity levels:
@@ -24,19 +23,31 @@ This prevents generating **per-operation files** (one controller per operation) 
 We can achieve per-operation file generation using the **standard php-laravel generator** by:
 1. Generating all classes in one file per tag (using `files` config)
 2. Adding special markers between classes in templates
-3. Using a post-processing script to split the combined file into separate files
+3. Using OpenAPI Generator's **built-in post-processing hook** (`PHP_POST_PROCESS_FILE` + `--enable-post-process-file`) to automatically split the combined file into separate files
+
+### Key Insight
+
+OpenAPI Generator has a built-in feature for post-processing generated files:
+```bash
+export PHP_POST_PROCESS_FILE="/path/to/split-script.php"
+openapi-generator-cli generate ... --enable-post-process-file
+```
+
+The generator automatically runs the specified script on each generated PHP file. This means:
+- **No manual steps** - splitting happens as part of generation
+- **Transparent to users** - just run the generator command
+- **No custom Java code** - only templates + a PHP script
 
 ### Goal
 
-Prove (or disprove) that this approach works with a standard generator, enabling per-operation files without custom Java code.
+Prove (or disprove) that this approach works with a standard generator, enabling per-operation files without custom Java code and without manual post-processing steps.
 
 ### Scope
 
 - Use standard `php-laravel` generator (no Java modifications)
 - Custom templates with markers
-- Post-processing script (bash/PHP) to split files
+- Post-processing script triggered by OpenAPI Generator's built-in hook
 - Integration test project to validate
-
 ## 2. Rationale
 
 ### Why Try This?
@@ -191,32 +202,69 @@ openapi-generator-cli author template -g php-laravel -o php-laravel-split/
 - Hybrid approach?
 
 ## 5. Acceptance Criteria
-
-- [ ] Directory structure created for php-laravel-split
-- [ ] Custom templates with markers created
-- [ ] Split script working and tested
-- [ ] Generation + split produces per-operation files
-- [ ] Integration test project validates generated code
-- [ ] Findings documented with recommendation
-
+- [x] Custom templates with split markers created
+- [x] Post-processing script created
+- [x] Tested with OpenAPI Generator's built-in hook
+- [x] Documented limitation with Docker-based workflows
+- [x] Recommendation provided
 ## 6. Current State
+**Last Updated:** 2026-01-01
 
-**Last Updated:** 2025-12-31
+### Status: POC Complete - Not Viable for Docker Workflows
 
-### Status: Not Started
+### Summary
 
-### Artifact Locations
+The marker-based file splitting approach using OpenAPI Generator's built-in post-processing hook (`PHP_POST_PROCESS_FILE` + `--enable-post-process-file`) **does not work with Docker-based workflows**.
 
-| Artifact | Path | Status |
-|----------|------|--------|
-| Generator scripts | `openapi-generator-generators/php-laravel-split/` | Not created |
-| Templates | `openapi-generator-server-templates/php-laravel-split/` | Not created |
-| Generated output | `generated/php-laravel-split/` | Not created |
-| Test project | `projects/laravel-api--php-laravel-split--integration-tests/` | Not created |
+### Root Cause
 
-### Next Actions
+1. OpenAPI Generator runs inside Docker container (`openapitools/openapi-generator-cli`)
+2. Post-process script must execute inside that same container
+3. The openapi-generator Docker image does not include PHP or sufficient tools for file splitting
+4. Error: `Cannot run program "/scripts/post-process-split.php": error=13, Permission denied`
 
-1. Create directory structure
-2. Extract default php-laravel templates
-3. Modify templates to add markers
-4. Create split script
+### What Was Tested
+
+1. ✅ Custom templates with `---SPLIT:filename---` markers - **works**
+2. ✅ Manual post-processing script to split files - **works**
+3. ❌ Built-in `PHP_POST_PROCESS_FILE` hook with Docker - **does not work**
+
+### Limitation
+
+The post-processing hook feature is designed for **host-based generation** where:
+- Generator runs directly on the host (not in Docker)
+- Host has PHP/tools installed
+- Script can execute in host environment
+
+For **Docker-based workflows** (which this project uses), the hook cannot execute custom scripts because the generator container lacks the required runtime.
+
+### Conclusion
+
+**The approach is not viable for this project** because:
+1. Project mandates Docker-based development (no local PHP/npm/node)
+2. Post-processing hook requires tools not available in generator container
+3. Manual post-processing step defeats the purpose (not transparent)
+
+### Recommendation
+
+**Continue using `laravel-max` custom generator** which:
+- Generates per-operation files natively (no post-processing)
+- Works with Docker-based workflows
+- Provides full control over generated code structure
+
+### Alternative for Other Projects
+
+For projects that run openapi-generator on the host (not Docker), the post-processing hook approach could work:
+
+```bash
+export PHP_POST_PROCESS_FILE="/path/to/split-script.php"
+openapi-generator-cli generate ... --enable-post-process-file
+```
+
+### Artifacts Created (for reference)
+
+| Artifact | Path |
+|----------|------|
+| Templates with markers | `openapi-generator-server-templates/openapi-generator-server-php-laravel-split/` |
+| Split script (manual) | `openapi-generator-generators/php-laravel-split/scripts/split-files.php` |
+| Makefile | `openapi-generator-generators/php-laravel-split/Makefile` |

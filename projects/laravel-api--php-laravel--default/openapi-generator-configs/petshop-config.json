@@ -1,0 +1,7 @@
+{
+  "invokerPackage": "PetShopApi",
+  "apiPackage": "PetShopApi\\Api",
+  "modelPackage": "PetShopApi\\Model",
+  "controllerPackage": "PetShopApi\\Http\\Controllers",
+  "variableNamingConvention": "camelCase"
+}

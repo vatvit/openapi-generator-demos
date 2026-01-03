@@ -15,8 +15,8 @@
     "autoload": {
         "psr-4": {
             "App\\": "app/",
-            "TictactoeApi\\Api\\": "../../generated/laravel-max/tictactoe/app/",
-            "TictactoeApi\\Model\\": "../../generated/laravel-max/tictactoe/app/Models/"
+            "TictactoeApi\\Api\\": "../../generated/php-max-laravel/tictactoe/app/",
+            "TictactoeApi\\Model\\": "../../generated/php-max-laravel/tictactoe/app/Models/"
         }
     },
     "autoload-dev": {

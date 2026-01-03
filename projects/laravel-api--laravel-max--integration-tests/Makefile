@@ -61,7 +61,7 @@ lint:
 		-v $$(pwd)/../..:/local \
 		-w /local/projects/laravel-api--laravel-max--integration-tests \
 		php:8.4-cli \
-		sh -c 'find ../../generated/laravel-max -name "*.php" -exec php -l {} \;'
+		sh -c 'find ../../generated/php-max-laravel -name "*.php" -exec php -l {} \;'
 
 # Clean generated files
 clean:

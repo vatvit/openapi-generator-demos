@@ -15,6 +15,9 @@ use TictactoeApi\Api\Handlers\GameplayApiHandlerInterface;
 use TictactoeApi\Api\Handlers\StatisticsApiHandlerInterface;
 use TictactoeApi\Api\Handlers\TicTacApiHandlerInterface;
 use PetshopApi\Api\Handlers\PetsApiHandlerInterface;
+use PetshopApi\Api\Handlers\RetrievalApiHandlerInterface;
+use PetshopApi\Api\Handlers\SearchApiHandlerInterface;
+use PetshopApi\Api\Handlers\WorkflowApiHandlerInterface;
 
 /**
  * Application Service Provider
@@ -35,8 +38,11 @@ class AppServiceProvider extends ServiceProvider
         $this->app->bind(StatisticsApiHandlerInterface::class, StatisticsHandler::class);
         $this->app->bind(TicTacApiHandlerInterface::class, TicTacHandler::class);
 
-        // Petshop handlers
+        // Petshop handlers - PetsHandler implements all 4 interfaces used by controllers
         $this->app->bind(PetsApiHandlerInterface::class, PetsHandler::class);
+        $this->app->bind(RetrievalApiHandlerInterface::class, PetsHandler::class);
+        $this->app->bind(SearchApiHandlerInterface::class, PetsHandler::class);
+        $this->app->bind(WorkflowApiHandlerInterface::class, PetsHandler::class);
     }
 
     /**

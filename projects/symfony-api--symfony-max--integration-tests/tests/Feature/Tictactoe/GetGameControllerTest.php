@@ -3,14 +3,14 @@
 namespace Tests\Feature\Tictactoe;
 
 use PHPUnit\Framework\TestCase;
-use TictactoeApi\Controller\GetGameController;
-use TictactoeApi\Api\GameplayApiServiceInterface;
+use TictactoeApi\Api\Controller\GetGameController;
+use TictactoeApi\Api\Handler\GetGameApiHandlerInterface;
 
 /**
  * Tests for generated GetGameController (Symfony) - controller without body param
  *
  * php-max generator creates per-operation controllers that inject
- * per-TAG service interfaces (not per-operation interfaces).
+ * per-operation handler interfaces.
  */
 class GetGameControllerTest extends TestCase
 {
@@ -22,15 +22,12 @@ class GetGameControllerTest extends TestCase
         );
     }
 
-    public function test_controller_extends_abstract_controller(): void
+    public function test_controller_is_final(): void
     {
         $reflection = new \ReflectionClass(GetGameController::class);
-        $parent = $reflection->getParentClass();
-
-        $this->assertNotFalse($parent, 'Controller should have a parent class');
-        $this->assertEquals(
-            'Symfony\Bundle\FrameworkBundle\Controller\AbstractController',
-            $parent->getName()
+        $this->assertTrue(
+            $reflection->isFinal(),
+            'Controller should be final'
         );
     }
 
@@ -43,34 +40,28 @@ class GetGameControllerTest extends TestCase
         );
     }
 
-    public function test_controller_accepts_request_and_path_params(): void
+    public function test_controller_accepts_path_param(): void
     {
         $reflection = new \ReflectionClass(GetGameController::class);
         $invokeMethod = $reflection->getMethod('__invoke');
         $params = $invokeMethod->getParameters();
 
-        // Should have Request + path params
-        $this->assertGreaterThanOrEqual(2, count($params), 'Should have Request and path params');
+        // Should have path param (game_id)
+        $this->assertCount(1, $params, 'Should have one path parameter');
 
-        // First param should be Request
-        $requestParam = $params[0];
-        $type = $requestParam->getType();
-        $this->assertNotNull($type, 'Request parameter should be typed');
-        $this->assertEquals('Symfony\Component\HttpFoundation\Request', $type->getName());
-
-        // Second param should be the path parameter (gameId or game_id)
-        $gameIdParam = $params[1];
-        $this->assertMatchesRegularExpression(
-            '/^(game_id|gameId)$/',
+        // Parameter should be the path parameter (game_id)
+        $gameIdParam = $params[0];
+        $this->assertEquals(
+            'game_id',
             $gameIdParam->getName(),
-            'Path parameter should be game_id or gameId'
+            'Path parameter should be game_id'
         );
         $type = $gameIdParam->getType();
         $this->assertNotNull($type, 'Path parameter should be typed');
         $this->assertEquals('string', $type->getName());
     }
 
-    public function test_controller_has_service_dependency(): void
+    public function test_controller_has_handler_dependency(): void
     {
         $reflection = new \ReflectionClass(GetGameController::class);
         $constructor = $reflection->getConstructor();
@@ -83,17 +74,15 @@ class GetGameControllerTest extends TestCase
         $param = $params[0];
         $type = $param->getType();
 
-        $this->assertNotNull($type, 'Service parameter should be typed');
+        $this->assertNotNull($type, 'Handler parameter should be typed');
         $this->assertInstanceOf(\ReflectionNamedType::class, $type);
-        // php-max uses per-TAG service interfaces
-        // getGame has multiple tags; controller uses the last-processed tag (Gameplay)
         $this->assertEquals(
-            'TictactoeApi\Api\GameplayApiServiceInterface',
+            GetGameApiHandlerInterface::class,
             $type->getName()
         );
     }
 
-    public function test_controller_has_no_validator_dependency(): void
+    public function test_controller_has_serializer_dependency(): void
     {
         $reflection = new \ReflectionClass(GetGameController::class);
         $constructor = $reflection->getConstructor();
@@ -102,8 +91,8 @@ class GetGameControllerTest extends TestCase
 
         $params = $constructor->getParameters();
 
-        // Should only have service, no validator (no body param)
-        $this->assertCount(1, $params, 'Should only have service dependency (no body param = no validator)');
+        // Should have handler and serializer
+        $this->assertCount(2, $params, 'Should have handler and serializer dependencies');
     }
 
     public function test_return_type_is_json_response(): void
@@ -114,5 +103,13 @@ class GetGameControllerTest extends TestCase
         $this->assertNotNull($returnType);
         $this->assertInstanceOf(\ReflectionNamedType::class, $returnType);
         $this->assertEquals('Symfony\Component\HttpFoundation\JsonResponse', $returnType->getName());
+    }
+
+    public function test_controller_has_route_attribute(): void
+    {
+        $reflection = new \ReflectionClass(GetGameController::class);
+        $attributes = $reflection->getAttributes('Symfony\Component\Routing\Attribute\Route');
+
+        $this->assertNotEmpty($attributes, 'Controller should have Route attribute');
     }
 }

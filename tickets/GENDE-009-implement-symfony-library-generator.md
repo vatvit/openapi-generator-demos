@@ -1,11 +1,11 @@
 ---
 code: GENDE-009
-status: On Hold
+status: Won't Do
 dateCreated: 2026-01-01T12:56:16.706Z
 type: Feature Enhancement
 priority: Medium
 dependsOn: GENDE-008
-implementationNotes: Deferred per GENDE-008 decision. Symfony support requires custom Java generator (3-4 weeks effort). Will revisit when clear demand emerges.
+closedReason: OOTB php-symfony generator doesn't match requirements - it generates full Symfony projects/bundles, not reusable libraries. Symfony library generation achieved via php-max generator with Symfony templates (GENDE-011, GENDE-027).
 ---
 
 # Implement Symfony Library Generator

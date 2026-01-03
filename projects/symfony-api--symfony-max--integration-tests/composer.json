@@ -1,6 +1,6 @@
 {
     "name": "openapi-generator/symfony-max-integration-tests",
-    "description": "Integration tests for symfony-max generator (php-max with Symfony templates)",
+    "description": "Integration tests for php-max generator with Symfony templates",
     "type": "project",
     "require": {
         "php": "^8.2",
@@ -15,7 +15,17 @@
     },
     "autoload": {
         "psr-4": {
-            "TictactoeApi\\": "../../generated/php-max-symfony-test/lib/"
+            "TictactoeApi\\Model\\": "../../generated/php-max-symfony/tictactoe/src/Model/",
+            "TictactoeApi\\Api\\Controller\\": "../../generated/php-max-symfony/tictactoe/src/Controller/",
+            "TictactoeApi\\Api\\Dto\\": "../../generated/php-max-symfony/tictactoe/src/Dto/",
+            "TictactoeApi\\Api\\Handler\\": "../../generated/php-max-symfony/tictactoe/src/Handler/",
+            "TictactoeApi\\Api\\Response\\": "../../generated/php-max-symfony/tictactoe/src/Response/",
+            "TictactoeApi\\Api\\Security\\": "../../generated/php-max-symfony/tictactoe/src/Security/",
+            "PetshopApi\\Model\\": "../../generated/php-max-symfony/petshop/src/Model/",
+            "PetshopApi\\Controller\\": "../../generated/php-max-symfony/petshop/src/Controller/",
+            "PetshopApi\\Handler\\": "../../generated/php-max-symfony/petshop/src/Handler/",
+            "PetshopApi\\Request\\": "../../generated/php-max-symfony/petshop/src/Request/",
+            "PetshopApi\\Api\\": "../../generated/php-max-symfony/petshop/src/Api/"
         }
     },
     "autoload-dev": {
@@ -24,7 +34,7 @@
         }
     },
     "scripts": {
-        "lint": "find ../../generated/php-max-symfony-test -name '*.php' -exec php -l {} \\;",
+        "lint": "find ../../generated/php-max-symfony/tictactoe -name '*.php' -exec php -l {} \\;",
         "test": "phpunit",
         "phpstan": "phpstan analyse --memory-limit=512M",
         "phpcs": "phpcs",

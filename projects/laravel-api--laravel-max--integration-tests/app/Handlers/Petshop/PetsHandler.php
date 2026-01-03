@@ -5,6 +5,9 @@ declare(strict_types=1);
 namespace App\Handlers\Petshop;
 
 use PetshopApi\Api\Handlers\PetsApiHandlerInterface;
+use PetshopApi\Api\Handlers\RetrievalApiHandlerInterface;
+use PetshopApi\Api\Handlers\SearchApiHandlerInterface;
+use PetshopApi\Api\Handlers\WorkflowApiHandlerInterface;
 use PetshopApi\Api\Http\Resources\AddPet200Resource;
 use PetshopApi\Api\Http\Resources\AddPet0Resource;
 use PetshopApi\Api\Http\Resources\DeletePet204Resource;
@@ -22,7 +25,7 @@ use PetshopApi\Model\Pet;
  *
  * Mock implementation for integration testing.
  */
-class PetsHandler implements PetsApiHandlerInterface
+class PetsHandler implements PetsApiHandlerInterface, RetrievalApiHandlerInterface, SearchApiHandlerInterface, WorkflowApiHandlerInterface
 {
     /** @var array<int, Pet> */
     private static array $pets = [];

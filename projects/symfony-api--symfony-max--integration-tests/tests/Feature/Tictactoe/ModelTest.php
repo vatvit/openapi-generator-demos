@@ -50,8 +50,8 @@ class ModelTest extends TestCase
     {
         $reflection = new \ReflectionClass(Game::class);
 
-        // Note: php-max uses snake_case for property names
-        $expectedProperties = ['id', 'status', 'mode', 'board', 'created_at'];
+        // Note: php-max uses camelCase for property names
+        $expectedProperties = ['id', 'status', 'mode', 'board', 'createdAt'];
 
         foreach ($expectedProperties as $property) {
             $this->assertTrue(
@@ -78,21 +78,21 @@ class ModelTest extends TestCase
         $this->assertTrue($hasUuidAttribute, 'Game id should have Uuid validation attribute');
     }
 
-    public function test_game_has_not_null_validation(): void
+    public function test_game_has_not_blank_validation(): void
     {
         $reflection = new \ReflectionClass(Game::class);
         $property = $reflection->getProperty('id');
         $attributes = $property->getAttributes();
 
-        $hasNotNullAttribute = false;
+        $hasNotBlankAttribute = false;
         foreach ($attributes as $attr) {
-            if ($attr->getName() === Assert\NotNull::class) {
-                $hasNotNullAttribute = true;
+            if ($attr->getName() === Assert\NotBlank::class) {
+                $hasNotBlankAttribute = true;
                 break;
             }
         }
 
-        $this->assertTrue($hasNotNullAttribute, 'Game id should have NotNull validation attribute');
+        $this->assertTrue($hasNotBlankAttribute, 'Game id should have NotBlank validation attribute');
     }
 
     public function test_game_has_from_array_method(): void

@@ -1,10 +1,11 @@
 ---
 code: GENDE-028
-status: Proposed
+status: Won't Do
 dateCreated: 2026-01-02T16:05:56.166Z
 type: Feature Enhancement
 priority: Medium
 relatedTickets: GENDE-011,GENDE-002
+closedReason: Already supported OOTB. OpenAPI Generator supports config files via `-c config.json`. All php-max additionalProperties (controllerPackage, handlerPackage, etc.) work in config files. Just need to create example configs and update Makefiles to use them.
 ---
 
 # GENDE-022: Extract php-max Generator CLI Parameters to Configuration File

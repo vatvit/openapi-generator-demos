@@ -1,0 +1,16 @@
+.openapi-generator-ignore
+src/Api/AdminApi.php
+src/Api/AnalyticsApi.php
+src/Api/CreationApi.php
+src/Api/DetailsApi.php
+src/Api/InventoryApi.php
+src/Api/ManagementApi.php
+src/Api/PetsApi.php
+src/Api/PublicApi.php
+src/Api/ReportingApi.php
+src/Api/RetrievalApi.php
+src/Api/SearchApi.php
+src/Api/WorkflowApi.php
+src/Model/Error.php
+src/Model/NewPet.php
+src/Model/Pet.php

@@ -16,13 +16,13 @@
     "autoload": {
         "psr-4": {
             "App\\": "app/",
-            "TictactoeApi\\Model\\": "../../generated/laravel-max/tictactoe/app/Models/",
-            "TictactoeApi\\Api\\Http\\": "../../generated/laravel-max/tictactoe/app/Http/",
-            "TictactoeApi\\Api\\Handlers\\": "../../generated/laravel-max/tictactoe/app/Handlers/",
-            "TictactoeApi\\Api\\Security\\": "../../generated/laravel-max/tictactoe/app/Security/",
-            "PetshopApi\\Model\\": "../../generated/laravel-max/petshop/app/Models/",
-            "PetshopApi\\Api\\Http\\": "../../generated/laravel-max/petshop/app/Http/",
-            "PetshopApi\\Api\\Handlers\\": "../../generated/laravel-max/petshop/app/Handlers/"
+            "TictactoeApi\\Model\\": "../../generated/php-max-laravel/tictactoe/app/Models/",
+            "TictactoeApi\\Api\\Http\\": "../../generated/php-max-laravel/tictactoe/app/Http/",
+            "TictactoeApi\\Api\\Handlers\\": "../../generated/php-max-laravel/tictactoe/app/Handlers/",
+            "TictactoeApi\\Api\\Security\\": "../../generated/php-max-laravel/tictactoe/app/Security/",
+            "PetshopApi\\Model\\": "../../generated/php-max-laravel/petshop/app/Models/",
+            "PetshopApi\\Api\\Http\\": "../../generated/php-max-laravel/petshop/app/Http/",
+            "PetshopApi\\Api\\Handlers\\": "../../generated/php-max-laravel/petshop/app/Handlers/"
         }
     },
     "autoload-dev": {
@@ -31,7 +31,7 @@
         }
     },
     "scripts": {
-        "lint": "find ../../generated/laravel-max/tictactoe -name '*.php' -exec php -l {} \\;",
+        "lint": "find ../../generated/php-max-laravel/tictactoe -name '*.php' -exec php -l {} \\;",
         "test": "phpunit",
         "phpstan": "phpstan analyse --memory-limit=512M",
         "phpcs": "phpcs",

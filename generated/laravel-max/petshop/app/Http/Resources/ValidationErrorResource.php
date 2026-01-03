@@ -1,6 +1,8 @@
-<?php declare(strict_types=1);
+<?php
 
-namespace TictactoeApi\Api\Http\Resources;
+declare(strict_types=1);
+
+namespace PetshopApi\Api\Http\Resources;
 
 use Illuminate\Http\Resources\Json\JsonResource;
 
@@ -46,10 +48,10 @@ class ValidationErrorResource extends JsonResource
      * Enforces HTTP 422 status code
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \Illuminate\Http\Response  $response
+     * @param  \Illuminate\Http\JsonResponse  $response
      * @return void
      */
-    public function withResponse($request, $response)
+    public function withResponse($request, \Illuminate\Http\JsonResponse $response): void
     {
         $response->setStatusCode($this->httpCode);
     }
@@ -59,11 +61,11 @@ class ValidationErrorResource extends JsonResource
      *
      * @param string $message Error message
      * @param string|null $code Error code (optional)
-     * @return static
+     * @return self
      */
-    public static function error(string $message, ?string $code = null): static
+    public static function error(string $message, ?string $code = null): self
     {
-        return new static([
+        return new self([
             'message' => $message,
             'code' => $code ?? 'VALIDATION',
         ]);

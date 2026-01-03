@@ -3,7 +3,7 @@ code: GENDE-009
 status: On Hold
 dateCreated: 2026-01-01T12:56:16.706Z
 type: Feature Enhancement
-priority: Low
+priority: Medium
 dependsOn: GENDE-008
 implementationNotes: Deferred per GENDE-008 decision. Symfony support requires custom Java generator (3-4 weeks effort). Will revisit when clear demand emerges.
 ---

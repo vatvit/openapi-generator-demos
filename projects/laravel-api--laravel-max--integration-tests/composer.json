@@ -8,7 +8,10 @@
     },
     "require-dev": {
         "phpunit/phpunit": "^11.0",
-        "mockery/mockery": "^1.6"
+        "mockery/mockery": "^1.6",
+        "phpstan/phpstan": "^2.0",
+        "larastan/larastan": "^3.0",
+        "squizlabs/php_codesniffer": "^3.11"
     },
     "autoload": {
         "psr-4": {
@@ -19,8 +22,7 @@
             "TictactoeApi\\Api\\Security\\": "../../generated/laravel-max/tictactoe/app/Security/",
             "PetshopApi\\Model\\": "../../generated/laravel-max/petshop/app/Models/",
             "PetshopApi\\Api\\Http\\": "../../generated/laravel-max/petshop/app/Http/",
-            "PetshopApi\\Api\\Handlers\\": "../../generated/laravel-max/petshop/app/Handlers/",
-            "PetshopApi\\Api\\Security\\": "../../generated/laravel-max/petshop/app/Security/"
+            "PetshopApi\\Api\\Handlers\\": "../../generated/laravel-max/petshop/app/Handlers/"
         }
     },
     "autoload-dev": {
@@ -30,7 +32,14 @@
     },
     "scripts": {
         "lint": "find ../../generated/laravel-max/tictactoe -name '*.php' -exec php -l {} \\;",
-        "test": "phpunit"
+        "test": "phpunit",
+        "phpstan": "phpstan analyse --memory-limit=512M",
+        "phpcs": "phpcs",
+        "phpcbf": "phpcbf",
+        "analyse": [
+            "@phpstan",
+            "@phpcs"
+        ]
     },
     "minimum-stability": "stable",
     "prefer-stable": true,

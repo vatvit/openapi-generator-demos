@@ -1,0 +1,40 @@
+<?xml version="1.0"?>
+<ruleset name="Laravel Max Integration Tests">
+    <description>PSR-12 coding standard for generated code and integration tests</description>
+
+    <!-- Use PSR-12 as the base standard -->
+    <rule ref="PSR12"/>
+
+    <!-- Allow test_ method naming convention in tests (PHPUnit standard) -->
+    <rule ref="PSR1.Methods.CamelCapsMethodName.NotCamelCaps">
+        <exclude-pattern>tests/*</exclude-pattern>
+    </rule>
+
+    <!-- Increase line length limit for generated code (auto-generated may have long type annotations) -->
+    <rule ref="Generic.Files.LineLength">
+        <properties>
+            <property name="lineLimit" value="180"/>
+            <property name="absoluteLineLimit" value="0"/>
+        </properties>
+    </rule>
+
+    <!-- Paths to check -->
+    <file>app</file>
+    <file>tests</file>
+    <file>../../generated/laravel-max/tictactoe/app</file>
+    <!-- Note: petshop excluded - has wrong namespace (TictactoeApi instead of PetshopApi) -->
+    <!-- <file>../../generated/laravel-max/petshop/app</file> -->
+
+    <!-- Exclude vendor directory -->
+    <exclude-pattern>vendor/*</exclude-pattern>
+
+    <!-- Show progress and colors -->
+    <arg value="sp"/>
+    <arg name="colors"/>
+
+    <!-- Use parallel processing for speed -->
+    <arg name="parallel" value="8"/>
+
+    <!-- Report format -->
+    <arg name="report" value="full"/>
+</ruleset>

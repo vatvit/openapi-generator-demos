@@ -1,0 +1,81 @@
+# GENERATED API ROUTES
+#
+# Symfony route configuration for API endpoints.
+# Auto-generated from OpenAPI specification.
+#
+# Include this file in your routes.yaml:
+#   api_generated:
+#       resource: 'api_generated.yaml'
+#       prefix: /api
+#
+# @generated
+
+# CreateGame - Create a new game
+createGame:
+    path: /games
+    controller: TictactoeApi\Api\Controller\CreateGameController
+    methods: [POST]
+    # Security: bearerHttpAuthentication
+
+# DeleteGame - Delete a game
+deleteGame:
+    path: /games/{gameId}
+    controller: TictactoeApi\Api\Controller\DeleteGameController
+    methods: [DELETE]
+    # Security: bearerHttpAuthentication
+
+# GetGame - Get game details
+getGame:
+    path: /games/{gameId}
+    controller: TictactoeApi\Api\Controller\GetGameController
+    methods: [GET]
+    # Security: bearerHttpAuthentication
+
+# ListGames - List all games
+listGames:
+    path: /games
+    controller: TictactoeApi\Api\Controller\ListGamesController
+    methods: [GET]
+    # Security: bearerHttpAuthentication
+
+# GetBoard - Get the game board
+getBoard:
+    path: /games/{gameId}/board
+    controller: TictactoeApi\Api\Controller\GetBoardController
+    methods: [GET]
+    # Security: defaultApiKey, app2AppOauth
+
+# GetMoves - Get move history
+getMoves:
+    path: /games/{gameId}/moves
+    controller: TictactoeApi\Api\Controller\GetMovesController
+    methods: [GET]
+    # Security: bearerHttpAuthentication
+
+# GetSquare - Get a single board square
+getSquare:
+    path: /games/{gameId}/board/{row}/{column}
+    controller: TictactoeApi\Api\Controller\GetSquareController
+    methods: [GET]
+    # Security: bearerHttpAuthentication, user2AppOauth
+
+# PutSquare - Set a single board square
+putSquare:
+    path: /games/{gameId}/board/{row}/{column}
+    controller: TictactoeApi\Api\Controller\PutSquareController
+    methods: [PUT]
+    # Security: bearerHttpAuthentication, user2AppOauth
+
+# GetLeaderboard - Get leaderboard
+getLeaderboard:
+    path: /leaderboard
+    controller: TictactoeApi\Api\Controller\GetLeaderboardController
+    methods: [GET]
+
+# GetPlayerStats - Get player statistics
+getPlayerStats:
+    path: /players/{playerId}/stats
+    controller: TictactoeApi\Api\Controller\GetPlayerStatsController
+    methods: [GET]
+    # Security: bearerHttpAuthentication
+

@@ -5,7 +5,7 @@ namespace Tests\Feature\Tictactoe;
 use PHPUnit\Framework\TestCase;
 use TictactoeApi\Api\Http\Controllers\CreateGameController;
 use TictactoeApi\Api\Http\Requests\CreateGameFormRequest;
-use TictactoeApi\Api\Handlers\GameManagementApiHandlerInterface;
+use TictactoeApi\Api\Handlers\CreateGameApiHandlerInterface;
 
 /**
  * Tests for generated CreateGameController
@@ -41,6 +41,7 @@ class CreateGameControllerTest extends TestCase
         $type = $param->getType();
 
         $this->assertNotNull($type, 'Parameter should be typed');
+        $this->assertInstanceOf(\ReflectionNamedType::class, $type);
         $this->assertEquals('TictactoeApi\Api\Http\Requests\CreateGameFormRequest', $type->getName());
     }
 
@@ -58,7 +59,8 @@ class CreateGameControllerTest extends TestCase
         $type = $param->getType();
 
         $this->assertNotNull($type, 'Handler parameter should be typed');
-        $this->assertEquals('TictactoeApi\Api\Handlers\GameManagementApiHandlerInterface', $type->getName());
+        $this->assertInstanceOf(\ReflectionNamedType::class, $type);
+        $this->assertEquals('TictactoeApi\Api\Handlers\CreateGameApiHandlerInterface', $type->getName());
     }
 
     public function test_return_type_is_json_response(): void
@@ -67,6 +69,7 @@ class CreateGameControllerTest extends TestCase
         $returnType = $reflection->getReturnType();
 
         $this->assertNotNull($returnType);
+        $this->assertInstanceOf(\ReflectionNamedType::class, $returnType);
         $this->assertEquals('Illuminate\Http\JsonResponse', $returnType->getName());
     }
 }

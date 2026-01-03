@@ -1,0 +1,7 @@
+{
+  "invokerPackage": "TicTacToeApi",
+  "apiPackage": "Api",
+  "modelPackage": "Model",
+  "bundleName": "TicTacToeApiBundle",
+  "variableNamingConvention": "camelCase"
+}

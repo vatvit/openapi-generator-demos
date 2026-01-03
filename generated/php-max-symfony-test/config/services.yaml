@@ -1,0 +1,51 @@
+# Services Configuration
+#
+# Generated from OpenAPI specification.
+# Import this file in your Symfony config/services.yaml:
+#
+# imports:
+#     - { resource: '../vendor/{package}/config/services.yaml' }
+#
+# @generated
+
+services:
+    _defaults:
+        autowire: true
+        autoconfigure: true
+
+    # Controllers
+    TictactoeApi\Controller\CreateGameController:
+        tags: ['controller.service_arguments']
+    TictactoeApi\Controller\DeleteGameController:
+        tags: ['controller.service_arguments']
+    TictactoeApi\Controller\GetGameController:
+        tags: ['controller.service_arguments']
+    TictactoeApi\Controller\ListGamesController:
+        tags: ['controller.service_arguments']
+    TictactoeApi\Controller\GetBoardController:
+        tags: ['controller.service_arguments']
+    TictactoeApi\Controller\GetMovesController:
+        tags: ['controller.service_arguments']
+    TictactoeApi\Controller\GetSquareController:
+        tags: ['controller.service_arguments']
+    TictactoeApi\Controller\PutSquareController:
+        tags: ['controller.service_arguments']
+    TictactoeApi\Controller\GetLeaderboardController:
+        tags: ['controller.service_arguments']
+    TictactoeApi\Controller\GetPlayerStatsController:
+        tags: ['controller.service_arguments']
+
+    # Service Interface Bindings
+    # Uncomment and configure with your implementations:
+    #
+    # TictactoeApi\Api\GameManagementApiServiceInterface:
+    #     class: App\Service\GameManagementApiService
+    #
+    # TictactoeApi\Api\GameplayApiServiceInterface:
+    #     class: App\Service\GameplayApiService
+    #
+    # TictactoeApi\Api\StatisticsApiServiceInterface:
+    #     class: App\Service\StatisticsApiService
+    #
+    # TictactoeApi\Api\TicTacApiServiceInterface:
+    #     class: App\Service\TicTacApiService

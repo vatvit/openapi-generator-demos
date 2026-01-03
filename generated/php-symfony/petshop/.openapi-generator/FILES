@@ -1,0 +1,15 @@
+src/Handler/AdminApiHandlerInterface.php
+src/Handler/AnalyticsApiHandlerInterface.php
+src/Handler/CreationApiHandlerInterface.php
+src/Handler/DetailsApiHandlerInterface.php
+src/Handler/InventoryApiHandlerInterface.php
+src/Handler/ManagementApiHandlerInterface.php
+src/Handler/PetsApiHandlerInterface.php
+src/Handler/PublicApiHandlerInterface.php
+src/Handler/ReportingApiHandlerInterface.php
+src/Handler/RetrievalApiHandlerInterface.php
+src/Handler/SearchApiHandlerInterface.php
+src/Handler/WorkflowApiHandlerInterface.php
+src/Model/Error.php
+src/Model/NewPet.php
+src/Model/Pet.php

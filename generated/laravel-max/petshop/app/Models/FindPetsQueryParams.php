@@ -1,6 +1,8 @@
-<?php declare(strict_types=1);
+<?php
 
-namespace TictactoeApi\Model;
+declare(strict_types=1);
+
+namespace PetshopApi\Model;
 
 final class FindPetsQueryParams
 {

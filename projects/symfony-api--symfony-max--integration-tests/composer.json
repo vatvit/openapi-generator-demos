@@ -1,0 +1,45 @@
+{
+    "name": "openapi-generator/symfony-max-integration-tests",
+    "description": "Integration tests for symfony-max generator (php-max with Symfony templates)",
+    "type": "project",
+    "require": {
+        "php": "^8.2",
+        "symfony/framework-bundle": "^7.0",
+        "symfony/http-foundation": "^7.0",
+        "symfony/validator": "^7.0"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^11.0",
+        "phpstan/phpstan": "^2.0",
+        "squizlabs/php_codesniffer": "^3.11"
+    },
+    "autoload": {
+        "psr-4": {
+            "TictactoeApi\\": "../../generated/php-max-symfony-test/lib/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Tests\\": "tests/"
+        }
+    },
+    "scripts": {
+        "lint": "find ../../generated/php-max-symfony-test -name '*.php' -exec php -l {} \\;",
+        "test": "phpunit",
+        "phpstan": "phpstan analyse --memory-limit=512M",
+        "phpcs": "phpcs",
+        "phpcbf": "phpcbf",
+        "analyse": [
+            "@phpstan",
+            "@phpcs"
+        ]
+    },
+    "minimum-stability": "stable",
+    "prefer-stable": true,
+    "config": {
+        "optimize-autoloader": true,
+        "preferred-install": "dist",
+        "sort-packages": true,
+        "platform-check": false
+    }
+}

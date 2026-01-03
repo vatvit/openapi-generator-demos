@@ -1,0 +1,15 @@
+includes:
+    - vendor/larastan/larastan/extension.neon
+
+parameters:
+    level: 6
+
+    paths:
+        - app
+        - tests
+        - ../../generated/laravel-max/tictactoe/app
+        # Note: petshop excluded - has wrong namespace (TictactoeApi instead of PetshopApi)
+        # - ../../generated/laravel-max/petshop/app
+
+    excludePaths:
+        - vendor

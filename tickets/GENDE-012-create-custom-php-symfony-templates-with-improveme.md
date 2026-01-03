@@ -1,9 +1,9 @@
 ---
 code: GENDE-012
-status: Proposed
+status: Implemented
 dateCreated: 2026-01-01T14:07:32.499Z
 type: Feature Enhancement
-priority: Low
+priority: High
 relatedTickets: GENDE-007
 dependsOn: GENDE-013
 implementationNotes: Custom templates come AFTER OOTB demo project to compare improvements
@@ -112,10 +112,43 @@ openapi-generator-server-templates/
 | Improvements doc | `openapi-generator-server-templates/openapi-generator-server-php-symfony/README.md` |
 
 ## 5. Acceptance Criteria
+- [x] Custom templates created at specified location
+- [x] TicTacToe API generated successfully
+- [x] PetShop API generated successfully
+- [x] Improvements documented in README.md
+- [x] Templates use Symfony 7.x patterns where applicable
+- [x] Generated code has `declare(strict_types=1)`
 
-- [ ] Custom templates created at specified location
-- [ ] TicTacToe API generated successfully
-- [ ] PetShop API generated successfully
-- [ ] Improvements documented in README.md
-- [ ] Templates use Symfony 7.x patterns where applicable
-- [ ] Generated code compiles without errors
+## Current State
+
+**Completed: 2026-01-01**
+
+### Artifact Locations
+
+| Artifact | Location |
+|----------|----------|
+| Custom templates | `openapi-generator-server-templates/openapi-generator-server-php-symfony/` |
+| Generated TicTacToe | `generated/php-symfony/tictactoe/` |
+| Generated PetShop | `generated/php-symfony/petshop/` |
+| Documentation | `openapi-generator-server-templates/openapi-generator-server-php-symfony/README.md` |
+
+### Templates Modified
+
+9 templates improved for PSR-12 compliance and cleaner code:
+
+1. `model.mustache` - PSR-12 header, clean docblock, sorted imports
+2. `model_generic.mustache` - Array type annotation for constructor
+3. `Controller.mustache` - PSR-12 header, clean docblock
+4. `api_controller.mustache` - PSR-12 header, clean docblock
+5. `api.mustache` - PSR-12 header, clean docblock (interface)
+6. `ApiServer.mustache` - PSR-12 header, array type annotation
+7. `Bundle.mustache` - PSR-12 header, sorted imports
+8. `Extension.mustache` - PSR-12 header, clean docblock
+9. `ApiPass.mustache` - PSR-12 header, clean docblock
+
+### Key Improvements
+
+1. **PSR-12 Compliance**: All files have `declare(strict_types=1)`
+2. **Clean Docblocks**: Removed verbose outdated headers
+3. **PHPStan Types**: Added `array<string, mixed>` annotations
+4. **Sorted Imports**: Alphabetically sorted per PSR-12

@@ -1,0 +1,60 @@
+version: '3.8'
+
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: symfony-php-max-app
+    restart: unless-stopped
+    working_dir: /var/www
+    volumes:
+      - ./:/var/www
+      - ../../generated:/generated:ro
+      - ./docker/php/local.ini:/usr/local/etc/php/conf.d/local.ini
+    networks:
+      - symfony-php-max
+    depends_on:
+      - db
+
+  webserver:
+    image: nginx:alpine
+    container_name: symfony-php-max-webserver
+    restart: unless-stopped
+    ports:
+      - "8003:80"
+    volumes:
+      - ./:/var/www
+      - ../../generated:/generated:ro
+      - ./docker/nginx/conf.d/:/etc/nginx/conf.d/
+    networks:
+      - symfony-php-max
+    depends_on:
+      - app
+
+  db:
+    image: mysql:8.0
+    container_name: symfony-php-max-db
+    restart: unless-stopped
+    tty: true
+    ports:
+      - "3309:3306"
+    environment:
+      MYSQL_DATABASE: symfony_api
+      MYSQL_ROOT_PASSWORD: password
+      MYSQL_PASSWORD: password
+      MYSQL_USER: symfony
+      SERVICE_TAGS: dev
+      SERVICE_NAME: mysql
+    volumes:
+      - dbdata-symfony-php-max:/var/lib/mysql/
+    networks:
+      - symfony-php-max
+
+networks:
+  symfony-php-max:
+    driver: bridge
+
+volumes:
+  dbdata-symfony-php-max:
+    driver: local

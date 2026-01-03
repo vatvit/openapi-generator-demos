@@ -1,0 +1,68 @@
+version: '3.8'
+
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: laravel-php-max-app
+    restart: unless-stopped
+    working_dir: /var/www
+    volumes:
+      - ./:/var/www
+      - ../../generated:/generated:ro
+      - ./docker/php/local.ini:/usr/local/etc/php/conf.d/local.ini
+    networks:
+      - laravel-php-max
+
+  webserver:
+    image: nginx:alpine
+    container_name: laravel-php-max-webserver
+    restart: unless-stopped
+    ports:
+      - "8002:80"
+    volumes:
+      - ./:/var/www
+      - ../../generated:/var/www-generated:ro
+      - ./docker/nginx/conf.d/:/etc/nginx/conf.d/
+    networks:
+      - laravel-php-max
+    depends_on:
+      - app
+
+  db:
+    image: mysql:8.0
+    container_name: laravel-php-max-db
+    restart: unless-stopped
+    tty: true
+    ports:
+      - "3308:3306"
+    environment:
+      MYSQL_DATABASE: laravel_api
+      MYSQL_ROOT_PASSWORD: password
+      MYSQL_PASSWORD: password
+      MYSQL_USER: laravel
+      SERVICE_TAGS: dev
+      SERVICE_NAME: mysql
+    volumes:
+      - dbdata-php-max:/var/lib/mysql/
+      - ./docker/mysql/my.cnf:/etc/mysql/my.cnf
+    networks:
+      - laravel-php-max
+
+  redis:
+    image: redis:alpine
+    container_name: laravel-php-max-redis
+    restart: unless-stopped
+    ports:
+      - "6381:6379"
+    networks:
+      - laravel-php-max
+
+networks:
+  laravel-php-max:
+    driver: bridge
+
+volumes:
+  dbdata-php-max:
+    driver: local

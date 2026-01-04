@@ -3,8 +3,8 @@
 namespace Tests\Feature\Tictactoe;
 
 use PHPUnit\Framework\TestCase;
-use TictactoeApi\Api\Controller\GetGameController;
-use TictactoeApi\Api\Handler\GetGameApiHandlerInterface;
+use TictactoeApi\Controller\GetGameController;
+use TictactoeApi\Handler\GetGameApiHandlerInterface;
 
 /**
  * Tests for generated GetGameController (Symfony) - controller without body param

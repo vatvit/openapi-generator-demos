@@ -2,71 +2,54 @@
 
 declare(strict_types=1);
 
-namespace TicTacToe\Model;
+namespace TictactoeApi\Model;
 
-/**
- * ValidationError
- *
- * 
- *
- * @generated
- */
 class ValidationError
 {
     /**
      * Error code
      */
     public string $code;
-
     /**
      * Human-readable error message
      */
     public string $message;
-
     /**
      * Additional error details
-     * @var mixed
+     * @var array<string, mixed>|null
      */
-    public ?arraymixed $details = null;
-
-    /**
-     * @var array<mixed>
-     */
+    public mixed $details = null;
+    /** @var array<mixed> */
     public array $errors;
 
     /**
-     * Constructor
-     *
-     * @param array<string, mixed> $data Named parameters
+     * @param array<string, mixed>|null $details
+     * @param array<mixed> $errors
      */
-    public function __construct(array $data = [])
-    {
-        $this->code = $data['code'] ?? throw new \InvalidArgumentException('Missing required parameter: code');
-        $this->message = $data['message'] ?? throw new \InvalidArgumentException('Missing required parameter: message');
-        $this->details = $data['details'] ?? null;
-        $this->errors = $data['errors'] ?? throw new \InvalidArgumentException('Missing required parameter: errors');
+    public function __construct(
+        string $code,
+        string $message,
+        mixed $details = null,
+        array $errors,
+    ) {
+        $this->code = $code;
+        $this->message = $message;
+        $this->details = $details;
+        $this->errors = $errors;
     }
 
-    /**
-     * Create from array (JSON data with original keys)
-     *
-     * @param array<string, mixed> $data
-     */
+    /** @param array<string, mixed> $data */
     public static function fromArray(array $data): self
     {
-        return new self([
-            'code' => $data['code'] ?? null,
-            'message' => $data['message'] ?? null,
-            'details' => $data['details'] ?? null,
-            'errors' => $data['errors'] ?? null,
-        ]);
+        return new self(
+            code: $data['code'],
+            message: $data['message'],
+            details: $data['details'] ?? null,
+            errors: $data['errors'],
+        );
     }
 
-    /**
-     * Convert to array
-     *
-     * @return array<string, mixed>
-     */
+    /** @return array<string, mixed> */
     public function toArray(): array
     {
         return [

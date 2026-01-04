@@ -2,59 +2,39 @@
 
 declare(strict_types=1);
 
-namespace TicTacToe\Model;
+namespace TictactoeApi\Model;
 
-/**
- * MoveHistory
- *
- * 
- *
- * @generated
- */
 class MoveHistory
 {
-    /**
-     */
-    public string $game_id;
-
-    /**
-     * @var array<mixed>
-     */
+    public string $gameId;
+    /** @var array<mixed> */
     public array $moves;
 
     /**
-     * Constructor
-     *
-     * @param array<string, mixed> $data Named parameters
+     * @param array<mixed> $moves
      */
-    public function __construct(array $data = [])
-    {
-        $this->game_id = $data['game_id'] ?? throw new \InvalidArgumentException('Missing required parameter: game_id');
-        $this->moves = $data['moves'] ?? throw new \InvalidArgumentException('Missing required parameter: moves');
+    public function __construct(
+        string $gameId,
+        array $moves,
+    ) {
+        $this->gameId = $gameId;
+        $this->moves = $moves;
     }
 
-    /**
-     * Create from array (JSON data with original keys)
-     *
-     * @param array<string, mixed> $data
-     */
+    /** @param array<string, mixed> $data */
     public static function fromArray(array $data): self
     {
-        return new self([
-            'game_id' => $data['gameId'] ?? null,
-            'moves' => $data['moves'] ?? null,
-        ]);
+        return new self(
+            gameId: $data['gameId'],
+            moves: $data['moves'],
+        );
     }
 
-    /**
-     * Convert to array
-     *
-     * @return array<string, mixed>
-     */
+    /** @return array<string, mixed> */
     public function toArray(): array
     {
         return [
-            'gameId' => $this->game_id,
+            'gameId' => $this->gameId,
             'moves' => $this->moves,
         ];
     }

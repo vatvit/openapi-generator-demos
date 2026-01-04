@@ -3,9 +3,9 @@
 namespace Tests\Feature\Tictactoe;
 
 use PHPUnit\Framework\TestCase;
-use TictactoeApi\Api\Controller\CreateGameController;
-use TictactoeApi\Api\Handler\CreateGameApiHandlerInterface;
-use TictactoeApi\Api\Dto\CreateGameRequest;
+use TictactoeApi\Controller\CreateGameController;
+use TictactoeApi\Handler\CreateGameApiHandlerInterface;
+use TictactoeApi\Request\CreateGameRequest;
 
 /**
  * Tests for generated CreateGameController (Symfony)

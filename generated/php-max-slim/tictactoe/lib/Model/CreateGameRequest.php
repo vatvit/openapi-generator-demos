@@ -2,76 +2,58 @@
 
 declare(strict_types=1);
 
-namespace TicTacToe\Model;
+namespace TictactoeApi\Model;
 
-/**
- * CreateGameRequest
- *
- * 
- *
- * @generated
- */
 class CreateGameRequest
 {
-    /**
-     */
-    public \TicTacToe\Model\GameMode $mode;
-
+    public \TictactoeApi\Model\GameMode $mode;
     /**
      * Opponent player ID (required for PvP mode)
      */
-    public ?string $opponent_id = null;
-
+    public ?string $opponentId = null;
     /**
      * Whether the game is private
      */
-    public ?bool $is_private = false;
-
+    public bool $isPrivate = false;
     /**
      * Additional game metadata
-     * @var mixed
+     * @var array<string, mixed>|null
      */
-    public ?arraymixed $metadata = null;
+    public mixed $metadata = null;
 
     /**
-     * Constructor
-     *
-     * @param array<string, mixed> $data Named parameters
+     * @param array<string, mixed>|null $metadata
      */
-    public function __construct(array $data = [])
-    {
-        $this->mode = $data['mode'] ?? throw new \InvalidArgumentException('Missing required parameter: mode');
-        $this->opponent_id = $data['opponent_id'] ?? null;
-        $this->is_private = $data['is_private'] ?? false;
-        $this->metadata = $data['metadata'] ?? null;
+    public function __construct(
+        \TictactoeApi\Model\GameMode $mode,
+        ?string $opponentId = null,
+        bool $isPrivate = false,
+        mixed $metadata = null,
+    ) {
+        $this->mode = $mode;
+        $this->opponentId = $opponentId;
+        $this->isPrivate = $isPrivate;
+        $this->metadata = $metadata;
     }
 
-    /**
-     * Create from array (JSON data with original keys)
-     *
-     * @param array<string, mixed> $data
-     */
+    /** @param array<string, mixed> $data */
     public static function fromArray(array $data): self
     {
-        return new self([
-            'mode' => $data['mode'] ?? null,
-            'opponent_id' => $data['opponentId'] ?? null,
-            'is_private' => $data['isPrivate'] ?? false,
-            'metadata' => $data['metadata'] ?? null,
-        ]);
+        return new self(
+            mode: \TictactoeApi\Model\GameMode::from($data['mode']),
+            opponentId: $data['opponentId'] ?? null,
+            isPrivate: $data['isPrivate'] ?? false,
+            metadata: $data['metadata'] ?? null,
+        );
     }
 
-    /**
-     * Convert to array
-     *
-     * @return array<string, mixed>
-     */
+    /** @return array<string, mixed> */
     public function toArray(): array
     {
         return [
             'mode' => $this->mode,
-            'opponentId' => $this->opponent_id,
-            'isPrivate' => $this->is_private,
+            'opponentId' => $this->opponentId,
+            'isPrivate' => $this->isPrivate,
             'metadata' => $this->metadata,
         ];
     }

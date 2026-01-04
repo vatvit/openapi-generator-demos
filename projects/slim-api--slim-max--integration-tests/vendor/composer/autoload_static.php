@@ -18,25 +18,25 @@ class ComposerStaticInit1bad906586177eec1f5864994f6e7828
     );
 
     public static $prefixLengthsPsr4 = array (
-        'T' =>
+        'T' => 
         array (
-            'TicTacToe\\Model\\' => 16,
-            'TicTacToe\\Handler\\' => 18,
-            'TicTacToe\\Api\\' => 14,
+            'TictactoeApi\\Model\\' => 19,
+            'TictactoeApi\\Handler\\' => 21,
+            'TictactoeApi\\Api\\' => 17,
             'Tests\\' => 6,
         ),
-        'S' =>
+        'S' => 
         array (
             'Symfony\\Polyfill\\Mbstring\\' => 26,
             'Slim\\Psr7\\' => 10,
             'Slim\\' => 5,
         ),
-        'R' =>
+        'R' => 
         array (
             'Respect\\Validation\\' => 19,
             'Respect\\Stringifier\\' => 20,
         ),
-        'P' =>
+        'P' => 
         array (
             'Psr\\Log\\' => 8,
             'Psr\\Http\\Server\\' => 16,
@@ -44,26 +44,23 @@ class ComposerStaticInit1bad906586177eec1f5864994f6e7828
             'Psr\\Container\\' => 14,
             'PhpParser\\' => 10,
             'PetshopApi\\Model\\' => 17,
+            'PetshopApi\\Handler\\' => 19,
             'PetshopApi\\Api\\' => 15,
         ),
-        'L' =>
+        'L' => 
         array (
             'Laravel\\SerializableClosure\\' => 28,
         ),
-        'I' =>
+        'I' => 
         array (
             'Invoker\\' => 8,
         ),
-        'H' =>
-        array (
-            'Handler\\' => 8,
-        ),
-        'F' =>
+        'F' => 
         array (
             'Fig\\Http\\Message\\' => 17,
             'FastRoute\\' => 10,
         ),
-        'D' =>
+        'D' => 
         array (
             'DeepCopy\\' => 9,
             'DI\\' => 3,
@@ -71,97 +68,97 @@ class ComposerStaticInit1bad906586177eec1f5864994f6e7828
     );
 
     public static $prefixDirsPsr4 = array (
-        'TicTacToe\\Model\\' =>
+        'TictactoeApi\\Model\\' => 
         array (
             0 => __DIR__ . '/../..' . '/../generated/php-max-slim/tictactoe/lib/Model',
         ),
-        'TicTacToe\\Handler\\' =>
+        'TictactoeApi\\Handler\\' => 
         array (
             0 => __DIR__ . '/../..' . '/../generated/php-max-slim/tictactoe/lib/Handler',
         ),
-        'TicTacToe\\Api\\' =>
+        'TictactoeApi\\Api\\' => 
         array (
             0 => __DIR__ . '/../..' . '/../generated/php-max-slim/tictactoe/lib/Api',
         ),
-        'Tests\\' =>
+        'Tests\\' => 
         array (
             0 => __DIR__ . '/../..' . '/tests',
         ),
-        'Symfony\\Polyfill\\Mbstring\\' =>
+        'Symfony\\Polyfill\\Mbstring\\' => 
         array (
             0 => __DIR__ . '/..' . '/symfony/polyfill-mbstring',
         ),
-        'Slim\\Psr7\\' =>
+        'Slim\\Psr7\\' => 
         array (
             0 => __DIR__ . '/..' . '/slim/psr7/src',
         ),
-        'Slim\\' =>
+        'Slim\\' => 
         array (
             0 => __DIR__ . '/..' . '/slim/slim/Slim',
         ),
-        'Respect\\Validation\\' =>
+        'Respect\\Validation\\' => 
         array (
             0 => __DIR__ . '/..' . '/respect/validation/library',
         ),
-        'Respect\\Stringifier\\' =>
+        'Respect\\Stringifier\\' => 
         array (
             0 => __DIR__ . '/..' . '/respect/stringifier/src',
         ),
-        'Psr\\Log\\' =>
+        'Psr\\Log\\' => 
         array (
             0 => __DIR__ . '/..' . '/psr/log/src',
         ),
-        'Psr\\Http\\Server\\' =>
+        'Psr\\Http\\Server\\' => 
         array (
             0 => __DIR__ . '/..' . '/psr/http-server-middleware/src',
             1 => __DIR__ . '/..' . '/psr/http-server-handler/src',
         ),
-        'Psr\\Http\\Message\\' =>
+        'Psr\\Http\\Message\\' => 
         array (
             0 => __DIR__ . '/..' . '/psr/http-factory/src',
             1 => __DIR__ . '/..' . '/psr/http-message/src',
         ),
-        'Psr\\Container\\' =>
+        'Psr\\Container\\' => 
         array (
             0 => __DIR__ . '/..' . '/psr/container/src',
         ),
-        'PhpParser\\' =>
+        'PhpParser\\' => 
         array (
             0 => __DIR__ . '/..' . '/nikic/php-parser/lib/PhpParser',
         ),
-        'PetshopApi\\Model\\' =>
+        'PetshopApi\\Model\\' => 
         array (
             0 => __DIR__ . '/../..' . '/../generated/php-max-slim/petshop/lib/Model',
         ),
-        'PetshopApi\\Api\\' =>
-        array (
-            0 => __DIR__ . '/../..' . '/../generated/php-max-slim/petshop/lib/Api',
-        ),
-        'Laravel\\SerializableClosure\\' =>
-        array (
-            0 => __DIR__ . '/..' . '/laravel/serializable-closure/src',
-        ),
-        'Invoker\\' =>
-        array (
-            0 => __DIR__ . '/..' . '/php-di/invoker/src',
-        ),
-        'Handler\\' =>
+        'PetshopApi\\Handler\\' => 
         array (
             0 => __DIR__ . '/../..' . '/../generated/php-max-slim/petshop/lib/Handler',
         ),
-        'Fig\\Http\\Message\\' =>
+        'PetshopApi\\Api\\' => 
+        array (
+            0 => __DIR__ . '/../..' . '/../generated/php-max-slim/petshop/lib/Api',
+        ),
+        'Laravel\\SerializableClosure\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/laravel/serializable-closure/src',
+        ),
+        'Invoker\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/php-di/invoker/src',
+        ),
+        'Fig\\Http\\Message\\' => 
         array (
             0 => __DIR__ . '/..' . '/fig/http-message-util/src',
         ),
-        'FastRoute\\' =>
+        'FastRoute\\' => 
         array (
             0 => __DIR__ . '/..' . '/nikic/fast-route/src',
         ),
-        'DeepCopy\\' =>
+        'DeepCopy\\' => 
         array (
             0 => __DIR__ . '/..' . '/myclabs/deep-copy/src/DeepCopy',
         ),
-        'DI\\' =>
+        'DI\\' => 
         array (
             0 => __DIR__ . '/..' . '/php-di/php-di/src',
         ),
@@ -2265,6 +2262,8 @@ class ComposerStaticInit1bad906586177eec1f5864994f6e7828
         'Slim\\Routing\\RouteRunner' => __DIR__ . '/..' . '/slim/slim/Slim/Routing/RouteRunner.php',
         'Slim\\Routing\\RoutingResults' => __DIR__ . '/..' . '/slim/slim/Slim/Routing/RoutingResults.php',
         'Symfony\\Polyfill\\Mbstring\\Mbstring' => __DIR__ . '/..' . '/symfony/polyfill-mbstring/Mbstring.php',
+        'Tests\\Feature\\Petshop\\ModelTest' => __DIR__ . '/../..' . '/tests/Feature/Petshop/ModelTest.php',
+        'Tests\\Feature\\Tictactoe\\ModelTest' => __DIR__ . '/../..' . '/tests/Feature/Tictactoe/ModelTest.php',
         'TheSeer\\Tokenizer\\Exception' => __DIR__ . '/..' . '/theseer/tokenizer/src/Exception.php',
         'TheSeer\\Tokenizer\\NamespaceUri' => __DIR__ . '/..' . '/theseer/tokenizer/src/NamespaceUri.php',
         'TheSeer\\Tokenizer\\NamespaceUriException' => __DIR__ . '/..' . '/theseer/tokenizer/src/NamespaceUriException.php',
@@ -2273,50 +2272,30 @@ class ComposerStaticInit1bad906586177eec1f5864994f6e7828
         'TheSeer\\Tokenizer\\TokenCollectionException' => __DIR__ . '/..' . '/theseer/tokenizer/src/TokenCollectionException.php',
         'TheSeer\\Tokenizer\\Tokenizer' => __DIR__ . '/..' . '/theseer/tokenizer/src/Tokenizer.php',
         'TheSeer\\Tokenizer\\XMLSerializer' => __DIR__ . '/..' . '/theseer/tokenizer/src/XMLSerializer.php',
-        'TicTacToe\\Api\\CreateGameApiServiceInterface' => __DIR__ . '/../..' . '/../generated/php-max-slim/tictactoe/lib/Api/CreateGameApiServiceInterface.php',
-        'TicTacToe\\Api\\DeleteGameApiServiceInterface' => __DIR__ . '/../..' . '/../generated/php-max-slim/tictactoe/lib/Api/DeleteGameApiServiceInterface.php',
-        'TicTacToe\\Api\\GetBoardApiServiceInterface' => __DIR__ . '/../..' . '/../generated/php-max-slim/tictactoe/lib/Api/GetBoardApiServiceInterface.php',
-        'TicTacToe\\Api\\GetGameApiServiceInterface' => __DIR__ . '/../..' . '/../generated/php-max-slim/tictactoe/lib/Api/GetGameApiServiceInterface.php',
-        'TicTacToe\\Api\\GetLeaderboardApiServiceInterface' => __DIR__ . '/../..' . '/../generated/php-max-slim/tictactoe/lib/Api/GetLeaderboardApiServiceInterface.php',
-        'TicTacToe\\Api\\GetMovesApiServiceInterface' => __DIR__ . '/../..' . '/../generated/php-max-slim/tictactoe/lib/Api/GetMovesApiServiceInterface.php',
-        'TicTacToe\\Api\\GetPlayerStatsApiServiceInterface' => __DIR__ . '/../..' . '/../generated/php-max-slim/tictactoe/lib/Api/GetPlayerStatsApiServiceInterface.php',
-        'TicTacToe\\Api\\GetSquareApiServiceInterface' => __DIR__ . '/../..' . '/../generated/php-max-slim/tictactoe/lib/Api/GetSquareApiServiceInterface.php',
-        'TicTacToe\\Api\\ListGamesApiServiceInterface' => __DIR__ . '/../..' . '/../generated/php-max-slim/tictactoe/lib/Api/ListGamesApiServiceInterface.php',
-        'TicTacToe\\Api\\PutSquareApiServiceInterface' => __DIR__ . '/../..' . '/../generated/php-max-slim/tictactoe/lib/Api/PutSquareApiServiceInterface.php',
-        'TicTacToe\\Handler\\CreateGameHandler' => __DIR__ . '/../..' . '/../generated/php-max-slim/tictactoe/lib/Handler/CreateGameHandler.php',
-        'TicTacToe\\Handler\\DeleteGameHandler' => __DIR__ . '/../..' . '/../generated/php-max-slim/tictactoe/lib/Handler/DeleteGameHandler.php',
-        'TicTacToe\\Handler\\GetBoardHandler' => __DIR__ . '/../..' . '/../generated/php-max-slim/tictactoe/lib/Handler/GetBoardHandler.php',
-        'TicTacToe\\Handler\\GetGameHandler' => __DIR__ . '/../..' . '/../generated/php-max-slim/tictactoe/lib/Handler/GetGameHandler.php',
-        'TicTacToe\\Handler\\GetLeaderboardHandler' => __DIR__ . '/../..' . '/../generated/php-max-slim/tictactoe/lib/Handler/GetLeaderboardHandler.php',
-        'TicTacToe\\Handler\\GetMovesHandler' => __DIR__ . '/../..' . '/../generated/php-max-slim/tictactoe/lib/Handler/GetMovesHandler.php',
-        'TicTacToe\\Handler\\GetPlayerStatsHandler' => __DIR__ . '/../..' . '/../generated/php-max-slim/tictactoe/lib/Handler/GetPlayerStatsHandler.php',
-        'TicTacToe\\Handler\\GetSquareHandler' => __DIR__ . '/../..' . '/../generated/php-max-slim/tictactoe/lib/Handler/GetSquareHandler.php',
-        'TicTacToe\\Handler\\ListGamesHandler' => __DIR__ . '/../..' . '/../generated/php-max-slim/tictactoe/lib/Handler/ListGamesHandler.php',
-        'TicTacToe\\Handler\\PutSquareHandler' => __DIR__ . '/../..' . '/../generated/php-max-slim/tictactoe/lib/Handler/PutSquareHandler.php',
-        'TicTacToe\\Model\\BadRequestError' => __DIR__ . '/../..' . '/../generated/php-max-slim/tictactoe/lib/Model/BadRequestError.php',
-        'TicTacToe\\Model\\CreateGameRequest' => __DIR__ . '/../..' . '/../generated/php-max-slim/tictactoe/lib/Model/CreateGameRequest.php',
-        'TicTacToe\\Model\\Error' => __DIR__ . '/../..' . '/../generated/php-max-slim/tictactoe/lib/Model/Error.php',
-        'TicTacToe\\Model\\ForbiddenError' => __DIR__ . '/../..' . '/../generated/php-max-slim/tictactoe/lib/Model/ForbiddenError.php',
-        'TicTacToe\\Model\\Game' => __DIR__ . '/../..' . '/../generated/php-max-slim/tictactoe/lib/Model/Game.php',
-        'TicTacToe\\Model\\GameListResponse' => __DIR__ . '/../..' . '/../generated/php-max-slim/tictactoe/lib/Model/GameListResponse.php',
-        'TicTacToe\\Model\\GameMode' => __DIR__ . '/../..' . '/../generated/php-max-slim/tictactoe/lib/Model/GameMode.php',
-        'TicTacToe\\Model\\GameStatus' => __DIR__ . '/../..' . '/../generated/php-max-slim/tictactoe/lib/Model/GameStatus.php',
-        'TicTacToe\\Model\\Leaderboard' => __DIR__ . '/../..' . '/../generated/php-max-slim/tictactoe/lib/Model/Leaderboard.php',
-        'TicTacToe\\Model\\LeaderboardEntry' => __DIR__ . '/../..' . '/../generated/php-max-slim/tictactoe/lib/Model/LeaderboardEntry.php',
-        'TicTacToe\\Model\\Mark' => __DIR__ . '/../..' . '/../generated/php-max-slim/tictactoe/lib/Model/Mark.php',
-        'TicTacToe\\Model\\Move' => __DIR__ . '/../..' . '/../generated/php-max-slim/tictactoe/lib/Model/Move.php',
-        'TicTacToe\\Model\\MoveHistory' => __DIR__ . '/../..' . '/../generated/php-max-slim/tictactoe/lib/Model/MoveHistory.php',
-        'TicTacToe\\Model\\MoveRequest' => __DIR__ . '/../..' . '/../generated/php-max-slim/tictactoe/lib/Model/MoveRequest.php',
-        'TicTacToe\\Model\\NotFoundError' => __DIR__ . '/../..' . '/../generated/php-max-slim/tictactoe/lib/Model/NotFoundError.php',
-        'TicTacToe\\Model\\Pagination' => __DIR__ . '/../..' . '/../generated/php-max-slim/tictactoe/lib/Model/Pagination.php',
-        'TicTacToe\\Model\\Player' => __DIR__ . '/../..' . '/../generated/php-max-slim/tictactoe/lib/Model/Player.php',
-        'TicTacToe\\Model\\PlayerStats' => __DIR__ . '/../..' . '/../generated/php-max-slim/tictactoe/lib/Model/PlayerStats.php',
-        'TicTacToe\\Model\\SquareResponse' => __DIR__ . '/../..' . '/../generated/php-max-slim/tictactoe/lib/Model/SquareResponse.php',
-        'TicTacToe\\Model\\Status' => __DIR__ . '/../..' . '/../generated/php-max-slim/tictactoe/lib/Model/Status.php',
-        'TicTacToe\\Model\\UnauthorizedError' => __DIR__ . '/../..' . '/../generated/php-max-slim/tictactoe/lib/Model/UnauthorizedError.php',
-        'TicTacToe\\Model\\ValidationError' => __DIR__ . '/../..' . '/../generated/php-max-slim/tictactoe/lib/Model/ValidationError.php',
-        'TicTacToe\\Model\\ValidationErrorAllOfErrors' => __DIR__ . '/../..' . '/../generated/php-max-slim/tictactoe/lib/Model/ValidationErrorAllOfErrors.php',
-        'TicTacToe\\Model\\Winner' => __DIR__ . '/../..' . '/../generated/php-max-slim/tictactoe/lib/Model/Winner.php',
+        'TictactoeApi\\Model\\BadRequestError' => __DIR__ . '/../..' . '/../generated/php-max-slim/tictactoe/lib/Model/BadRequestError.php',
+        'TictactoeApi\\Model\\CreateGameRequest' => __DIR__ . '/../..' . '/../generated/php-max-slim/tictactoe/lib/Model/CreateGameRequest.php',
+        'TictactoeApi\\Model\\Error' => __DIR__ . '/../..' . '/../generated/php-max-slim/tictactoe/lib/Model/Error.php',
+        'TictactoeApi\\Model\\ForbiddenError' => __DIR__ . '/../..' . '/../generated/php-max-slim/tictactoe/lib/Model/ForbiddenError.php',
+        'TictactoeApi\\Model\\Game' => __DIR__ . '/../..' . '/../generated/php-max-slim/tictactoe/lib/Model/Game.php',
+        'TictactoeApi\\Model\\GameListResponse' => __DIR__ . '/../..' . '/../generated/php-max-slim/tictactoe/lib/Model/GameListResponse.php',
+        'TictactoeApi\\Model\\GameMode' => __DIR__ . '/../..' . '/../generated/php-max-slim/tictactoe/lib/Model/GameMode.php',
+        'TictactoeApi\\Model\\GameStatus' => __DIR__ . '/../..' . '/../generated/php-max-slim/tictactoe/lib/Model/GameStatus.php',
+        'TictactoeApi\\Model\\Leaderboard' => __DIR__ . '/../..' . '/../generated/php-max-slim/tictactoe/lib/Model/Leaderboard.php',
+        'TictactoeApi\\Model\\LeaderboardEntry' => __DIR__ . '/../..' . '/../generated/php-max-slim/tictactoe/lib/Model/LeaderboardEntry.php',
+        'TictactoeApi\\Model\\Mark' => __DIR__ . '/../..' . '/../generated/php-max-slim/tictactoe/lib/Model/Mark.php',
+        'TictactoeApi\\Model\\Move' => __DIR__ . '/../..' . '/../generated/php-max-slim/tictactoe/lib/Model/Move.php',
+        'TictactoeApi\\Model\\MoveHistory' => __DIR__ . '/../..' . '/../generated/php-max-slim/tictactoe/lib/Model/MoveHistory.php',
+        'TictactoeApi\\Model\\MoveRequest' => __DIR__ . '/../..' . '/../generated/php-max-slim/tictactoe/lib/Model/MoveRequest.php',
+        'TictactoeApi\\Model\\NotFoundError' => __DIR__ . '/../..' . '/../generated/php-max-slim/tictactoe/lib/Model/NotFoundError.php',
+        'TictactoeApi\\Model\\Pagination' => __DIR__ . '/../..' . '/../generated/php-max-slim/tictactoe/lib/Model/Pagination.php',
+        'TictactoeApi\\Model\\Player' => __DIR__ . '/../..' . '/../generated/php-max-slim/tictactoe/lib/Model/Player.php',
+        'TictactoeApi\\Model\\PlayerStats' => __DIR__ . '/../..' . '/../generated/php-max-slim/tictactoe/lib/Model/PlayerStats.php',
+        'TictactoeApi\\Model\\SquareResponse' => __DIR__ . '/../..' . '/../generated/php-max-slim/tictactoe/lib/Model/SquareResponse.php',
+        'TictactoeApi\\Model\\Status' => __DIR__ . '/../..' . '/../generated/php-max-slim/tictactoe/lib/Model/Status.php',
+        'TictactoeApi\\Model\\UnauthorizedError' => __DIR__ . '/../..' . '/../generated/php-max-slim/tictactoe/lib/Model/UnauthorizedError.php',
+        'TictactoeApi\\Model\\ValidationError' => __DIR__ . '/../..' . '/../generated/php-max-slim/tictactoe/lib/Model/ValidationError.php',
+        'TictactoeApi\\Model\\ValidationErrorAllOfErrors' => __DIR__ . '/../..' . '/../generated/php-max-slim/tictactoe/lib/Model/ValidationErrorAllOfErrors.php',
+        'TictactoeApi\\Model\\Winner' => __DIR__ . '/../..' . '/../generated/php-max-slim/tictactoe/lib/Model/Winner.php',
         'staabm\\SideEffectsDetector\\SideEffect' => __DIR__ . '/..' . '/staabm/side-effects-detector/lib/SideEffect.php',
         'staabm\\SideEffectsDetector\\SideEffectsDetector' => __DIR__ . '/..' . '/staabm/side-effects-detector/lib/SideEffectsDetector.php',
     );

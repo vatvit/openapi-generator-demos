@@ -3,10 +3,10 @@
 namespace Tests\Feature\Tictactoe;
 
 use PHPUnit\Framework\TestCase;
-use TicTacToe\Model\Game;
-use TicTacToe\Model\CreateGameRequest;
-use TicTacToe\Model\GameStatus;
-use TicTacToe\Model\GameMode;
+use TictactoeApi\Model\Game;
+use TictactoeApi\Model\CreateGameRequest;
+use TictactoeApi\Model\GameStatus;
+use TictactoeApi\Model\GameMode;
 
 /**
  * Tests for generated TicTacToe Model DTOs (Slim)

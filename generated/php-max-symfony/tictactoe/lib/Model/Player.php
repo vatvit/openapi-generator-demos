@@ -1,0 +1,88 @@
+<?php
+
+declare(strict_types=1);
+
+namespace TictactoeApi\Model;
+
+use Symfony\Component\Validator\Constraints as Assert;
+
+class Player
+{
+    /**
+     * Unique player identifier
+     */
+    #[Assert\NotBlank]
+    #[Assert\Type('string')]
+
+
+
+    #[Assert\Uuid]
+    public string $id;
+    /**
+     * Player username
+     */
+    #[Assert\NotBlank]
+    #[Assert\Type('string')]
+
+    #[Assert\Length(min: 3, max: 50)]
+
+
+
+    #[Assert\Regex('//^[a-zA-Z0-9_-]+$//')]
+    public string $username;
+    /**
+     * Player display name
+     */
+    #[Assert\Type('string')]
+
+
+
+    #[Assert\Length(max: 100)]
+
+    public ?string $displayName = null;
+    /**
+     * URL to player avatar image
+     */
+    #[Assert\Type('string')]
+
+
+
+    #[Assert\Url]
+    public ?string $avatarUrl = null;
+
+    /**
+     */
+    public function __construct(
+        string $id,
+        string $username,
+        ?string $displayName = null,
+        ?string $avatarUrl = null,
+    ) {
+        $this->id = $id;
+        $this->username = $username;
+        $this->displayName = $displayName;
+        $this->avatarUrl = $avatarUrl;
+    }
+
+    /** @param array<string, mixed> $data */
+    public static function fromArray(array $data): self
+    {
+        return new self(
+            id: $data['id'],
+            username: $data['username'],
+            displayName: $data['displayName'] ?? null,
+            avatarUrl: $data['avatarUrl'] ?? null,
+        );
+    }
+
+    /** @return array<string, mixed> */
+    public function toArray(): array
+    {
+        return [
+            'id' => $this->id,
+            'username' => $this->username,
+            'displayName' => $this->displayName,
+            'avatarUrl' => $this->avatarUrl,
+        ];
+    }
+}

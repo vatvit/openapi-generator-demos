@@ -1,0 +1,100 @@
+<?php
+
+declare(strict_types=1);
+
+namespace TictactoeApi\Model;
+
+use Symfony\Component\Validator\Constraints as Assert;
+
+class Move
+{
+    /**
+     * Sequential move number
+     */
+    #[Assert\NotBlank]
+    #[Assert\Type('int')]
+    #[Assert\GreaterThanOrEqual(1)]
+    public int $moveNumber;
+    /**
+     * Player who made the move
+     */
+    #[Assert\NotBlank]
+    #[Assert\Type('string')]
+
+
+
+    #[Assert\Uuid]
+    public string $playerId;
+    #[Assert\NotBlank]
+    #[Assert\Type('string')]
+
+
+
+    #[Assert\Choice(['X', 'O'])]
+    public string $mark;
+    /**
+     * Board coordinate (1-3)
+     */
+    #[Assert\NotBlank]
+    #[Assert\Type('int')]
+    #[Assert\GreaterThanOrEqual(1)]
+    #[Assert\LessThanOrEqual(3)]
+    public int $row;
+    /**
+     * Board coordinate (1-3)
+     */
+    #[Assert\NotBlank]
+    #[Assert\Type('int')]
+    #[Assert\GreaterThanOrEqual(1)]
+    #[Assert\LessThanOrEqual(3)]
+    public int $column;
+    /**
+     * When the move was made
+     */
+    #[Assert\NotBlank]
+    public \DateTime $timestamp;
+
+    /**
+     */
+    public function __construct(
+        int $moveNumber,
+        string $playerId,
+        string $mark,
+        int $row,
+        int $column,
+        \DateTime $timestamp,
+    ) {
+        $this->moveNumber = $moveNumber;
+        $this->playerId = $playerId;
+        $this->mark = $mark;
+        $this->row = $row;
+        $this->column = $column;
+        $this->timestamp = $timestamp;
+    }
+
+    /** @param array<string, mixed> $data */
+    public static function fromArray(array $data): self
+    {
+        return new self(
+            moveNumber: $data['moveNumber'],
+            playerId: $data['playerId'],
+            mark: $data['mark'],
+            row: $data['row'],
+            column: $data['column'],
+            timestamp: isset($data['timestamp']) ? new \DateTime($data['timestamp']) : throw new \InvalidArgumentException('timestamp is required'),
+        );
+    }
+
+    /** @return array<string, mixed> */
+    public function toArray(): array
+    {
+        return [
+            'moveNumber' => $this->moveNumber,
+            'playerId' => $this->playerId,
+            'mark' => $this->mark,
+            'row' => $this->row,
+            'column' => $this->column,
+            'timestamp' => $this->timestamp->format(\DateTime::ATOM),
+        ];
+    }
+}

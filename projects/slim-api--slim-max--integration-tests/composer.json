@@ -16,12 +16,12 @@
     },
     "autoload": {
         "psr-4": {
-            "TicTacToe\\Api\\": "../../generated/php-max-slim/tictactoe/lib/Api/",
-            "TicTacToe\\Handler\\": "../../generated/php-max-slim/tictactoe/lib/Handler/",
-            "TicTacToe\\Model\\": "../../generated/php-max-slim/tictactoe/lib/Model/",
+            "TictactoeApi\\Api\\": "../../generated/php-max-slim/tictactoe/lib/Api/",
+            "TictactoeApi\\Handler\\": "../../generated/php-max-slim/tictactoe/lib/Handler/",
+            "TictactoeApi\\Model\\": "../../generated/php-max-slim/tictactoe/lib/Model/",
             "PetshopApi\\Api\\": "../../generated/php-max-slim/petshop/lib/Api/",
-            "PetshopApi\\Model\\": "../../generated/php-max-slim/petshop/lib/Model/",
-            "Handler\\": "../../generated/php-max-slim/petshop/lib/Handler/"
+            "PetshopApi\\Handler\\": "../../generated/php-max-slim/petshop/lib/Handler/",
+            "PetshopApi\\Model\\": "../../generated/php-max-slim/petshop/lib/Model/"
         }
     },
     "autoload-dev": {

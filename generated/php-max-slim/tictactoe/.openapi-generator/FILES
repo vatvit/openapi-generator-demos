@@ -1,16 +1,7 @@
-.openapi-generator-ignore
-composer.json
-dependencies.php
-lib/Api/CreateGameApiServiceInterface.php
-lib/Api/DeleteGameApiServiceInterface.php
-lib/Api/GetBoardApiServiceInterface.php
-lib/Api/GetGameApiServiceInterface.php
-lib/Api/GetLeaderboardApiServiceInterface.php
-lib/Api/GetMovesApiServiceInterface.php
-lib/Api/GetPlayerStatsApiServiceInterface.php
-lib/Api/GetSquareApiServiceInterface.php
-lib/Api/ListGamesApiServiceInterface.php
-lib/Api/PutSquareApiServiceInterface.php
+lib/Api/GameManagementApi.php
+lib/Api/GameplayApi.php
+lib/Api/StatisticsApi.php
+lib/Api/TicTacApi.php
 lib/Model/BadRequestError.php
 lib/Model/CreateGameRequest.php
 lib/Model/Error.php
@@ -35,4 +26,3 @@ lib/Model/UnauthorizedError.php
 lib/Model/ValidationError.php
 lib/Model/ValidationErrorAllOfErrors.php
 lib/Model/Winner.php
-routes.php

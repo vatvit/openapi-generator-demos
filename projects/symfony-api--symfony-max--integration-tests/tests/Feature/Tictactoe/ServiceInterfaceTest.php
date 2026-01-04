@@ -4,13 +4,13 @@ namespace Tests\Feature\Tictactoe;
 
 use PHPUnit\Framework\TestCase;
 // Per-TAG handler interfaces have naming bug - file/class name mismatch
-// use TictactoeApi\Api\Handler\GameManagementApiHandlerInterface;
-// use TictactoeApi\Api\Handler\GameplayApiHandlerInterface;
-// use TictactoeApi\Api\Handler\StatisticsApiHandlerInterface;
-// use TictactoeApi\Api\Handler\TicTacApiHandlerInterface;
-use TictactoeApi\Api\Handler\CreateGameApiHandlerInterface;
-use TictactoeApi\Api\Handler\GetGameApiHandlerInterface;
-use TictactoeApi\Api\Handler\PutSquareApiHandlerInterface;
+// use TictactoeApi\Handler\GameManagementApiHandlerInterface;
+// use TictactoeApi\Handler\GameplayApiHandlerInterface;
+// use TictactoeApi\Handler\StatisticsApiHandlerInterface;
+// use TictactoeApi\Handler\TicTacApiHandlerInterface;
+use TictactoeApi\Handler\CreateGameApiHandlerInterface;
+use TictactoeApi\Handler\GetGameApiHandlerInterface;
+use TictactoeApi\Handler\PutSquareApiHandlerInterface;
 
 /**
  * Tests for generated Handler Interfaces (Symfony)

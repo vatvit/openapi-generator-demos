@@ -2,21 +2,14 @@
 
 declare(strict_types=1);
 
-namespace TicTacToe\Model;
+namespace TictactoeApi\Model;
 
 /**
- * Status
- *
  * Current game status including board state and winner
- *
- * @generated
  */
 class Status
 {
-    /**
-     */
-    public \TicTacToe\Model\Winner $winner;
-
+    public \TictactoeApi\Model\Winner $winner;
     /**
      * 3x3 game board represented as nested arrays
      * @var array<mixed>
@@ -24,34 +17,26 @@ class Status
     public array $board;
 
     /**
-     * Constructor
-     *
-     * @param array<string, mixed> $data Named parameters
+     * @param array<mixed> $board
      */
-    public function __construct(array $data = [])
-    {
-        $this->winner = $data['winner'] ?? throw new \InvalidArgumentException('Missing required parameter: winner');
-        $this->board = $data['board'] ?? throw new \InvalidArgumentException('Missing required parameter: board');
+    public function __construct(
+        \TictactoeApi\Model\Winner $winner,
+        array $board,
+    ) {
+        $this->winner = $winner;
+        $this->board = $board;
     }
 
-    /**
-     * Create from array (JSON data with original keys)
-     *
-     * @param array<string, mixed> $data
-     */
+    /** @param array<string, mixed> $data */
     public static function fromArray(array $data): self
     {
-        return new self([
-            'winner' => $data['winner'] ?? null,
-            'board' => $data['board'] ?? null,
-        ]);
+        return new self(
+            winner: \TictactoeApi\Model\Winner::from($data['winner']),
+            board: $data['board'],
+        );
     }
 
-    /**
-     * Convert to array
-     *
-     * @return array<string, mixed>
-     */
+    /** @return array<string, mixed> */
     public function toArray(): array
     {
         return [

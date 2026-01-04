@@ -2,55 +2,35 @@
 
 declare(strict_types=1);
 
-namespace TicTacToe\Model;
+namespace TictactoeApi\Model;
 
-/**
- * GameListResponse
- *
- * 
- *
- * @generated
- */
 class GameListResponse
 {
-    /**
-     * @var array<mixed>
-     */
+    /** @var array<mixed> */
     public array $games;
+    public \TictactoeApi\Model\Pagination $pagination;
 
     /**
+     * @param array<mixed> $games
      */
-    public \TicTacToe\Model\Pagination $pagination;
-
-    /**
-     * Constructor
-     *
-     * @param array<string, mixed> $data Named parameters
-     */
-    public function __construct(array $data = [])
-    {
-        $this->games = $data['games'] ?? throw new \InvalidArgumentException('Missing required parameter: games');
-        $this->pagination = $data['pagination'] ?? throw new \InvalidArgumentException('Missing required parameter: pagination');
+    public function __construct(
+        array $games,
+        \TictactoeApi\Model\Pagination $pagination,
+    ) {
+        $this->games = $games;
+        $this->pagination = $pagination;
     }
 
-    /**
-     * Create from array (JSON data with original keys)
-     *
-     * @param array<string, mixed> $data
-     */
+    /** @param array<string, mixed> $data */
     public static function fromArray(array $data): self
     {
-        return new self([
-            'games' => $data['games'] ?? null,
-            'pagination' => $data['pagination'] ?? null,
-        ]);
+        return new self(
+            games: $data['games'],
+            pagination: $data['pagination'],
+        );
     }
 
-    /**
-     * Convert to array
-     *
-     * @return array<string, mixed>
-     */
+    /** @return array<string, mixed> */
     public function toArray(): array
     {
         return [

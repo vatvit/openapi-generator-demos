@@ -2,63 +2,43 @@
 
 declare(strict_types=1);
 
-namespace TicTacToe\Model;
+namespace TictactoeApi\Model;
 
-/**
- * ValidationErrorAllOfErrors
- *
- * 
- *
- * @generated
- */
 class ValidationErrorAllOfErrors
 {
     /**
      * Field that failed validation
      */
     public string $field;
-
     /**
      * Validation error message
      */
     public string $message;
-
-    /**
-     * @var mixed
-     */
     public mixed $value = null;
 
     /**
-     * Constructor
-     *
-     * @param array<string, mixed> $data Named parameters
      */
-    public function __construct(array $data = [])
-    {
-        $this->field = $data['field'] ?? throw new \InvalidArgumentException('Missing required parameter: field');
-        $this->message = $data['message'] ?? throw new \InvalidArgumentException('Missing required parameter: message');
-        $this->value = $data['value'] ?? null;
+    public function __construct(
+        string $field,
+        string $message,
+        mixed $value = null,
+    ) {
+        $this->field = $field;
+        $this->message = $message;
+        $this->value = $value;
     }
 
-    /**
-     * Create from array (JSON data with original keys)
-     *
-     * @param array<string, mixed> $data
-     */
+    /** @param array<string, mixed> $data */
     public static function fromArray(array $data): self
     {
-        return new self([
-            'field' => $data['field'] ?? null,
-            'message' => $data['message'] ?? null,
-            'value' => $data['value'] ?? null,
-        ]);
+        return new self(
+            field: $data['field'],
+            message: $data['message'],
+            value: $data['value'] ?? null,
+        );
     }
 
-    /**
-     * Convert to array
-     *
-     * @return array<string, mixed>
-     */
+    /** @return array<string, mixed> */
     public function toArray(): array
     {
         return [

@@ -2,68 +2,48 @@
 
 declare(strict_types=1);
 
-namespace TicTacToe\Model;
+namespace TictactoeApi\Model;
 
-/**
- * Leaderboard
- *
- * 
- *
- * @generated
- */
 class Leaderboard
 {
-    /**
-     */
     public string $timeframe;
-
-    /**
-     * @var array<mixed>
-     */
+    /** @var array<mixed> */
     public array $entries;
-
     /**
      * When this leaderboard was generated
      */
-    public \DateTime $generated_at;
+    public \DateTime $generatedAt;
 
     /**
-     * Constructor
-     *
-     * @param array<string, mixed> $data Named parameters
+     * @param array<mixed> $entries
      */
-    public function __construct(array $data = [])
-    {
-        $this->timeframe = $data['timeframe'] ?? throw new \InvalidArgumentException('Missing required parameter: timeframe');
-        $this->entries = $data['entries'] ?? throw new \InvalidArgumentException('Missing required parameter: entries');
-        $this->generated_at = $data['generated_at'] ?? throw new \InvalidArgumentException('Missing required parameter: generated_at');
+    public function __construct(
+        string $timeframe,
+        array $entries,
+        \DateTime $generatedAt,
+    ) {
+        $this->timeframe = $timeframe;
+        $this->entries = $entries;
+        $this->generatedAt = $generatedAt;
     }
 
-    /**
-     * Create from array (JSON data with original keys)
-     *
-     * @param array<string, mixed> $data
-     */
+    /** @param array<string, mixed> $data */
     public static function fromArray(array $data): self
     {
-        return new self([
-            'timeframe' => $data['timeframe'] ?? null,
-            'entries' => $data['entries'] ?? null,
-            'generated_at' => $data['generatedAt'] ?? null,
-        ]);
+        return new self(
+            timeframe: $data['timeframe'],
+            entries: $data['entries'],
+            generatedAt: isset($data['generatedAt']) ? new \DateTime($data['generatedAt']) : throw new \InvalidArgumentException('generatedAt is required'),
+        );
     }
 
-    /**
-     * Convert to array
-     *
-     * @return array<string, mixed>
-     */
+    /** @return array<string, mixed> */
     public function toArray(): array
     {
         return [
             'timeframe' => $this->timeframe,
             'entries' => $this->entries,
-            'generatedAt' => $this->generated_at,
+            'generatedAt' => $this->generatedAt->format(\DateTime::ATOM),
         ];
     }
 }

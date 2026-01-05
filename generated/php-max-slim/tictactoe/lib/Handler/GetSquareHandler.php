@@ -2,13 +2,16 @@
 
 declare(strict_types=1);
 
-namespace TicTacToe\Handler;
+namespace TictactoeApi\Handler;
 
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\RequestHandlerInterface;
-use Slim\Psr7\Response;
-use TicTacToe\Api\GetSquareApiServiceInterface;
+use TictactoeApi\Api\GetSquareHandlerServiceInterface;
+use TictactoeApi\Handler\GetSquareValidator;
+use TictactoeApi\Response\GetSquare200Response;
+use TictactoeApi\Response\GetSquare400Response;
+use TictactoeApi\Response\GetSquare404Response;
 
 /**
  * GetSquareHandler
@@ -18,44 +21,60 @@ use TicTacToe\Api\GetSquareApiServiceInterface;
  *
  * @generated
  */
-final class GetSquareHandler implements RequestHandlerInterface
+class GetSquareHandler implements RequestHandlerInterface
 {
     public function __construct(
-        private readonly GetSquareApiServiceInterface $service,
-    ) {
-    }
+        private readonly GetSquareHandlerServiceInterface $service,
+        private readonly GetSquareValidator $validator
+    ) {}
 
     /**
      * Handle the request
-     *
-     * Get a single board square
-     * Retrieves the requested square.
      */
     public function handle(ServerRequestInterface $request): ResponseInterface
     {
         // Extract path parameters
-        $game_id = $request->getAttribute('gameId');
+        // Extract path parameters
+        // Extract path parameters
+        $game_id = $request->getAttribute('game_id');
         $row = $request->getAttribute('row');
+        $row = (int) $row;
         $column = $request->getAttribute('column');
+        $column = (int) $column;
 
-        // Call service
+
+
+        // Validate input
+        $validationResult = $this->validator->validate([
+            'game_id' => $game_id,
+            'row' => $row,
+            'column' => $column,
+        ]);
+
+        if (!$validationResult->isValid()) {
+            return $this->jsonResponse(
+                ['errors' => $validationResult->getErrors()],
+                422
+            );
+        }
+
+        // Call service with validated parameters
         $result = $this->service->getSquare(
-            game_id: $game_id,
-            row: $row,
-            column: $column,
+            $game_id,
+            $row,
+            $column
         );
 
-        return $this->jsonResponse($result);
+        return $this->jsonResponse($result->getData(), $result->getStatusCode());
     }
 
     /**
-     * Create JSON response
+     * Create a JSON response
      */
     private function jsonResponse(mixed $data, int $status = 200): ResponseInterface
     {
-        $response = new Response($status);
+        $response = new \Slim\Psr7\Response($status);
         $response->getBody()->write(json_encode($data, JSON_THROW_ON_ERROR));
-
         return $response->withHeader('Content-Type', 'application/json');
     }
 }

@@ -2,13 +2,16 @@
 
 declare(strict_types=1);
 
-namespace TicTacToe\Handler;
+namespace TictactoeApi\Handler;
 
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\RequestHandlerInterface;
-use Slim\Psr7\Response;
-use TicTacToe\Api\DeleteGameApiServiceInterface;
+use TictactoeApi\Api\DeleteGameHandlerServiceInterface;
+use TictactoeApi\Handler\DeleteGameValidator;
+use TictactoeApi\Response\DeleteGame204Response;
+use TictactoeApi\Response\DeleteGame403Response;
+use TictactoeApi\Response\DeleteGame404Response;
 
 /**
  * DeleteGameHandler
@@ -18,40 +21,50 @@ use TicTacToe\Api\DeleteGameApiServiceInterface;
  *
  * @generated
  */
-final class DeleteGameHandler implements RequestHandlerInterface
+class DeleteGameHandler implements RequestHandlerInterface
 {
     public function __construct(
-        private readonly DeleteGameApiServiceInterface $service,
-    ) {
-    }
+        private readonly DeleteGameHandlerServiceInterface $service,
+        private readonly DeleteGameValidator $validator
+    ) {}
 
     /**
      * Handle the request
-     *
-     * Delete a game
-     * Deletes a game. Only allowed for game creators or admins.
      */
     public function handle(ServerRequestInterface $request): ResponseInterface
     {
         // Extract path parameters
-        $game_id = $request->getAttribute('gameId');
+        $game_id = $request->getAttribute('game_id');
 
-        // Call service
+
+
+        // Validate input
+        $validationResult = $this->validator->validate([
+            'game_id' => $game_id,
+        ]);
+
+        if (!$validationResult->isValid()) {
+            return $this->jsonResponse(
+                ['errors' => $validationResult->getErrors()],
+                422
+            );
+        }
+
+        // Call service with validated parameters
         $result = $this->service->deleteGame(
-            game_id: $game_id,
+            $game_id
         );
 
-        return $this->jsonResponse($result);
+        return $this->jsonResponse($result->getData(), $result->getStatusCode());
     }
 
     /**
-     * Create JSON response
+     * Create a JSON response
      */
     private function jsonResponse(mixed $data, int $status = 200): ResponseInterface
     {
-        $response = new Response($status);
+        $response = new \Slim\Psr7\Response($status);
         $response->getBody()->write(json_encode($data, JSON_THROW_ON_ERROR));
-
         return $response->withHeader('Content-Type', 'application/json');
     }
 }

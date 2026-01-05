@@ -2,29 +2,28 @@
 
 declare(strict_types=1);
 
-namespace TictactoeApi\Handler;
+namespace PetshopApi\Handler;
 
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\RequestHandlerInterface;
-use TictactoeApi\Api\GetPlayerStatsApiHandlerInterfaceServiceInterface;
-use TictactoeApi\Handler\GetPlayerStatsValidator;
-use TictactoeApi\Response\GetPlayerStats200Response;
-use TictactoeApi\Response\GetPlayerStats404Response;
+use PetshopApi\Api\DeletePetHandlerServiceInterface;
+use PetshopApi\Handler\DeletePetValidator;
+use PetshopApi\Response\DeletePet204Response;
+use PetshopApi\Response\DeletePet0Response;
 
 /**
- * GetPlayerStatsHandler
+ * DeletePetHandler
  *
- * PSR-15 request handler for getPlayerStats operation.
- * Get player statistics
+ * PSR-15 request handler for deletePet operation.
  *
  * @generated
  */
-class GetPlayerStatsHandler implements RequestHandlerInterface
+class DeletePetHandler implements RequestHandlerInterface
 {
     public function __construct(
-        private readonly GetPlayerStatsApiHandlerInterfaceServiceInterface $service,
-        private readonly GetPlayerStatsValidator $validator
+        private readonly DeletePetHandlerServiceInterface $service,
+        private readonly DeletePetValidator $validator
     ) {}
 
     /**
@@ -33,13 +32,13 @@ class GetPlayerStatsHandler implements RequestHandlerInterface
     public function handle(ServerRequestInterface $request): ResponseInterface
     {
         // Extract path parameters
-        $player_id = $request->getAttribute('player_id');
+        $id = $request->getAttribute('id');
 
 
 
         // Validate input
         $validationResult = $this->validator->validate([
-            'player_id' => $player_id,
+            'id' => $id,
         ]);
 
         if (!$validationResult->isValid()) {
@@ -50,8 +49,8 @@ class GetPlayerStatsHandler implements RequestHandlerInterface
         }
 
         // Call service with validated parameters
-        $result = $this->service->getPlayerStats(
-            $player_id
+        $result = $this->service->deletePet(
+            $id
         );
 
         return $this->jsonResponse($result->getData(), $result->getStatusCode());

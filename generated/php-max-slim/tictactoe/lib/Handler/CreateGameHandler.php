@@ -2,14 +2,17 @@
 
 declare(strict_types=1);
 
-namespace TicTacToe\Handler;
+namespace TictactoeApi\Handler;
 
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\RequestHandlerInterface;
-use Slim\Psr7\Response;
-use TicTacToe\Model\CreateGameRequest;
-use TicTacToe\Api\CreateGameApiServiceInterface;
+use TictactoeApi\Api\CreateGameHandlerServiceInterface;
+use TictactoeApi\Handler\CreateGameValidator;
+use TictactoeApi\Response\CreateGame201Response;
+use TictactoeApi\Response\CreateGame400Response;
+use TictactoeApi\Response\CreateGame401Response;
+use TictactoeApi\Response\CreateGame422Response;
 
 /**
  * CreateGameHandler
@@ -19,44 +22,50 @@ use TicTacToe\Api\CreateGameApiServiceInterface;
  *
  * @generated
  */
-final class CreateGameHandler implements RequestHandlerInterface
+class CreateGameHandler implements RequestHandlerInterface
 {
     public function __construct(
-        private readonly CreateGameApiServiceInterface $service,
-    ) {
-    }
+        private readonly CreateGameHandlerServiceInterface $service,
+        private readonly CreateGameValidator $validator
+    ) {}
 
     /**
      * Handle the request
-     *
-     * Create a new game
-     * Creates a new TicTacToe game with specified configuration.
      */
     public function handle(ServerRequestInterface $request): ResponseInterface
     {
-        // Parse request body
-        $bodyData = $request->getParsedBody() ?? [];
-        if (is_string($bodyData)) {
-            $bodyData = json_decode($bodyData, true) ?? [];
-        }
-        $create_game_request = CreateGameRequest::fromArray($bodyData);
 
-        // Call service
+
+        // Parse request body
+        $body = $request->getParsedBody();
+
+        // Validate input
+        $validationResult = $this->validator->validate([
+            'body' => $body,
+        ]);
+
+        if (!$validationResult->isValid()) {
+            return $this->jsonResponse(
+                ['errors' => $validationResult->getErrors()],
+                422
+            );
+        }
+
+        // Call service with validated parameters
         $result = $this->service->createGame(
-            create_game_request: $create_game_request,
+            $body
         );
 
-        return $this->jsonResponse($result);
+        return $this->jsonResponse($result->getData(), $result->getStatusCode());
     }
 
     /**
-     * Create JSON response
+     * Create a JSON response
      */
     private function jsonResponse(mixed $data, int $status = 200): ResponseInterface
     {
-        $response = new Response($status);
+        $response = new \Slim\Psr7\Response($status);
         $response->getBody()->write(json_encode($data, JSON_THROW_ON_ERROR));
-
         return $response->withHeader('Content-Type', 'application/json');
     }
 }

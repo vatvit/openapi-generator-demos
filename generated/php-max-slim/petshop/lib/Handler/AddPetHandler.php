@@ -2,15 +2,15 @@
 
 declare(strict_types=1);
 
-namespace Handler;
+namespace PetshopApi\Handler;
 
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\RequestHandlerInterface;
-use PetshopApi\Api\AddPetApiHandlerInterfaceServiceInterface;
-use Handler\AddPetValidator;
-use Response\AddPet200Response;
-use Response\AddPet0Response;
+use PetshopApi\Api\AddPetHandlerServiceInterface;
+use PetshopApi\Handler\AddPetValidator;
+use PetshopApi\Response\AddPet200Response;
+use PetshopApi\Response\AddPet0Response;
 
 /**
  * AddPetHandler
@@ -22,7 +22,7 @@ use Response\AddPet0Response;
 class AddPetHandler implements RequestHandlerInterface
 {
     public function __construct(
-        private readonly AddPetApiHandlerInterfaceServiceInterface $service,
+        private readonly AddPetHandlerServiceInterface $service,
         private readonly AddPetValidator $validator
     ) {}
 

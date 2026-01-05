@@ -2,13 +2,16 @@
 
 declare(strict_types=1);
 
-namespace TicTacToe\Handler;
+namespace TictactoeApi\Handler;
 
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\RequestHandlerInterface;
-use Slim\Psr7\Response;
-use TicTacToe\Api\ListGamesApiServiceInterface;
+use TictactoeApi\Api\ListGamesHandlerServiceInterface;
+use TictactoeApi\Handler\ListGamesValidator;
+use TictactoeApi\Response\ListGames200Response;
+use TictactoeApi\Response\ListGames400Response;
+use TictactoeApi\Response\ListGames401Response;
 
 /**
  * ListGamesHandler
@@ -18,47 +21,62 @@ use TicTacToe\Api\ListGamesApiServiceInterface;
  *
  * @generated
  */
-final class ListGamesHandler implements RequestHandlerInterface
+class ListGamesHandler implements RequestHandlerInterface
 {
     public function __construct(
-        private readonly ListGamesApiServiceInterface $service,
-    ) {
-    }
+        private readonly ListGamesHandlerServiceInterface $service,
+        private readonly ListGamesValidator $validator
+    ) {}
 
     /**
      * Handle the request
-     *
-     * List all games
-     * Retrieves a paginated list of games with optional filtering.
      */
     public function handle(ServerRequestInterface $request): ResponseInterface
     {
+
         // Extract query parameters
         $queryParams = $request->getQueryParams();
         $page = $queryParams['page'] ?? 1;
+        $page = $page !== null ? (int) $page : null;
         $limit = $queryParams['limit'] ?? 20;
+        $limit = $limit !== null ? (int) $limit : null;
         $status = $queryParams['status'] ?? null;
-        $player_id = $queryParams['playerId'] ?? null;
+        $player_id = $queryParams['player_id'] ?? null;
 
-        // Call service
+
+        // Validate input
+        $validationResult = $this->validator->validate([
+            'page' => $page,
+            'limit' => $limit,
+            'status' => $status,
+            'player_id' => $player_id,
+        ]);
+
+        if (!$validationResult->isValid()) {
+            return $this->jsonResponse(
+                ['errors' => $validationResult->getErrors()],
+                422
+            );
+        }
+
+        // Call service with validated parameters
         $result = $this->service->listGames(
-            page: $page,
-            limit: $limit,
-            status: $status,
-            player_id: $player_id,
+            $page,
+            $limit,
+            $status,
+            $player_id
         );
 
-        return $this->jsonResponse($result);
+        return $this->jsonResponse($result->getData(), $result->getStatusCode());
     }
 
     /**
-     * Create JSON response
+     * Create a JSON response
      */
     private function jsonResponse(mixed $data, int $status = 200): ResponseInterface
     {
-        $response = new Response($status);
+        $response = new \Slim\Psr7\Response($status);
         $response->getBody()->write(json_encode($data, JSON_THROW_ON_ERROR));
-
         return $response->withHeader('Content-Type', 'application/json');
     }
 }

@@ -2,14 +2,17 @@
 
 declare(strict_types=1);
 
-namespace TicTacToe\Handler;
+namespace TictactoeApi\Handler;
 
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\RequestHandlerInterface;
-use Slim\Psr7\Response;
-use TicTacToe\Model\MoveRequest;
-use TicTacToe\Api\PutSquareApiServiceInterface;
+use TictactoeApi\Api\PutSquareHandlerServiceInterface;
+use TictactoeApi\Handler\PutSquareValidator;
+use TictactoeApi\Response\PutSquare200Response;
+use TictactoeApi\Response\PutSquare400Response;
+use TictactoeApi\Response\PutSquare404Response;
+use TictactoeApi\Response\PutSquare409Response;
 
 /**
  * PutSquareHandler
@@ -19,52 +22,64 @@ use TicTacToe\Api\PutSquareApiServiceInterface;
  *
  * @generated
  */
-final class PutSquareHandler implements RequestHandlerInterface
+class PutSquareHandler implements RequestHandlerInterface
 {
     public function __construct(
-        private readonly PutSquareApiServiceInterface $service,
-    ) {
-    }
+        private readonly PutSquareHandlerServiceInterface $service,
+        private readonly PutSquareValidator $validator
+    ) {}
 
     /**
      * Handle the request
-     *
-     * Set a single board square
-     * Places a mark on the board and retrieves the whole board and the winner (if any).
      */
     public function handle(ServerRequestInterface $request): ResponseInterface
     {
         // Extract path parameters
-        $game_id = $request->getAttribute('gameId');
+        // Extract path parameters
+        // Extract path parameters
+        $game_id = $request->getAttribute('game_id');
         $row = $request->getAttribute('row');
+        $row = (int) $row;
         $column = $request->getAttribute('column');
+        $column = (int) $column;
+
 
         // Parse request body
-        $bodyData = $request->getParsedBody() ?? [];
-        if (is_string($bodyData)) {
-            $bodyData = json_decode($bodyData, true) ?? [];
-        }
-        $move_request = MoveRequest::fromArray($bodyData);
+        $body = $request->getParsedBody();
 
-        // Call service
+        // Validate input
+        $validationResult = $this->validator->validate([
+            'game_id' => $game_id,
+            'row' => $row,
+            'column' => $column,
+            'body' => $body,
+        ]);
+
+        if (!$validationResult->isValid()) {
+            return $this->jsonResponse(
+                ['errors' => $validationResult->getErrors()],
+                422
+            );
+        }
+
+        // Call service with validated parameters
         $result = $this->service->putSquare(
-            game_id: $game_id,
-            row: $row,
-            column: $column,
-            move_request: $move_request,
+            $game_id,
+            $row,
+            $column,
+            $body
         );
 
-        return $this->jsonResponse($result);
+        return $this->jsonResponse($result->getData(), $result->getStatusCode());
     }
 
     /**
-     * Create JSON response
+     * Create a JSON response
      */
     private function jsonResponse(mixed $data, int $status = 200): ResponseInterface
     {
-        $response = new Response($status);
+        $response = new \Slim\Psr7\Response($status);
         $response->getBody()->write(json_encode($data, JSON_THROW_ON_ERROR));
-
         return $response->withHeader('Content-Type', 'application/json');
     }
 }

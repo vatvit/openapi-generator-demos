@@ -1,6 +1,6 @@
 ---
 code: GENDE-049
-status: Proposed
+status: Implemented
 dateCreated: 2026-01-03T18:00:00.000Z
 type: Bug Fix
 priority: Medium

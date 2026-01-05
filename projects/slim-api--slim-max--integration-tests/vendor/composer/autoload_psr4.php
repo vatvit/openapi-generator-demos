@@ -6,9 +6,9 @@ $vendorDir = dirname(__DIR__);
 $baseDir = dirname($vendorDir);
 
 return array(
-    'TictactoeApi\\Model\\' => array($baseDir . '/../generated/php-max-slim/tictactoe/lib/Model'),
-    'TictactoeApi\\Handler\\' => array($baseDir . '/../generated/php-max-slim/tictactoe/lib/Handler'),
-    'TictactoeApi\\Api\\' => array($baseDir . '/../generated/php-max-slim/tictactoe/lib/Api'),
+    'TictactoeApi\\Model\\' => array($baseDir . '/../../generated/php-max-slim/tictactoe/lib/Model'),
+    'TictactoeApi\\Handler\\' => array($baseDir . '/../../generated/php-max-slim/tictactoe/lib/Handler'),
+    'TictactoeApi\\Api\\' => array($baseDir . '/../../generated/php-max-slim/tictactoe/lib/Api'),
     'Tests\\' => array($baseDir . '/tests'),
     'Symfony\\Polyfill\\Mbstring\\' => array($vendorDir . '/symfony/polyfill-mbstring'),
     'Slim\\Psr7\\' => array($vendorDir . '/slim/psr7/src'),
@@ -20,9 +20,9 @@ return array(
     'Psr\\Http\\Message\\' => array($vendorDir . '/psr/http-factory/src', $vendorDir . '/psr/http-message/src'),
     'Psr\\Container\\' => array($vendorDir . '/psr/container/src'),
     'PhpParser\\' => array($vendorDir . '/nikic/php-parser/lib/PhpParser'),
-    'PetshopApi\\Model\\' => array($baseDir . '/../generated/php-max-slim/petshop/lib/Model'),
-    'PetshopApi\\Handler\\' => array($baseDir . '/../generated/php-max-slim/petshop/lib/Handler'),
-    'PetshopApi\\Api\\' => array($baseDir . '/../generated/php-max-slim/petshop/lib/Api'),
+    'PetshopApi\\Model\\' => array($baseDir . '/../../generated/php-max-slim/petshop/lib/Model'),
+    'PetshopApi\\Handler\\' => array($baseDir . '/../../generated/php-max-slim/petshop/lib/Handler'),
+    'PetshopApi\\Api\\' => array($baseDir . '/../../generated/php-max-slim/petshop/lib/Api'),
     'Laravel\\SerializableClosure\\' => array($vendorDir . '/laravel/serializable-closure/src'),
     'Invoker\\' => array($vendorDir . '/php-di/invoker/src'),
     'Fig\\Http\\Message\\' => array($vendorDir . '/fig/http-message-util/src'),

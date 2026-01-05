@@ -2,22 +2,24 @@
 
 declare(strict_types=1);
 
-namespace TictactoeApi\Handler;
+namespace TictactoeApi\Api;
 
+use TictactoeApi\Model\BadRequestError;
+use TictactoeApi\Model\GameListResponse;
+use TictactoeApi\Model\GameStatus;
+use TictactoeApi\Model\UnauthorizedError;
 
 /**
- * ListGamesApiHandlerInterface
+ * ListGamesApiInterface
  *
- * Handler interface for listGames operation.
- * Implement this to provide business logic.
+ * API Service interface for ListGamesApi operations.
+ * Implement this interface in your application to handle API requests.
  *
- * List all games
- *
- * Retrieves a paginated list of games with optional filtering.
+ * Operation: listGames
  *
  * @generated
  */
-interface ListGamesApiHandlerInterface
+interface ListGamesApiInterface
 {
     /**
      * List all games
@@ -36,4 +38,5 @@ interface ListGamesApiHandlerInterface
         \TictactoeApi\Model\GameStatus|null $status = null,
         string|null $player_id = null,
     );
+
 }

@@ -2,22 +2,21 @@
 
 declare(strict_types=1);
 
-namespace TictactoeApi\Handler;
+namespace TictactoeApi\Api;
 
+use TictactoeApi\Model\Leaderboard;
 
 /**
- * GetLeaderboardApiHandlerInterface
+ * GetLeaderboardApiInterface
  *
- * Handler interface for getLeaderboard operation.
- * Implement this to provide business logic.
+ * API Service interface for GetLeaderboardApi operations.
+ * Implement this interface in your application to handle API requests.
  *
- * Get leaderboard
- *
- * Retrieves the global leaderboard with top players.
+ * Operation: getLeaderboard
  *
  * @generated
  */
-interface GetLeaderboardApiHandlerInterface
+interface GetLeaderboardApiInterface
 {
     /**
      * Get leaderboard
@@ -32,4 +31,5 @@ interface GetLeaderboardApiHandlerInterface
         string|null $timeframe = null,
         int|null $limit = null,
     );
+
 }

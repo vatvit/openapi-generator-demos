@@ -9,17 +9,18 @@ use PetshopApi\Model\NewPet;
 use PetshopApi\Model\Pet;
 
 /**
- * ManagementApiInterface
+ * CreationApiInterface
  *
- * API Service interface for ManagementApi operations.
+ * API Service interface for CreationApi operations.
  * Implement this interface in your application to handle API requests.
+ *
+ * Operation: addPet
  *
  * @generated
  */
-interface ManagementApiInterface
+interface CreationApiInterface
 {
     /**
-     * 
      *
      * Creates a new pet in the store. Duplicates are allowed
      *
@@ -27,19 +28,7 @@ interface ManagementApiInterface
      * @return mixed
      */
     public function addPet(
-        \PetshopApi\Model\NewPet $new_pet,
-    );
-
-    /**
-     * 
-     *
-     * deletes a single pet based on the ID supplied
-     *
-     * @param int $id ID of pet to delete
-     * @return mixed
-     */
-    public function deletePet(
-        int $id,
+        \PetshopApi\Model\NewPet $new_pet
     );
 
 }

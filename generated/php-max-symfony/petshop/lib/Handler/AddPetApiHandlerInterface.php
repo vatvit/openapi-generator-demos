@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace PetshopApi\Handler;
 
-use PetshopApi\Response\AddPet200Response;
-use PetshopApi\Response\AddPet0Response;
 
 /**
  * AddPetApiHandlerInterface
@@ -23,8 +21,11 @@ interface AddPetApiHandlerInterface
     /**
      *
      * Creates a new pet in the store. Duplicates are allowed
+     *
+     * @param \PetshopApi\Model\NewPet $new_pet Pet to add to the store
+     * @return mixed
      */
     public function addPet(
-        \PetshopApi\Request\AddPetRequest $new_pet
-    ): AddPet200Response|AddPet0Response;
+        \PetshopApi\Model\NewPet $new_pet
+    );
 }

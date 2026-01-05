@@ -12,12 +12,13 @@ use PetshopApi\Model\Error;
  * API Service interface for AdminApi operations.
  * Implement this interface in your application to handle API requests.
  *
+ * Operation: deletePet
+ *
  * @generated
  */
 interface AdminApiInterface
 {
     /**
-     * 
      *
      * deletes a single pet based on the ID supplied
      *

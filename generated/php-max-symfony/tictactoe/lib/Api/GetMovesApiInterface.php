@@ -2,22 +2,22 @@
 
 declare(strict_types=1);
 
-namespace TictactoeApi\Handler;
+namespace TictactoeApi\Api;
 
+use TictactoeApi\Model\MoveHistory;
+use TictactoeApi\Model\NotFoundError;
 
 /**
- * GetMovesApiHandlerInterface
+ * GetMovesApiInterface
  *
- * Handler interface for getMoves operation.
- * Implement this to provide business logic.
+ * API Service interface for GetMovesApi operations.
+ * Implement this interface in your application to handle API requests.
  *
- * Get move history
- *
- * Retrieves the complete move history for a game.
+ * Operation: getMoves
  *
  * @generated
  */
-interface GetMovesApiHandlerInterface
+interface GetMovesApiInterface
 {
     /**
      * Get move history
@@ -30,4 +30,5 @@ interface GetMovesApiHandlerInterface
     public function getMoves(
         string $game_id,
     );
+
 }

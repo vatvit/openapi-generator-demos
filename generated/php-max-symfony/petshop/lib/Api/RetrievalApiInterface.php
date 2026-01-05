@@ -8,17 +8,18 @@ use PetshopApi\Model\Error;
 use PetshopApi\Model\Pet;
 
 /**
- * PublicApiInterface
+ * RetrievalApiInterface
  *
- * API Service interface for PublicApi operations.
+ * API Service interface for RetrievalApi operations.
  * Implement this interface in your application to handle API requests.
+ *
+ * Operation: findPetById
  *
  * @generated
  */
-interface PublicApiInterface
+interface RetrievalApiInterface
 {
     /**
-     * 
      *
      * Returns a user based on a single ID, if the user does not have access to the pet
      *

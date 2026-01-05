@@ -2,22 +2,22 @@
 
 declare(strict_types=1);
 
-namespace TictactoeApi\Handler;
+namespace TictactoeApi\Api;
 
+use TictactoeApi\Model\Game;
+use TictactoeApi\Model\NotFoundError;
 
 /**
- * GetGameApiHandlerInterface
+ * GetGameApiInterface
  *
- * Handler interface for getGame operation.
- * Implement this to provide business logic.
+ * API Service interface for GetGameApi operations.
+ * Implement this interface in your application to handle API requests.
  *
- * Get game details
- *
- * Retrieves detailed information about a specific game.
+ * Operation: getGame
  *
  * @generated
  */
-interface GetGameApiHandlerInterface
+interface GetGameApiInterface
 {
     /**
      * Get game details
@@ -30,4 +30,5 @@ interface GetGameApiHandlerInterface
     public function getGame(
         string $game_id,
     );
+
 }

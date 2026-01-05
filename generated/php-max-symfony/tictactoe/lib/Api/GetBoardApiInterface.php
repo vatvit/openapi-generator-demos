@@ -8,14 +8,16 @@ use TictactoeApi\Model\NotFoundError;
 use TictactoeApi\Model\Status;
 
 /**
- * TicTacApiInterface
+ * GetBoardApiInterface
  *
- * API Service interface for TicTacApi operations.
+ * API Service interface for GetBoardApi operations.
  * Implement this interface in your application to handle API requests.
+ *
+ * Operation: getBoard
  *
  * @generated
  */
-interface TicTacApiInterface
+interface GetBoardApiInterface
 {
     /**
      * Get the game board

@@ -20,7 +20,7 @@ use PetshopApi\Handler\DeletePetApiHandlerInterface;
  * @generated
  */
 #[Route('/pets/{id}', name: 'api.deletePet', methods: ['DELETE'])]
-class DeletePetController
+final class DeletePetController
 {
     public function __construct(
         private readonly DeletePetApiHandlerInterface $handler,

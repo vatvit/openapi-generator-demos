@@ -2,22 +2,22 @@
 
 declare(strict_types=1);
 
-namespace TictactoeApi\Handler;
+namespace TictactoeApi\Api;
 
+use TictactoeApi\Model\ForbiddenError;
+use TictactoeApi\Model\NotFoundError;
 
 /**
- * DeleteGameApiHandlerInterface
+ * DeleteGameApiInterface
  *
- * Handler interface for deleteGame operation.
- * Implement this to provide business logic.
+ * API Service interface for DeleteGameApi operations.
+ * Implement this interface in your application to handle API requests.
  *
- * Delete a game
- *
- * Deletes a game. Only allowed for game creators or admins.
+ * Operation: deleteGame
  *
  * @generated
  */
-interface DeleteGameApiHandlerInterface
+interface DeleteGameApiInterface
 {
     /**
      * Delete a game
@@ -30,4 +30,5 @@ interface DeleteGameApiHandlerInterface
     public function deleteGame(
         string $game_id,
     );
+
 }

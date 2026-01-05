@@ -2,22 +2,22 @@
 
 declare(strict_types=1);
 
-namespace TictactoeApi\Handler;
+namespace TictactoeApi\Api;
 
+use TictactoeApi\Model\NotFoundError;
+use TictactoeApi\Model\PlayerStats;
 
 /**
- * GetPlayerStatsApiHandlerInterface
+ * GetPlayerStatsApiInterface
  *
- * Handler interface for getPlayerStats operation.
- * Implement this to provide business logic.
+ * API Service interface for GetPlayerStatsApi operations.
+ * Implement this interface in your application to handle API requests.
  *
- * Get player statistics
- *
- * Retrieves comprehensive statistics for a player.
+ * Operation: getPlayerStats
  *
  * @generated
  */
-interface GetPlayerStatsApiHandlerInterface
+interface GetPlayerStatsApiInterface
 {
     /**
      * Get player statistics
@@ -30,4 +30,5 @@ interface GetPlayerStatsApiHandlerInterface
     public function getPlayerStats(
         string $player_id,
     );
+
 }

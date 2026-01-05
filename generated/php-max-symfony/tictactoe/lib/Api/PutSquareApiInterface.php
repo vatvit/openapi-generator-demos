@@ -2,22 +2,25 @@
 
 declare(strict_types=1);
 
-namespace TictactoeApi\Handler;
+namespace TictactoeApi\Api;
 
+use TictactoeApi\Model\BadRequestError;
+use TictactoeApi\Model\Error;
+use TictactoeApi\Model\MoveRequest;
+use TictactoeApi\Model\NotFoundError;
+use TictactoeApi\Model\Status;
 
 /**
- * PutSquareApiHandlerInterface
+ * PutSquareApiInterface
  *
- * Handler interface for putSquare operation.
- * Implement this to provide business logic.
+ * API Service interface for PutSquareApi operations.
+ * Implement this interface in your application to handle API requests.
  *
- * Set a single board square
- *
- * Places a mark on the board and retrieves the whole board and the winner (if any).
+ * Operation: putSquare
  *
  * @generated
  */
-interface PutSquareApiHandlerInterface
+interface PutSquareApiInterface
 {
     /**
      * Set a single board square
@@ -36,4 +39,5 @@ interface PutSquareApiHandlerInterface
         int $column,
         \TictactoeApi\Model\MoveRequest $move_request
     );
+
 }

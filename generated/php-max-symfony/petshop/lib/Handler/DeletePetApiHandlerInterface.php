@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace PetshopApi\Handler;
 
-use PetshopApi\Response\DeletePet204Response;
-use PetshopApi\Response\DeletePet0Response;
 
 /**
  * DeletePetApiHandlerInterface
@@ -23,8 +21,11 @@ interface DeletePetApiHandlerInterface
     /**
      *
      * deletes a single pet based on the ID supplied
+     *
+     * @param int $id ID of pet to delete
+     * @return mixed
      */
     public function deletePet(
         int $id,
-    ): DeletePet204Response|DeletePet0Response;
+    );
 }

@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace TictactoeApi\Handler;
 
-use TictactoeApi\Response\GetBoard200Response;
-use TictactoeApi\Response\GetBoard404Response;
 
 /**
  * GetBoardApiHandlerInterface
@@ -25,8 +23,11 @@ interface GetBoardApiHandlerInterface
      * Get the game board
      *
      * Retrieves the current state of the board and the winner.
+     *
+     * @param string $game_id Unique game identifier
+     * @return mixed
      */
     public function getBoard(
         string $game_id,
-    ): GetBoard200Response|GetBoard404Response;
+    );
 }

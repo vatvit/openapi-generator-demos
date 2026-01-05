@@ -14,28 +14,28 @@ class ValidationError
      * Human-readable error message
      */
     public string $message;
+    /** @var array<mixed> */
+    public \TictactoeApi\Model\ValidationErrorAllOfErrors[] $errors;
     /**
      * Additional error details
      * @var array<string, mixed>|null
      */
     public ?array<string,mixed> $details = null;
-    /** @var array<mixed> */
-    public \TictactoeApi\Model\ValidationErrorAllOfErrors[] $errors;
 
     /**
-     * @param array<string, mixed>|null $details
      * @param array<mixed> $errors
+     * @param array<string, mixed>|null $details
      */
     public function __construct(
         string $code,
         string $message,
-        ?array<string,mixed> $details = null,
         \TictactoeApi\Model\ValidationErrorAllOfErrors[] $errors,
+        ?array<string,mixed> $details = null,
     ) {
         $this->code = $code;
         $this->message = $message;
-        $this->details = $details;
         $this->errors = $errors;
+        $this->details = $details;
     }
 
     /** @param array<string, mixed> $data */
@@ -44,8 +44,8 @@ class ValidationError
         return new self(
             code: $data['code'],
             message: $data['message'],
-            details: $data['details'] ?? null,
             errors: $data['errors'],
+            details: $data['details'] ?? null,
         );
     }
 
@@ -55,8 +55,8 @@ class ValidationError
         return [
             'code' => $this->code,
             'message' => $this->message,
-            'details' => $this->details,
             'errors' => $this->errors,
+            'details' => $this->details,
         ];
     }
 }

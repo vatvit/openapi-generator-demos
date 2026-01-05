@@ -21,7 +21,7 @@ use PetshopApi\Request\AddPetRequest as RequestDto;
  * @generated
  */
 #[Route('/pets', name: 'api.addPet', methods: ['POST'])]
-class AddPetController
+final class AddPetController
 {
     public function __construct(
         private readonly AddPetApiHandlerInterface $handler,

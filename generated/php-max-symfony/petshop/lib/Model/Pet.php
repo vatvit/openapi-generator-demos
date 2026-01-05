@@ -14,25 +14,25 @@ class Pet
 
 
     public string $name;
+    #[Assert\NotBlank]
+    #[Assert\Type('int')]
+    public int $id;
     #[Assert\Type('string')]
 
 
 
     public ?string $tag = null;
-    #[Assert\NotBlank]
-    #[Assert\Type('int')]
-    public int $id;
 
     /**
      */
     public function __construct(
         string $name,
-        ?string $tag = null,
         int $id,
+        ?string $tag = null,
     ) {
         $this->name = $name;
-        $this->tag = $tag;
         $this->id = $id;
+        $this->tag = $tag;
     }
 
     /** @param array<string, mixed> $data */
@@ -40,8 +40,8 @@ class Pet
     {
         return new self(
             name: $data['name'],
-            tag: $data['tag'] ?? null,
             id: $data['id'],
+            tag: $data['tag'] ?? null,
         );
     }
 
@@ -50,8 +50,8 @@ class Pet
     {
         return [
             'name' => $this->name,
-            'tag' => $this->tag,
             'id' => $this->id,
+            'tag' => $this->tag,
         ];
     }
 }

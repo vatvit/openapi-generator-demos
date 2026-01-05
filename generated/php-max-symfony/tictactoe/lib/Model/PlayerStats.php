@@ -15,8 +15,6 @@ class PlayerStats
 
     #[Assert\Uuid]
     public string $playerId;
-    #[Assert\Valid]
-    public ?\TictactoeApi\Model\Player $player = null;
     /**
      * Total games played
      */
@@ -45,6 +43,8 @@ class PlayerStats
     #[Assert\Type('int')]
     #[Assert\GreaterThanOrEqual(0)]
     public int $draws;
+    #[Assert\Valid]
+    public ?\TictactoeApi\Model\Player $player = null;
     /**
      * Win rate (0.0 to 1.0)
      */
@@ -65,21 +65,21 @@ class PlayerStats
      */
     public function __construct(
         string $playerId,
-        ?\TictactoeApi\Model\Player $player = null,
         int $gamesPlayed,
         int $wins,
         int $losses,
         int $draws,
+        ?\TictactoeApi\Model\Player $player = null,
         ?float $winRate = null,
         ?int $currentStreak = null,
         ?int $longestWinStreak = null,
     ) {
         $this->playerId = $playerId;
-        $this->player = $player;
         $this->gamesPlayed = $gamesPlayed;
         $this->wins = $wins;
         $this->losses = $losses;
         $this->draws = $draws;
+        $this->player = $player;
         $this->winRate = $winRate;
         $this->currentStreak = $currentStreak;
         $this->longestWinStreak = $longestWinStreak;
@@ -90,11 +90,11 @@ class PlayerStats
     {
         return new self(
             playerId: $data['playerId'],
-            player: $data['player'] ?? null,
             gamesPlayed: $data['gamesPlayed'],
             wins: $data['wins'],
             losses: $data['losses'],
             draws: $data['draws'],
+            player: $data['player'] ?? null,
             winRate: $data['winRate'] ?? null,
             currentStreak: $data['currentStreak'] ?? null,
             longestWinStreak: $data['longestWinStreak'] ?? null,
@@ -106,11 +106,11 @@ class PlayerStats
     {
         return [
             'playerId' => $this->playerId,
-            'player' => $this->player,
             'gamesPlayed' => $this->gamesPlayed,
             'wins' => $this->wins,
             'losses' => $this->losses,
             'draws' => $this->draws,
+            'player' => $this->player,
             'winRate' => $this->winRate,
             'currentStreak' => $this->currentStreak,
             'longestWinStreak' => $this->longestWinStreak,

@@ -2,22 +2,23 @@
 
 declare(strict_types=1);
 
-namespace TictactoeApi\Handler;
+namespace TictactoeApi\Api;
 
+use TictactoeApi\Model\BadRequestError;
+use TictactoeApi\Model\NotFoundError;
+use TictactoeApi\Model\SquareResponse;
 
 /**
- * GetSquareApiHandlerInterface
+ * GetSquareApiInterface
  *
- * Handler interface for getSquare operation.
- * Implement this to provide business logic.
+ * API Service interface for GetSquareApi operations.
+ * Implement this interface in your application to handle API requests.
  *
- * Get a single board square
- *
- * Retrieves the requested square.
+ * Operation: getSquare
  *
  * @generated
  */
-interface GetSquareApiHandlerInterface
+interface GetSquareApiInterface
 {
     /**
      * Get a single board square
@@ -34,4 +35,5 @@ interface GetSquareApiHandlerInterface
         int $row,
         int $column,
     );
+
 }

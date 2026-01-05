@@ -20,7 +20,7 @@ use PetshopApi\Handler\FindPetByIdApiHandlerInterface;
  * @generated
  */
 #[Route('/pets/{id}', name: 'api.findPetById', methods: ['GET'])]
-class FindPetByIdController
+final class FindPetByIdController
 {
     public function __construct(
         private readonly FindPetByIdApiHandlerInterface $handler,

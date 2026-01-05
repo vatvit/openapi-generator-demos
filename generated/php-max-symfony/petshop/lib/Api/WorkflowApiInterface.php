@@ -14,12 +14,13 @@ use PetshopApi\Model\Pet;
  * API Service interface for WorkflowApi operations.
  * Implement this interface in your application to handle API requests.
  *
+ * Operation: addPet
+ *
  * @generated
  */
 interface WorkflowApiInterface
 {
     /**
-     * 
      *
      * Creates a new pet in the store. Duplicates are allowed
      *
@@ -27,7 +28,7 @@ interface WorkflowApiInterface
      * @return mixed
      */
     public function addPet(
-        \PetshopApi\Model\NewPet $new_pet,
+        \PetshopApi\Model\NewPet $new_pet
     );
 
 }

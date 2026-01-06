@@ -1,6 +1,6 @@
 ---
 code: GENDE-021
-status: Proposed
+status: Implemented
 dateCreated: 2026-01-01T17:02:58.431Z
 type: Technical Debt
 priority: Low

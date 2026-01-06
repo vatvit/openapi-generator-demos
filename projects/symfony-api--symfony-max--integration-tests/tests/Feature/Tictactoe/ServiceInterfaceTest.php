@@ -3,46 +3,47 @@
 namespace Tests\Feature\Tictactoe;
 
 use PHPUnit\Framework\TestCase;
-// Per-TAG handler interfaces have naming bug - file/class name mismatch
-// use TictactoeApi\Handler\GameManagementApiHandlerInterface;
-// use TictactoeApi\Handler\GameplayApiHandlerInterface;
-// use TictactoeApi\Handler\StatisticsApiHandlerInterface;
-// use TictactoeApi\Handler\TicTacApiHandlerInterface;
 use TictactoeApi\Handler\CreateGameApiHandlerInterface;
+use TictactoeApi\Handler\DeleteGameApiHandlerInterface;
+use TictactoeApi\Handler\GetBoardApiHandlerInterface;
 use TictactoeApi\Handler\GetGameApiHandlerInterface;
+use TictactoeApi\Handler\GetLeaderboardApiHandlerInterface;
+use TictactoeApi\Handler\GetMovesApiHandlerInterface;
+use TictactoeApi\Handler\GetPlayerStatsApiHandlerInterface;
+use TictactoeApi\Handler\GetSquareApiHandlerInterface;
+use TictactoeApi\Handler\ListGamesApiHandlerInterface;
 use TictactoeApi\Handler\PutSquareApiHandlerInterface;
 
 /**
  * Tests for generated Handler Interfaces (Symfony)
  *
- * php-max generator creates both per-TAG and per-operation handler interfaces.
+ * php-max generator creates per-operation handler interfaces for fine-grained control.
  */
 class ServiceInterfaceTest extends TestCase
 {
     /**
-     * @skip Per-TAG handlers have naming bug: file is *ApiHandlerInterface.php but class is *HandlerInterface
-     * TODO: Fix in generator templates - class name should match filename
+     * Test that all per-operation handler interfaces exist
+     * Note: We use per-operation handlers (not per-TAG) for better separation of concerns
      */
-    public function test_all_per_tag_handler_interfaces_exist(): void
-    {
-        // Known bug: Files are named *ApiHandlerInterface.php but contain *HandlerInterface class
-        // Example: GameManagementApiHandlerInterface.php contains "interface GameManagementHandlerInterface"
-        // Skipping this test until the generator is fixed
-        $this->markTestSkipped('Per-TAG handler interfaces have naming bug (class name != filename)');
-    }
-
-    public function test_all_per_operation_handler_interfaces_exist(): void
+    public function test_all_handler_interfaces_exist(): void
     {
         $interfaces = [
             CreateGameApiHandlerInterface::class,
+            DeleteGameApiHandlerInterface::class,
+            GetBoardApiHandlerInterface::class,
             GetGameApiHandlerInterface::class,
+            GetLeaderboardApiHandlerInterface::class,
+            GetMovesApiHandlerInterface::class,
+            GetPlayerStatsApiHandlerInterface::class,
+            GetSquareApiHandlerInterface::class,
+            ListGamesApiHandlerInterface::class,
             PutSquareApiHandlerInterface::class,
         ];
 
         foreach ($interfaces as $interface) {
             $this->assertTrue(
                 interface_exists($interface),
-                "Interface should exist: $interface"
+                "Handler interface should exist: $interface"
             );
         }
     }

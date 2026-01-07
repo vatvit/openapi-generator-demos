@@ -7,9 +7,8 @@ parameters:
     paths:
         - app
         - tests
-        - ../../generated/laravel-max/tictactoe/app
-        # Note: petshop excluded - has wrong namespace (TictactoeApi instead of PetshopApi)
-        # - ../../generated/laravel-max/petshop/app
+        - ../../generated/php-max-laravel/tictactoe/app
+        - ../../generated/php-max-laravel/petshop/app
 
     excludePaths:
         - vendor

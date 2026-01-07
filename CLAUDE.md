@@ -24,6 +24,11 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
    - Development guidelines and critical rules
    - Quality requirements (detailed)
 
+4. **`CLAUDE_FLOW.md`** - Ticket processing workflow
+   - Before Implementation: requirements, assess, architecture, clarification, tasks
+   - Implementation: implement (with TDD), tech-debt
+   - Step-by-step guide for each command
+
 ### Reference Implementation (ETALON)
 
 **📌 `examples/laravel-max/`** - **THE IDEAL REFERENCE IMPLEMENTATION**
@@ -49,12 +54,12 @@ This is the **etalon (standard)** - the maximum quality solution that demonstrat
 
 ### Generator Documentation
 
-4. **`openapi-generator-server-templates/GENERATORS-COMMON.md`** - Generator concepts
+5. **`openapi-generator-server-templates/GENERATORS-COMMON.md`** - Generator concepts
    - Template loop types
    - Customization via `files` config
    - Common patterns across all generators
 
-5. **Generator-Specific Analyses:**
+6. **Generator-Specific Analyses:**
    - `openapi-generator-server-templates/openapi-generator-server-php-laravel-default/GENERATOR-ANALYSIS.md`
      - php-laravel generator capabilities
      - Quality score: 85%
@@ -122,6 +127,33 @@ mcp__mdt-all__update_cr_attrs(project, key, attributes)
 
 > **The ticket is the source of truth.** Historical docs (PHASE_*.md) are reference only.
 > The ticket's "Current State" section must always reflect actual current state.
+
+### Ticket Processing Flow
+
+**See `CLAUDE_FLOW.md` for detailed workflow.**
+
+Use these commands when processing tickets:
+
+#### Before Implementation (Planning)
+| Command | Purpose |
+|---------|---------|
+| `mdt:requirements` | Define what and why |
+| `mdt:assess` | Understand current state |
+| `mdt:architecture` | Design solution |
+| `mdt:clarification` | Resolve ambiguities |
+| `mdt:tasks` | Break down into subtasks |
+
+#### Implementation
+| Command | Purpose |
+|---------|---------|
+| `mdt:implement` | Execute with tests (TDD) |
+| `mdt:tech-debt` | Document/fix technical debt |
+
+**Minimum Viable Ticket (ready for implementation):**
+- [ ] Clear description (what problem it solves)
+- [ ] Acceptance criteria (how to verify done)
+- [ ] Solution approach (how to implement)
+- [ ] No blocking dependencies
 
 ---
 

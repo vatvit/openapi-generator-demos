@@ -92,7 +92,7 @@ projects/
 
 Project directories follow the pattern:
 ```
-{framework}-api--{generator}--{variant}
+{framework/projectName}--{generator}--{variant}
 ```
 
 Examples:

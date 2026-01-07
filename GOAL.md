@@ -62,6 +62,57 @@ See `examples/laravel-max/README.md` for complete documentation.
 
 ---
 
+## Generator Approaches
+
+This project pursues **two parallel generator approaches** to achieve the goal. Both aim to produce the same quality output (as defined in GOAL_MAX.md), but use different implementation strategies:
+
+### 1. php-max Generator (PoC - Custom Java Generator)
+
+| Attribute | Value |
+|-----------|-------|
+| **Base** | OpenAPI Generator v7.18.0 |
+| **Type** | Custom Java generator with embedded per-operation logic |
+| **Location** | `openapi-generator-generators/php-max/` |
+| **Templates** | Laravel (default), Symfony, Slim (external) |
+| **Status** | Working PoC, validated with 166 integration tests |
+| **Epic** | N/A (original development, various GENDE-0xx tickets) |
+
+**How it works:** The per-operation generation logic is implemented directly in the Java generator class (`PhpMaxGenerator.java`). The generator itself handles the loop over operations.
+
+### 2. New Generator (Production - Extended Core)
+
+| Attribute | Value |
+|-----------|-------|
+| **Base** | OpenAPI Generator fork with extended core engine |
+| **Type** | Standard generator using core's `operationTemplateFiles()` API |
+| **Location** | TBD (will be created in GENDE-089) |
+| **Templates** | Laravel (default/embedded), Symfony, Slim (external) |
+| **Status** | Planned |
+| **Epic** | GENDE-088 (36 tickets) |
+
+**How it works:** The per-operation generation is handled by the core engine (via `TemplateFileType.Operation`). The generator just configures which templates to use via `operationTemplateFiles()` map.
+
+### Why Two Approaches?
+
+| Aspect | php-max (PoC) | New Generator (Production) |
+|--------|---------------|---------------------------|
+| **Purpose** | Prove the concept works | Production-ready solution |
+| **Core changes** | Embedded in generator | In core engine (shareable) |
+| **Upstream contribution** | Not possible (custom code) | Possible (GENDE-078 epic) |
+| **Maintenance** | Self-contained | Benefits from upstream updates |
+| **Flexibility** | Full control | Follows core conventions |
+
+**Both approaches are valid and maintained.** They serve different purposes:
+- **php-max**: Quick iteration, full control, proven working
+- **New generator**: Clean architecture, upstream compatibility, long-term maintainability
+
+### Related Epics
+
+- **GENDE-078**: Contribute per-operation templates to upstream OpenAPI Generator
+- **GENDE-088**: Create production generator based on extended OpenAPI Generator core
+
+---
+
 ## Program Maximum
 
 For detailed specifications of the ideal Laravel-focused solution, including:

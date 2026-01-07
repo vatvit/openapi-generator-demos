@@ -3,6 +3,8 @@
 .PHONY: generate-lumen-server generate-lumen-petshop generate-lumen-tictactoe
 .PHONY: setup-lumen start-lumen stop-lumen logs-lumen test-lumen test-lumen-phpunit dumpautoload-lumen
 .PHONY: extract-templates extract-laravel-templates check-version update-generator-version
+.PHONY: test-max-all test-max-laravel test-max-symfony test-max-slim
+.PHONY: test-fork validate-fork
 
 # OpenAPI Generator version (using latest to get 7.18.0-SNAPSHOT)
 OPENAPI_GENERATOR_VERSION := latest
@@ -50,6 +52,15 @@ help: ## Show this help message
 	@echo "  \033[36mextract-lumen-templates\033[0m  Extract default php-lumen templates"
 	@echo "  \033[36mcheck-version\033[0m            Verify generator version matches expected"
 	@echo "  \033[36mupdate-generator-version\033[0m Update to new generator version"
+	@echo ""
+	@echo "🧪 php-max Integration Tests (GENDE-070):"
+	@echo "  \033[36mtest-max-all\033[0m             Run all php-max tests (Laravel + Symfony + Slim)"
+	@echo "  \033[36mtest-max-laravel\033[0m         Run Laravel php-max tests"
+	@echo "  \033[36mtest-max-symfony\033[0m         Run Symfony php-max tests"
+	@echo "  \033[36mtest-max-slim\033[0m            Run Slim php-max tests"
+	@echo ""
+	@echo "🔍 Fork Validation:"
+	@echo "  \033[36mvalidate-fork\033[0m            Validate OpenAPI Generator fork (3600+ tests)"
 	@echo ""
 	@echo "💡 Tip: Each subdirectory has its own Makefile with more commands:"
 	@echo "   cd projects/laravel-api--php-laravel--replaced-tags && make help"
@@ -239,3 +250,64 @@ check-version: ## Verify generator version matches expected
 
 update-generator-version: ## Update OpenAPI Generator version (Usage: make update-generator-version VERSION=v7.19.0)
 	@$(MAKE) -C openapi-generator-generators/php-laravel update-generator-version VERSION=$(VERSION)
+
+# =============================================================================
+# php-max Generator Integration Tests (Laravel, Symfony, Slim)
+# =============================================================================
+
+test-max-all: ## Run all php-max integration tests (Laravel + Symfony + Slim)
+	@echo "🧪 Running php-max Integration Tests for All Frameworks"
+	@echo "========================================================"
+	@echo ""
+	@echo "📋 Testing Laravel (laravel-max)..."
+	@$(MAKE) test-max-laravel
+	@echo ""
+	@echo "📋 Testing Symfony (symfony-max)..."
+	@$(MAKE) test-max-symfony
+	@echo ""
+	@echo "📋 Testing Slim (slim-max)..."
+	@$(MAKE) test-max-slim
+	@echo ""
+	@echo "🎉 All php-max integration tests completed!"
+
+test-max-laravel: ## Run Laravel php-max integration tests
+	@echo "🧪 Running Laravel php-max tests..."
+	@$(MAKE) -C projects/laravel-api--laravel-max--integration-tests test
+
+test-max-symfony: ## Run Symfony php-max integration tests
+	@echo "🧪 Running Symfony php-max tests..."
+	@$(MAKE) -C projects/symfony-api--symfony-max--integration-tests test
+
+test-max-slim: ## Run Slim php-max integration tests
+	@echo "🧪 Running Slim php-max tests..."
+	@$(MAKE) -C projects/slim-api--slim-max--integration-tests test
+
+# =============================================================================
+# Fork Validation
+# =============================================================================
+
+validate-fork: ## Validate OpenAPI Generator fork (run upstream tests)
+	@echo "🔍 Validating OpenAPI Generator Fork"
+	@echo "====================================="
+	@echo ""
+	@echo "📋 Running openapi-generator-core tests..."
+	docker run --rm \
+		-v $$(pwd)/openapi-generator:/workspace \
+		-v $(HOME)/.m2:/root/.m2 \
+		-w /workspace \
+		maven:3.9-eclipse-temurin-17 \
+		mvn test -pl modules/openapi-generator-core -q
+	@echo "✅ Core module tests passed!"
+	@echo ""
+	@echo "📋 Running openapi-generator module tests..."
+	docker run --rm \
+		-v $$(pwd)/openapi-generator:/workspace \
+		-v $(HOME)/.m2:/root/.m2 \
+		-w /workspace \
+		maven:3.9-eclipse-temurin-17 \
+		mvn test -pl modules/openapi-generator -q
+	@echo "✅ Generator module tests passed!"
+	@echo ""
+	@echo "🎉 Fork validation complete!"
+
+test-fork: validate-fork ## Alias for validate-fork

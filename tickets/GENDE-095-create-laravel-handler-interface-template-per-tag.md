@@ -1,6 +1,6 @@
 ---
 code: GENDE-095
-status: Proposed
+status: Implemented
 dateCreated: 2026-01-07T16:39:56.754Z
 type: Feature Enhancement
 priority: High

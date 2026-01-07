@@ -1,6 +1,6 @@
 ---
 code: GENDE-098
-status: Proposed
+status: Implemented
 dateCreated: 2026-01-07T16:39:57.213Z
 type: Feature Enhancement
 priority: High

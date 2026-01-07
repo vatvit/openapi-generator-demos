@@ -1,0 +1,16 @@
+<?xml version="1.0"?>
+<ruleset name="PHP-Adaptive Integration Tests">
+    <description>PSR-12 coding standard for php-adaptive integration tests</description>
+
+    <file>app</file>
+    <file>tests</file>
+    <file>../../generated/php-adaptive</file>
+
+    <exclude-pattern>vendor/*</exclude-pattern>
+    <exclude-pattern>*.blade.php</exclude-pattern>
+
+    <arg name="colors"/>
+    <arg value="p"/>
+
+    <rule ref="PSR12"/>
+</ruleset>

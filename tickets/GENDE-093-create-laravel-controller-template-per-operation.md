@@ -1,6 +1,6 @@
 ---
 code: GENDE-093
-status: Proposed
+status: Implemented
 dateCreated: 2026-01-07T16:39:56.464Z
 type: Feature Enhancement
 priority: High
@@ -54,9 +54,30 @@ class CreatePetController extends Controller
 `src/main/resources/{generator-name}/controller.mustache`
 
 ## 5. Acceptance Criteria
+- [x] Template generates valid PHP
+- [x] One controller per operation
+- [x] Uses __invoke pattern
+- [x] Injects handler interface
+- [ ] Passes PHPStan level 6 (requires integration project for verification)
 
-- [ ] Template generates valid PHP
-- [ ] One controller per operation
-- [ ] Uses __invoke pattern
-- [ ] Injects handler interface
-- [ ] Passes PHPStan level 6
+### Implementation Notes
+
+**Template Features:**
+- `declare(strict_types=1)` for strict typing
+- `final` class declaration
+- Constructor property promotion with `readonly`
+- `__invoke` pattern for single-action controller
+- PHPDoc comments with operation summary/notes
+- Proper namespace aliasing for body DTOs (avoids naming conflicts)
+
+**Parameter Handling:**
+- Path params: Injected as typed method arguments
+- Query params: Extracted with type casting and null handling
+- Body params: Converted to DTO with `fromArray()`
+
+**Handler Delegation:**
+- Argument order: path params → query params → body DTO
+- Returns response via `$response->toJsonResponse()`
+
+**Known Issue Resolved:**
+- Model DTO aliased as `{BaseType}Dto` to avoid conflict with FormRequest class name

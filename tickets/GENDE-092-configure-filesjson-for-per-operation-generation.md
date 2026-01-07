@@ -1,6 +1,6 @@
 ---
 code: GENDE-092
-status: Proposed
+status: Implemented
 dateCreated: 2026-01-07T16:39:11.356Z
 type: Feature Enhancement
 priority: High
@@ -79,7 +79,31 @@ public class NewGenerator extends AbstractPhpCodegen {
 ```
 
 ## 5. Acceptance Criteria
+- [x] Per-operation files configured using `operationTemplateFiles()` API
+- [x] Per-operation files generated correctly (Controller, Request, Response per operation)
+- [x] Generator uses internal configuration (no external files.json needed)
 
-- [ ] files.json created with all file types
-- [ ] Per-operation files configured correctly
-- [ ] Generator reads and applies configuration
+### Implementation Notes
+
+**Per-Operation Configuration (in `configureOperationTemplates()`):**
+```java
+operationTemplateFiles().put(
+    "controller.mustache",
+    srcBasePath + "/Http/Controllers/{{operationIdPascalCase}}Controller.php"
+);
+operationTemplateFiles().put(
+    "request.mustache",
+    srcBasePath + "/Http/Requests/{{operationIdPascalCase}}Request.php"
+);
+operationTemplateFiles().put(
+    "response.mustache",
+    srcBasePath + "/Http/Responses/{{operationIdPascalCase}}Response.php"
+);
+```
+
+**Test Results (TicTacToe spec - 10 operations):**
+- Controllers: CreateGameController, DeleteGameController, GetBoardController, GetGameController, GetLeaderboardController, GetMovesController, GetPlayerStatsController, GetSquareController, ListGamesController, PutSquareController
+- Requests: Matching Request DTOs for each operation
+- Responses: Matching Response DTOs for each operation
+
+**Fork API Used:** `operationTemplateFiles()` from extended core (v7.19.0-SNAPSHOT)

@@ -1,0 +1,47 @@
+{
+    "name": "openapi-generator/php-adaptive-integration-tests",
+    "description": "Integration tests for php-adaptive generator",
+    "type": "project",
+    "require": {
+        "php": "^8.2",
+        "laravel/framework": "^11.0"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^11.0",
+        "mockery/mockery": "^1.6",
+        "phpstan/phpstan": "^2.0",
+        "larastan/larastan": "^3.0",
+        "squizlabs/php_codesniffer": "^3.11"
+    },
+    "autoload": {
+        "psr-4": {
+            "App\\": "app/",
+            "TicTacToeApi\\": "../../generated/php-adaptive/tictactoe/lib/",
+            "PetshopApi\\": "../../generated/php-adaptive/petshop/lib/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Tests\\": "tests/"
+        }
+    },
+    "scripts": {
+        "lint": "find ../../generated/php-adaptive -name '*.php' -exec php -l {} \\;",
+        "test": "phpunit",
+        "phpstan": "phpstan analyse --memory-limit=512M",
+        "phpcs": "phpcs",
+        "phpcbf": "phpcbf",
+        "analyse": [
+            "@phpstan",
+            "@phpcs"
+        ]
+    },
+    "minimum-stability": "stable",
+    "prefer-stable": true,
+    "config": {
+        "optimize-autoloader": true,
+        "preferred-install": "dist",
+        "sort-packages": true,
+        "platform-check": false
+    }
+}

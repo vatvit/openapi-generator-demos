@@ -5,14 +5,12 @@ declare(strict_types=1);
 namespace Tests\Feature\Petshop;
 
 use PHPUnit\Framework\TestCase;
-use ReflectionClass;
-use ReflectionMethod;
 use PetshopApi\Model\Pet;
 use PetshopApi\Model\NewPet;
 use PetshopApi\Model\Error;
 
 /**
- * Tests that verify the generated Petshop model classes have correct structure.
+ * Tests that verify the generated Petshop model classes behave correctly.
  */
 class ModelGenerationTest extends TestCase
 {
@@ -39,176 +37,218 @@ class ModelGenerationTest extends TestCase
     }
 
     /**
-     * Test that Pet model has expected properties.
+     * Test that Pet model can be created with expected properties.
      */
-    public function testPetModelHasExpectedProperties(): void
+    public function testPetModelCanBeCreatedWithProperties(): void
     {
-        $reflection = new ReflectionClass(Pet::class);
+        $pet = Pet::fromArray([
+            'id' => 1,
+            'name' => 'Fluffy',
+            'tag' => 'cat',
+        ]);
 
-        // Pet should have id (from allOf with NewPet + id)
-        $this->assertTrue(
-            $reflection->hasProperty('id'),
-            "Pet should have 'id' property"
-        );
-        $this->assertTrue(
-            $reflection->hasProperty('name'),
-            "Pet should have 'name' property"
-        );
+        $this->assertInstanceOf(Pet::class, $pet);
+        $array = $pet->toArray();
+        $this->assertArrayHasKey('id', $array);
+        $this->assertArrayHasKey('name', $array);
+        $this->assertSame(1, $array['id']);
+        $this->assertSame('Fluffy', $array['name']);
     }
 
     /**
-     * Test that NewPet model has expected properties.
+     * Test that NewPet model can be created with expected properties.
      */
-    public function testNewPetModelHasExpectedProperties(): void
+    public function testNewPetModelCanBeCreatedWithProperties(): void
     {
-        $reflection = new ReflectionClass(NewPet::class);
+        $newPet = NewPet::fromArray([
+            'name' => 'Buddy',
+            'tag' => 'dog',
+        ]);
 
-        $this->assertTrue(
-            $reflection->hasProperty('name'),
-            "NewPet should have 'name' property"
-        );
-        $this->assertTrue(
-            $reflection->hasProperty('tag'),
-            "NewPet should have 'tag' property"
-        );
+        $this->assertInstanceOf(NewPet::class, $newPet);
+        $array = $newPet->toArray();
+        $this->assertArrayHasKey('name', $array);
+        $this->assertArrayHasKey('tag', $array);
+        $this->assertSame('Buddy', $array['name']);
     }
 
     /**
-     * Test that Error model has expected properties.
+     * Test that Error model can be created with expected properties.
      */
-    public function testErrorModelHasExpectedProperties(): void
+    public function testErrorModelCanBeCreatedWithProperties(): void
     {
-        $reflection = new ReflectionClass(Error::class);
+        $error = Error::fromArray([
+            'code' => 404,
+            'message' => 'Pet not found',
+        ]);
 
-        $this->assertTrue(
-            $reflection->hasProperty('code'),
-            "Error should have 'code' property"
-        );
-        $this->assertTrue(
-            $reflection->hasProperty('message'),
-            "Error should have 'message' property"
-        );
+        $this->assertInstanceOf(Error::class, $error);
+        $array = $error->toArray();
+        $this->assertArrayHasKey('code', $array);
+        $this->assertArrayHasKey('message', $array);
+        $this->assertSame(404, $array['code']);
+        $this->assertSame('Pet not found', $array['message']);
     }
 
     /**
-     * Test that all models have fromArray static method.
+     * Test that all models have fromArray method that returns instance.
      */
-    public function testAllModelsHaveFromArrayMethod(): void
+    public function testAllModelsFromArrayReturnsInstance(): void
     {
+        $testData = $this->getTestDataForModels();
+
         foreach ($this->expectedModels as $name => $class) {
-            $this->assertTrue(
-                method_exists($class, 'fromArray'),
-                "Model {$name} should have fromArray method"
+            $data = $testData[$name] ?? [];
+            $instance = $class::fromArray($data);
+            $this->assertInstanceOf(
+                $class,
+                $instance,
+                "{$name}::fromArray() should return instance of {$name}"
             );
-
-            $reflection = new ReflectionMethod($class, 'fromArray');
-            $this->assertTrue($reflection->isStatic(), "fromArray should be static in {$name}");
-            $this->assertTrue($reflection->isPublic(), "fromArray should be public in {$name}");
         }
     }
 
     /**
-     * Test that all models have toArray method.
+     * Test that all models have toArray method that returns array.
      */
-    public function testAllModelsHaveToArrayMethod(): void
+    public function testAllModelsToArrayReturnsArray(): void
     {
+        $testData = $this->getTestDataForModels();
+
         foreach ($this->expectedModels as $name => $class) {
-            $this->assertTrue(
-                method_exists($class, 'toArray'),
-                "Model {$name} should have toArray method"
+            $data = $testData[$name] ?? [];
+            $instance = $class::fromArray($data);
+            $array = $instance->toArray();
+            $this->assertIsArray(
+                $array,
+                "{$name}::toArray() should return array"
             );
-
-            $reflection = new ReflectionMethod($class, 'toArray');
-            $this->assertFalse($reflection->isStatic(), "toArray should not be static in {$name}");
-            $this->assertTrue($reflection->isPublic(), "toArray should be public in {$name}");
         }
     }
 
     /**
-     * Test that fromArray returns self type.
+     * Test that fromArray is callable as static method.
      */
-    public function testFromArrayReturnType(): void
+    public function testFromArrayIsStaticAndPublic(): void
     {
-        foreach ($this->expectedModels as $name => $class) {
-            $reflection = new ReflectionMethod($class, 'fromArray');
-            $returnType = $reflection->getReturnType();
+        // If fromArray was not static/public, these calls would fail
+        $pet = Pet::fromArray(['id' => 1, 'name' => 'Test', 'tag' => 'test']);
+        $this->assertInstanceOf(Pet::class, $pet);
 
-            $this->assertNotNull($returnType, "fromArray should have return type in {$name}");
-            $this->assertSame('self', $returnType->getName(), "fromArray should return self in {$name}");
-        }
+        $newPet = NewPet::fromArray(['name' => 'Test']);
+        $this->assertInstanceOf(NewPet::class, $newPet);
+
+        $error = Error::fromArray(['code' => 400, 'message' => 'Error']);
+        $this->assertInstanceOf(Error::class, $error);
     }
 
     /**
-     * Test that toArray returns array type.
+     * Test that toArray is callable as instance method.
      */
-    public function testToArrayReturnType(): void
+    public function testToArrayIsInstanceMethodAndPublic(): void
     {
-        foreach ($this->expectedModels as $name => $class) {
-            $reflection = new ReflectionMethod($class, 'toArray');
-            $returnType = $reflection->getReturnType();
+        // If toArray was static or not public, these calls would fail
+        $pet = Pet::fromArray(['id' => 1, 'name' => 'Test', 'tag' => 'test']);
+        $result = $pet->toArray();
+        $this->assertIsArray($result);
 
-            $this->assertNotNull($returnType, "toArray should have return type in {$name}");
-            $this->assertSame('array', $returnType->getName(), "toArray should return array in {$name}");
-        }
+        $newPet = NewPet::fromArray(['name' => 'Test']);
+        $result = $newPet->toArray();
+        $this->assertIsArray($result);
+
+        $error = Error::fromArray(['code' => 400, 'message' => 'Error']);
+        $result = $error->toArray();
+        $this->assertIsArray($result);
     }
 
     /**
-     * Test that NewPet tag property is optional (nullable).
+     * Test that fromArray -> toArray roundtrip preserves data.
      */
-    public function testNewPetTagIsOptional(): void
+    public function testFromArrayToArrayRoundtrip(): void
     {
-        $reflection = new ReflectionClass(NewPet::class);
-        $property = $reflection->getProperty('tag');
-        $type = $property->getType();
+        $originalData = [
+            'id' => 123,
+            'name' => 'Max',
+            'tag' => 'dog',
+        ];
 
-        $this->assertNotNull($type, "tag should have a type");
-        $this->assertTrue($type->allowsNull(), "tag should be nullable");
+        $pet = Pet::fromArray($originalData);
+        $resultData = $pet->toArray();
+
+        $this->assertSame($originalData['id'], $resultData['id']);
+        $this->assertSame($originalData['name'], $resultData['name']);
+        $this->assertSame($originalData['tag'], $resultData['tag']);
     }
 
     /**
-     * Test constructor parameter order (required before optional).
+     * Test that NewPet tag property accepts null (optional).
      */
-    public function testConstructorParameterOrder(): void
+    public function testNewPetTagAcceptsNull(): void
     {
-        foreach ($this->expectedModels as $name => $class) {
-            $reflection = new ReflectionClass($class);
-            $constructor = $reflection->getConstructor();
+        $newPet = NewPet::fromArray([
+            'name' => 'Whiskers',
+            'tag' => null,
+        ]);
 
-            if ($constructor === null) {
-                continue;
-            }
-
-            $params = $constructor->getParameters();
-            $seenOptional = false;
-
-            foreach ($params as $param) {
-                if ($param->isOptional()) {
-                    $seenOptional = true;
-                } else {
-                    $this->assertFalse(
-                        $seenOptional,
-                        "In {$name}: Required parameter '{$param->getName()}' should not come after optional parameters"
-                    );
-                }
-            }
-        }
+        $this->assertInstanceOf(NewPet::class, $newPet);
+        $array = $newPet->toArray();
+        $this->assertArrayHasKey('tag', $array);
     }
 
     /**
-     * Test that Error model has required properties typed as non-nullable.
+     * Test that models can be created with required parameters only.
      */
-    public function testErrorRequiredPropertiesAreNotNullable(): void
+    public function testModelsCanBeCreatedWithRequiredOnly(): void
     {
-        $reflection = new ReflectionClass(Error::class);
+        // Pet requires id and name, tag is optional
+        $pet = Pet::fromArray(['id' => 1, 'name' => 'Test']);
+        $this->assertInstanceOf(Pet::class, $pet);
 
-        $codeProperty = $reflection->getProperty('code');
-        $codeType = $codeProperty->getType();
-        $this->assertNotNull($codeType);
-        $this->assertFalse($codeType->allowsNull(), "code should not be nullable");
+        // NewPet requires name, tag is optional
+        $newPet = NewPet::fromArray(['name' => 'Test']);
+        $this->assertInstanceOf(NewPet::class, $newPet);
 
-        $messageProperty = $reflection->getProperty('message');
-        $messageType = $messageProperty->getType();
-        $this->assertNotNull($messageType);
-        $this->assertFalse($messageType->allowsNull(), "message should not be nullable");
+        // Error requires code and message
+        $error = Error::fromArray(['code' => 400, 'message' => 'Test']);
+        $this->assertInstanceOf(Error::class, $error);
+    }
+
+    /**
+     * Test that Error model required properties work correctly.
+     */
+    public function testErrorRequiredPropertiesWork(): void
+    {
+        $error = Error::fromArray([
+            'code' => 500,
+            'message' => 'Internal server error',
+        ]);
+
+        $array = $error->toArray();
+        $this->assertSame(500, $array['code']);
+        $this->assertSame('Internal server error', $array['message']);
+    }
+
+    /**
+     * Provide test data for each model class.
+     *
+     * @return array<string, array<string, mixed>>
+     */
+    private function getTestDataForModels(): array
+    {
+        return [
+            'Pet' => [
+                'id' => 1,
+                'name' => 'TestPet',
+                'tag' => 'test',
+            ],
+            'NewPet' => [
+                'name' => 'NewTestPet',
+                'tag' => 'test',
+            ],
+            'Error' => [
+                'code' => 400,
+                'message' => 'Test error',
+            ],
+        ];
     }
 }

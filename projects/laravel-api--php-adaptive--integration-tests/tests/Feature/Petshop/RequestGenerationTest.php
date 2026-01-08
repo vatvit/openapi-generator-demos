@@ -6,7 +6,6 @@ namespace Tests\Feature\Petshop;
 
 use PHPUnit\Framework\TestCase;
 use ReflectionClass;
-use ReflectionMethod;
 use Illuminate\Foundation\Http\FormRequest;
 use PetshopApi\Http\Requests\AddPetRequest;
 use PetshopApi\Http\Requests\DeletePetRequest;
@@ -14,12 +13,12 @@ use PetshopApi\Http\Requests\FindPetByIdRequest;
 use PetshopApi\Http\Requests\FindPetsRequest;
 
 /**
- * Tests that verify the generated request classes have correct structure.
+ * Tests that verify the generated request classes behave correctly.
  */
 class RequestGenerationTest extends TestCase
 {
     /**
-     * @var array<string, class-string> Request classes to test
+     * @var array<string, class-string<FormRequest>> Request classes to test
      */
     private array $expectedRequests = [
         'AddPet' => AddPetRequest::class,
@@ -47,9 +46,10 @@ class RequestGenerationTest extends TestCase
     public function testAllRequestsExtendFormRequest(): void
     {
         foreach ($this->expectedRequests as $name => $class) {
-            $reflection = new ReflectionClass($class);
-            $this->assertTrue(
-                $reflection->isSubclassOf(FormRequest::class),
+            $request = new $class();
+            $this->assertInstanceOf(
+                FormRequest::class,
+                $request,
                 "{$name}Request should extend FormRequest"
             );
         }
@@ -70,39 +70,25 @@ class RequestGenerationTest extends TestCase
     }
 
     /**
-     * Test that all request classes have authorize method.
+     * Test that all request classes have authorize method returning bool.
      */
     public function testAllRequestsHaveAuthorizeMethod(): void
     {
-        foreach ($this->expectedRequests as $name => $class) {
-            $this->assertTrue(
-                method_exists($class, 'authorize'),
-                "{$name}Request should have authorize method"
-            );
-
-            $reflection = new ReflectionMethod($class, 'authorize');
-            $returnType = $reflection->getReturnType();
-            $this->assertNotNull($returnType);
-            $this->assertSame('bool', $returnType->getName());
-        }
+        $this->assertIsBool((new AddPetRequest())->authorize());
+        $this->assertIsBool((new DeletePetRequest())->authorize());
+        $this->assertIsBool((new FindPetByIdRequest())->authorize());
+        $this->assertIsBool((new FindPetsRequest())->authorize());
     }
 
     /**
-     * Test that all request classes have rules method.
+     * Test that all request classes have rules method returning array.
      */
     public function testAllRequestsHaveRulesMethod(): void
     {
-        foreach ($this->expectedRequests as $name => $class) {
-            $this->assertTrue(
-                method_exists($class, 'rules'),
-                "{$name}Request should have rules method"
-            );
-
-            $reflection = new ReflectionMethod($class, 'rules');
-            $returnType = $reflection->getReturnType();
-            $this->assertNotNull($returnType);
-            $this->assertSame('array', $returnType->getName());
-        }
+        $this->assertIsArray((new AddPetRequest())->rules());
+        $this->assertIsArray((new DeletePetRequest())->rules());
+        $this->assertIsArray((new FindPetByIdRequest())->rules());
+        $this->assertIsArray((new FindPetsRequest())->rules());
     }
 
     /**
@@ -140,12 +126,9 @@ class RequestGenerationTest extends TestCase
      */
     public function testAuthorizeReturnsTrue(): void
     {
-        foreach ($this->expectedRequests as $name => $class) {
-            $request = new $class();
-            $this->assertTrue(
-                $request->authorize(),
-                "{$name}Request::authorize() should return true"
-            );
-        }
+        $this->assertTrue((new AddPetRequest())->authorize(), 'AddPetRequest::authorize() should return true');
+        $this->assertTrue((new DeletePetRequest())->authorize(), 'DeletePetRequest::authorize() should return true');
+        $this->assertTrue((new FindPetByIdRequest())->authorize(), 'FindPetByIdRequest::authorize() should return true');
+        $this->assertTrue((new FindPetsRequest())->authorize(), 'FindPetsRequest::authorize() should return true');
     }
 }

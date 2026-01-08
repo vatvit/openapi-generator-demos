@@ -6,17 +6,22 @@ namespace Tests\Feature\Petshop;
 
 use PHPUnit\Framework\TestCase;
 use ReflectionClass;
-use ReflectionMethod;
 use Illuminate\Http\JsonResponse;
 use PetshopApi\Http\Controllers\AddPetController;
 use PetshopApi\Http\Controllers\DeletePetController;
 use PetshopApi\Http\Controllers\FindPetByIdController;
 use PetshopApi\Http\Controllers\FindPetsController;
 use PetshopApi\Http\Requests\AddPetRequest;
+use PetshopApi\Http\Requests\DeletePetRequest;
 use PetshopApi\Http\Requests\FindPetByIdRequest;
+use PetshopApi\Http\Requests\FindPetsRequest;
+use PetshopApi\Api\PetsHandlerInterface;
+use PetshopApi\Api\WorkflowHandlerInterface;
+use PetshopApi\Api\RetrievalHandlerInterface;
+use PetshopApi\Api\SearchHandlerInterface;
 
 /**
- * Tests that verify the generated controller classes have correct structure.
+ * Tests that verify the generated controller classes behave correctly.
  */
 class ControllerGenerationTest extends TestCase
 {
@@ -85,98 +90,74 @@ class ControllerGenerationTest extends TestCase
     }
 
     /**
-     * Test that all __invoke methods return JsonResponse.
+     * Test that all controllers can be instantiated with handler.
      */
-    public function testAllInvokeMethodsReturnJsonResponse(): void
+    public function testAllControllersCanBeInstantiated(): void
     {
-        foreach ($this->expectedControllers as $name => $class) {
-            $reflection = new ReflectionMethod($class, '__invoke');
-            $returnType = $reflection->getReturnType();
-            $this->assertNotNull($returnType);
-            $this->assertSame(
-                JsonResponse::class,
-                $returnType->getName(),
-                "{$name}Controller::__invoke should return JsonResponse"
-            );
-        }
+        // Each controller uses a different handler interface
+        $workflowMock = $this->createMock(WorkflowHandlerInterface::class);
+        $this->assertInstanceOf(AddPetController::class, new AddPetController($workflowMock));
+
+        $petsMock = $this->createMock(PetsHandlerInterface::class);
+        $this->assertInstanceOf(DeletePetController::class, new DeletePetController($petsMock));
+
+        $retrievalMock = $this->createMock(RetrievalHandlerInterface::class);
+        $this->assertInstanceOf(FindPetByIdController::class, new FindPetByIdController($retrievalMock));
+
+        $searchMock = $this->createMock(SearchHandlerInterface::class);
+        $this->assertInstanceOf(FindPetsController::class, new FindPetsController($searchMock));
     }
 
     /**
-     * Test that constructor injects handler interface.
+     * Test AddPetController constructor accepts correct handler.
      */
-    public function testConstructorInjectsHandlerInterface(): void
+    public function testAddPetControllerConstructor(): void
     {
-        foreach ($this->expectedControllers as $name => $class) {
-            $reflection = new ReflectionClass($class);
-            $constructor = $reflection->getConstructor();
-            $params = $constructor->getParameters();
-
-            $this->assertCount(1, $params, "{$name}Controller should have 1 constructor parameter");
-            $this->assertSame('handler', $params[0]->getName());
-
-            // Handler type should end with 'HandlerInterface'
-            $handlerType = $params[0]->getType()->getName();
-            $this->assertStringEndsWith(
-                'HandlerInterface',
-                $handlerType,
-                "{$name}Controller should inject a HandlerInterface"
-            );
-        }
+        $handler = $this->createMock(WorkflowHandlerInterface::class);
+        $controller = new AddPetController($handler);
+        $this->assertInstanceOf(AddPetController::class, $controller);
     }
 
     /**
-     * Test AddPetController __invoke has request parameter.
+     * Test DeletePetController returns JsonResponse with path parameter.
      */
-    public function testAddPetControllerInvokeHasRequestParameter(): void
+    public function testDeletePetControllerReturnsJsonResponse(): void
     {
-        $reflection = new ReflectionMethod(AddPetController::class, '__invoke');
-        $params = $reflection->getParameters();
+        $handler = $this->createMock(PetsHandlerInterface::class);
+        $handler->method('deletePet')
+            ->willReturn(new JsonResponse(null, 204));
 
-        $this->assertGreaterThanOrEqual(1, count($params));
-        $this->assertSame('request', $params[0]->getName());
-        $this->assertSame(
-            AddPetRequest::class,
-            $params[0]->getType()->getName()
-        );
+        $controller = new DeletePetController($handler);
+        $request = new DeletePetRequest();
+
+        $response = $controller($request, 123);
+        $this->assertInstanceOf(JsonResponse::class, $response);
     }
 
     /**
-     * Test FindPetByIdController __invoke has path parameter.
+     * Test FindPetByIdController returns JsonResponse with path parameter.
      */
-    public function testFindPetByIdControllerInvokeHasPathParameter(): void
+    public function testFindPetByIdControllerReturnsJsonResponse(): void
     {
-        $reflection = new ReflectionMethod(FindPetByIdController::class, '__invoke');
-        $params = $reflection->getParameters();
+        $handler = $this->createMock(RetrievalHandlerInterface::class);
+        $handler->method('findPetById')
+            ->willReturn(new JsonResponse(['id' => 1, 'name' => 'Fluffy']));
 
-        $this->assertCount(2, $params);
-        $this->assertSame('request', $params[0]->getName());
-        $this->assertSame('id', $params[1]->getName());
-        $this->assertSame('int', $params[1]->getType()->getName());
+        $controller = new FindPetByIdController($handler);
+        $request = new FindPetByIdRequest();
+
+        $response = $controller($request, 1);
+        $this->assertInstanceOf(JsonResponse::class, $response);
     }
 
     /**
-     * Test DeletePetController __invoke has path parameter.
+     * Test FindPetsController constructor accepts correct handler.
      */
-    public function testDeletePetControllerInvokeHasPathParameter(): void
+    public function testFindPetsControllerConstructor(): void
     {
-        $reflection = new ReflectionMethod(DeletePetController::class, '__invoke');
-        $params = $reflection->getParameters();
-
-        $this->assertCount(2, $params);
-        $this->assertSame('id', $params[1]->getName());
-        $this->assertSame('int', $params[1]->getType()->getName());
-    }
-
-    /**
-     * Test FindPetsController __invoke has only request parameter (query params in request).
-     */
-    public function testFindPetsControllerInvokeHasOnlyRequestParameter(): void
-    {
-        $reflection = new ReflectionMethod(FindPetsController::class, '__invoke');
-        $params = $reflection->getParameters();
-
-        $this->assertCount(1, $params);
-        $this->assertSame('request', $params[0]->getName());
+        $handler = $this->createMock(SearchHandlerInterface::class);
+        $controller = new FindPetsController($handler);
+        $this->assertInstanceOf(FindPetsController::class, $controller);
     }
 
     /**

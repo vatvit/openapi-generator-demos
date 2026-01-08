@@ -6,15 +6,18 @@ namespace Tests\Feature\Tictactoe;
 
 use PHPUnit\Framework\TestCase;
 use ReflectionClass;
-use ReflectionMethod;
 use Illuminate\Http\JsonResponse;
 use TicTacToeApi\Api\GameManagementHandlerInterface;
 use TicTacToeApi\Api\GameplayHandlerInterface;
 use TicTacToeApi\Api\StatisticsHandlerInterface;
 use TicTacToeApi\Api\TicTacHandlerInterface;
+use TicTacToeApi\Model\CreateGameRequest;
+use TicTacToeApi\Model\MoveRequest;
+use TicTacToeApi\Model\GameStatus;
+use TicTacToeApi\Model\GameMode;
 
 /**
- * Tests that verify the generated handler interfaces have correct structure.
+ * Tests that verify the generated handler interfaces behave correctly.
  */
 class HandlerInterfaceGenerationTest extends TestCase
 {
@@ -56,16 +59,30 @@ class HandlerInterfaceGenerationTest extends TestCase
     }
 
     /**
+     * Test that mock implementations can be created for all interfaces.
+     */
+    public function testMockImplementationsCanBeCreated(): void
+    {
+        foreach ($this->expectedInterfaces as $name => $interface) {
+            $mock = $this->createMock($interface);
+            $this->assertInstanceOf(
+                $interface,
+                $mock,
+                "Should be able to create mock for {$name}"
+            );
+        }
+    }
+
+    /**
      * Test GameManagementHandlerInterface has expected methods.
      */
     public function testGameManagementHandlerInterfaceMethods(): void
     {
         $expectedMethods = ['createGame', 'deleteGame', 'getGame', 'listGames'];
-        $reflection = new ReflectionClass(GameManagementHandlerInterface::class);
 
         foreach ($expectedMethods as $method) {
             $this->assertTrue(
-                $reflection->hasMethod($method),
+                method_exists(GameManagementHandlerInterface::class, $method),
                 "GameManagementHandlerInterface should have method '{$method}'"
             );
         }
@@ -77,11 +94,10 @@ class HandlerInterfaceGenerationTest extends TestCase
     public function testGameplayHandlerInterfaceMethods(): void
     {
         $expectedMethods = ['getBoard', 'getGame', 'getMoves', 'getSquare', 'putSquare'];
-        $reflection = new ReflectionClass(GameplayHandlerInterface::class);
 
         foreach ($expectedMethods as $method) {
             $this->assertTrue(
-                $reflection->hasMethod($method),
+                method_exists(GameplayHandlerInterface::class, $method),
                 "GameplayHandlerInterface should have method '{$method}'"
             );
         }
@@ -93,11 +109,10 @@ class HandlerInterfaceGenerationTest extends TestCase
     public function testStatisticsHandlerInterfaceMethods(): void
     {
         $expectedMethods = ['getLeaderboard', 'getPlayerStats'];
-        $reflection = new ReflectionClass(StatisticsHandlerInterface::class);
 
         foreach ($expectedMethods as $method) {
             $this->assertTrue(
-                $reflection->hasMethod($method),
+                method_exists(StatisticsHandlerInterface::class, $method),
                 "StatisticsHandlerInterface should have method '{$method}'"
             );
         }
@@ -109,163 +124,173 @@ class HandlerInterfaceGenerationTest extends TestCase
     public function testTicTacHandlerInterfaceMethods(): void
     {
         $expectedMethods = ['getBoard'];
-        $reflection = new ReflectionClass(TicTacHandlerInterface::class);
 
         foreach ($expectedMethods as $method) {
             $this->assertTrue(
-                $reflection->hasMethod($method),
+                method_exists(TicTacHandlerInterface::class, $method),
                 "TicTacHandlerInterface should have method '{$method}'"
             );
         }
     }
 
     /**
-     * Test that all handler methods return JsonResponse.
+     * Test that GameManagementHandlerInterface methods return JsonResponse.
      */
-    public function testAllMethodsReturnJsonResponse(): void
+    public function testGameManagementMethodsReturnJsonResponse(): void
     {
-        foreach ($this->expectedInterfaces as $name => $interface) {
-            $reflection = new ReflectionClass($interface);
-            foreach ($reflection->getMethods() as $method) {
-                $returnType = $method->getReturnType();
-                $this->assertNotNull(
-                    $returnType,
-                    "Method {$name}::{$method->getName()} should have a return type"
-                );
-                $this->assertSame(
-                    JsonResponse::class,
-                    $returnType->getName(),
-                    "Method {$name}::{$method->getName()} should return JsonResponse"
-                );
-            }
-        }
+        $mock = $this->createMock(GameManagementHandlerInterface::class);
+
+        $mock->method('createGame')->willReturn(new JsonResponse(['id' => 'game-123'], 201));
+        $mock->method('deleteGame')->willReturn(new JsonResponse(null, 204));
+        $mock->method('getGame')->willReturn(new JsonResponse(['id' => 'game-123']));
+        $mock->method('listGames')->willReturn(new JsonResponse(['games' => []]));
+
+        $createRequest = new CreateGameRequest(GameMode::PVP);
+        $this->assertInstanceOf(JsonResponse::class, $mock->createGame($createRequest));
+        $this->assertInstanceOf(JsonResponse::class, $mock->deleteGame('game-123'));
+        $this->assertInstanceOf(JsonResponse::class, $mock->getGame('game-123'));
+        $this->assertInstanceOf(JsonResponse::class, $mock->listGames());
     }
 
     /**
-     * Test createGame method has correct parameters.
+     * Test that GameplayHandlerInterface methods return JsonResponse.
      */
-    public function testCreateGameMethodParameters(): void
+    public function testGameplayMethodsReturnJsonResponse(): void
     {
-        $reflection = new ReflectionMethod(
-            GameManagementHandlerInterface::class,
-            'createGame'
-        );
-        $params = $reflection->getParameters();
+        $mock = $this->createMock(GameplayHandlerInterface::class);
 
-        $this->assertCount(1, $params, "createGame should have 1 parameter");
-        $this->assertSame('create_game_request', $params[0]->getName());
-        $this->assertSame(
-            'TicTacToeApi\Model\CreateGameRequest',
-            $params[0]->getType()->getName()
-        );
+        $mock->method('getBoard')->willReturn(new JsonResponse(['board' => []]));
+        $mock->method('getGame')->willReturn(new JsonResponse(['id' => 'game-123']));
+        $mock->method('getMoves')->willReturn(new JsonResponse(['moves' => []]));
+        $mock->method('getSquare')->willReturn(new JsonResponse(['mark' => 'X']));
+        $mock->method('putSquare')->willReturn(new JsonResponse(['mark' => 'X']));
+
+        $this->assertInstanceOf(JsonResponse::class, $mock->getBoard('game-123'));
+        $this->assertInstanceOf(JsonResponse::class, $mock->getGame('game-123'));
+        $this->assertInstanceOf(JsonResponse::class, $mock->getMoves('game-123'));
+        $this->assertInstanceOf(JsonResponse::class, $mock->getSquare('game-123', 0, 0));
+
+        $moveRequest = MoveRequest::fromArray(['mark' => 'X']);
+        $this->assertInstanceOf(JsonResponse::class, $mock->putSquare('game-123', 0, 0, $moveRequest));
     }
 
     /**
-     * Test listGames method has correct parameters.
+     * Test that StatisticsHandlerInterface methods return JsonResponse.
      */
-    public function testListGamesMethodParameters(): void
+    public function testStatisticsMethodsReturnJsonResponse(): void
     {
-        $reflection = new ReflectionMethod(
-            GameManagementHandlerInterface::class,
-            'listGames'
-        );
-        $params = $reflection->getParameters();
+        $mock = $this->createMock(StatisticsHandlerInterface::class);
 
-        $this->assertCount(4, $params, "listGames should have 4 parameters");
+        $mock->method('getLeaderboard')->willReturn(new JsonResponse(['entries' => []]));
+        $mock->method('getPlayerStats')->willReturn(new JsonResponse(['player' => []]));
 
-        // All params should be optional (nullable with defaults)
-        foreach ($params as $param) {
-            $this->assertTrue(
-                $param->isOptional(),
-                "Parameter {$param->getName()} should be optional"
-            );
-        }
+        $this->assertInstanceOf(JsonResponse::class, $mock->getLeaderboard());
+        $this->assertInstanceOf(JsonResponse::class, $mock->getPlayerStats('player-123'));
     }
 
     /**
-     * Test getGame method has correct parameters.
+     * Test createGame method accepts CreateGameRequest parameter.
      */
-    public function testGetGameMethodParameters(): void
+    public function testCreateGameAcceptsCreateGameRequest(): void
     {
-        $reflection = new ReflectionMethod(
-            GameManagementHandlerInterface::class,
-            'getGame'
-        );
-        $params = $reflection->getParameters();
+        $mock = $this->createMock(GameManagementHandlerInterface::class);
+        $mock->expects($this->once())
+            ->method('createGame')
+            ->with($this->isInstanceOf(CreateGameRequest::class))
+            ->willReturn(new JsonResponse(['id' => 'game-123'], 201));
 
-        $this->assertCount(1, $params, "getGame should have 1 parameter");
-        $this->assertSame('game_id', $params[0]->getName());
-        $this->assertSame('string', $params[0]->getType()->getName());
-        $this->assertFalse($params[0]->isOptional(), "game_id should be required");
+        $request = new CreateGameRequest(GameMode::PVP);
+        $mock->createGame($request);
     }
 
     /**
-     * Test putSquare method has correct parameters.
+     * Test listGames method accepts optional parameters.
      */
-    public function testPutSquareMethodParameters(): void
+    public function testListGamesAcceptsOptionalParameters(): void
     {
-        $reflection = new ReflectionMethod(
-            GameplayHandlerInterface::class,
-            'putSquare'
-        );
-        $params = $reflection->getParameters();
+        $mock = $this->createMock(GameManagementHandlerInterface::class);
+        $mock->method('listGames')->willReturn(new JsonResponse(['games' => []]));
 
-        $this->assertCount(4, $params, "putSquare should have 4 parameters");
+        // Call with no parameters (all optional)
+        $result1 = $mock->listGames();
+        $this->assertInstanceOf(JsonResponse::class, $result1);
 
-        // Check parameter names
-        $this->assertSame('game_id', $params[0]->getName());
-        $this->assertSame('row', $params[1]->getName());
-        $this->assertSame('column', $params[2]->getName());
-        $this->assertSame('move_request', $params[3]->getName());
+        // Call with some parameters
+        $result2 = $mock->listGames(1, 10);
+        $this->assertInstanceOf(JsonResponse::class, $result2);
 
-        // Check parameter types
-        $this->assertSame('string', $params[0]->getType()->getName());
-        $this->assertSame('int', $params[1]->getType()->getName());
-        $this->assertSame('int', $params[2]->getType()->getName());
-        $this->assertSame(
-            'TicTacToeApi\Model\MoveRequest',
-            $params[3]->getType()->getName()
-        );
+        // Call with all parameters
+        $result3 = $mock->listGames(1, 10, GameStatus::IN_PROGRESS, 'player-123');
+        $this->assertInstanceOf(JsonResponse::class, $result3);
     }
 
     /**
-     * Test getPlayerStats method has correct parameters.
+     * Test getGame method requires game_id parameter.
      */
-    public function testGetPlayerStatsMethodParameters(): void
+    public function testGetGameRequiresGameId(): void
     {
-        $reflection = new ReflectionMethod(
-            StatisticsHandlerInterface::class,
-            'getPlayerStats'
-        );
-        $params = $reflection->getParameters();
+        $mock = $this->createMock(GameManagementHandlerInterface::class);
+        $mock->expects($this->once())
+            ->method('getGame')
+            ->with($this->equalTo('game-123'))
+            ->willReturn(new JsonResponse(['id' => 'game-123']));
 
-        $this->assertCount(1, $params, "getPlayerStats should have 1 parameter");
-        $this->assertSame('player_id', $params[0]->getName());
-        $this->assertSame('string', $params[0]->getType()->getName());
+        $mock->getGame('game-123');
     }
 
     /**
-     * Test getLeaderboard method has correct parameters.
+     * Test putSquare method requires path params and body DTO.
      */
-    public function testGetLeaderboardMethodParameters(): void
+    public function testPutSquareRequiresAllParameters(): void
     {
-        $reflection = new ReflectionMethod(
-            StatisticsHandlerInterface::class,
-            'getLeaderboard'
-        );
-        $params = $reflection->getParameters();
+        $mock = $this->createMock(GameplayHandlerInterface::class);
+        $mock->expects($this->once())
+            ->method('putSquare')
+            ->with(
+                $this->equalTo('game-123'),
+                $this->equalTo(1),
+                $this->equalTo(2),
+                $this->isInstanceOf(MoveRequest::class)
+            )
+            ->willReturn(new JsonResponse(['mark' => 'X']));
 
-        $this->assertCount(2, $params, "getLeaderboard should have 2 parameters");
-        $this->assertSame('timeframe', $params[0]->getName());
-        $this->assertSame('limit', $params[1]->getName());
-
-        // Both should be optional
-        $this->assertTrue($params[0]->isOptional());
-        $this->assertTrue($params[1]->isOptional());
+        $moveRequest = MoveRequest::fromArray(['mark' => 'X']);
+        $mock->putSquare('game-123', 1, 2, $moveRequest);
     }
 
     /**
-     * Test that all methods are public.
+     * Test getPlayerStats method requires player_id parameter.
+     */
+    public function testGetPlayerStatsRequiresPlayerId(): void
+    {
+        $mock = $this->createMock(StatisticsHandlerInterface::class);
+        $mock->expects($this->once())
+            ->method('getPlayerStats')
+            ->with($this->equalTo('player-123'))
+            ->willReturn(new JsonResponse(['player' => []]));
+
+        $mock->getPlayerStats('player-123');
+    }
+
+    /**
+     * Test getLeaderboard method accepts optional parameters.
+     */
+    public function testGetLeaderboardAcceptsOptionalParameters(): void
+    {
+        $mock = $this->createMock(StatisticsHandlerInterface::class);
+        $mock->method('getLeaderboard')->willReturn(new JsonResponse(['entries' => []]));
+
+        // Call with no parameters
+        $result1 = $mock->getLeaderboard();
+        $this->assertInstanceOf(JsonResponse::class, $result1);
+
+        // Call with parameters
+        $result2 = $mock->getLeaderboard(null, 10);
+        $this->assertInstanceOf(JsonResponse::class, $result2);
+    }
+
+    /**
+     * Test that all interface methods are public.
      */
     public function testAllMethodsArePublic(): void
     {

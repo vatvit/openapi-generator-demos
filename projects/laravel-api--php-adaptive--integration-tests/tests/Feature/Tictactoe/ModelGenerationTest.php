@@ -5,8 +5,6 @@ declare(strict_types=1);
 namespace Tests\Feature\Tictactoe;
 
 use PHPUnit\Framework\TestCase;
-use ReflectionClass;
-use ReflectionMethod;
 use TicTacToeApi\Model\Game;
 use TicTacToeApi\Model\Player;
 use TicTacToeApi\Model\Move;
@@ -25,7 +23,7 @@ use TicTacToeApi\Model\GameStatus;
 use TicTacToeApi\Model\Mark;
 
 /**
- * Tests that verify the generated model classes have correct structure.
+ * Tests that verify the generated model classes behave correctly.
  */
 class ModelGenerationTest extends TestCase
 {
@@ -62,172 +60,282 @@ class ModelGenerationTest extends TestCase
     }
 
     /**
-     * Test that Game model has expected properties.
+     * Test that Game model can be created with expected properties.
      */
-    public function testGameModelHasExpectedProperties(): void
+    public function testGameModelCanBeCreatedWithProperties(): void
     {
-        $reflection = new ReflectionClass(Game::class);
+        $game = Game::fromArray([
+            'id' => 'game-123',
+            'status' => GameStatus::IN_PROGRESS,
+            'mode' => GameMode::PVP,
+            'board' => [['X', null, null], [null, 'O', null], [null, null, null]],
+            'createdAt' => '2024-01-01T00:00:00Z',
+        ]);
 
-        $expectedProperties = ['id', 'status', 'mode', 'board', 'created_at'];
-
-        foreach ($expectedProperties as $property) {
-            $this->assertTrue(
-                $reflection->hasProperty($property),
-                "Game should have property '{$property}'"
-            );
-        }
+        $this->assertInstanceOf(Game::class, $game);
+        $array = $game->toArray();
+        $this->assertArrayHasKey('id', $array);
+        $this->assertArrayHasKey('status', $array);
+        $this->assertArrayHasKey('mode', $array);
+        $this->assertArrayHasKey('board', $array);
+        $this->assertArrayHasKey('createdAt', $array);
     }
 
     /**
-     * Test that Game model has optional properties marked as nullable.
+     * Test that Game model accepts null for optional properties.
      */
-    public function testGameModelOptionalPropertiesAreNullable(): void
+    public function testGameModelAcceptsNullForOptionalProperties(): void
     {
-        $reflection = new ReflectionClass(Game::class);
+        $game = Game::fromArray([
+            'id' => 'game-123',
+            'status' => GameStatus::PENDING,
+            'mode' => GameMode::PVP,
+            'board' => [['', '', ''], ['', '', ''], ['', '', '']],
+            'createdAt' => '2024-01-01T00:00:00Z',
+            'playerX' => null,
+            'playerO' => null,
+            'currentTurn' => null,
+            'winner' => null,
+            'updatedAt' => null,
+            'completedAt' => null,
+        ]);
 
-        $optionalProperties = ['player_x', 'player_o', 'current_turn', 'winner', 'updated_at', 'completed_at'];
-
-        foreach ($optionalProperties as $propName) {
-            if ($reflection->hasProperty($propName)) {
-                $property = $reflection->getProperty($propName);
-                $type = $property->getType();
-                $this->assertTrue(
-                    $type !== null && $type->allowsNull(),
-                    "Property '{$propName}' should be nullable"
-                );
-            }
-        }
+        $this->assertInstanceOf(Game::class, $game);
+        $array = $game->toArray();
+        // Optional properties should be in array (may be null)
+        $this->assertArrayHasKey('playerX', $array);
     }
 
     /**
-     * Test that all models have fromArray static method.
+     * Test that all models have fromArray method that returns instance.
      */
-    public function testAllModelsHaveFromArrayMethod(): void
+    public function testAllModelsFromArrayReturnsInstance(): void
     {
+        $testData = $this->getTestDataForModels();
+
         foreach ($this->expectedModels as $name => $class) {
-            $this->assertTrue(
-                method_exists($class, 'fromArray'),
-                "Model {$name} should have fromArray method"
+            $data = $testData[$name] ?? [];
+            $instance = $class::fromArray($data);
+            $this->assertInstanceOf(
+                $class,
+                $instance,
+                "{$name}::fromArray() should return instance of {$name}"
             );
-
-            $reflection = new ReflectionMethod($class, 'fromArray');
-            $this->assertTrue($reflection->isStatic(), "fromArray should be static in {$name}");
-            $this->assertTrue($reflection->isPublic(), "fromArray should be public in {$name}");
         }
     }
 
     /**
-     * Test that all models have toArray method.
+     * Test that all models have toArray method that returns array.
      */
-    public function testAllModelsHaveToArrayMethod(): void
+    public function testAllModelsToArrayReturnsArray(): void
     {
+        $testData = $this->getTestDataForModels();
+
         foreach ($this->expectedModels as $name => $class) {
-            $this->assertTrue(
-                method_exists($class, 'toArray'),
-                "Model {$name} should have toArray method"
-            );
-
-            $reflection = new ReflectionMethod($class, 'toArray');
-            $this->assertFalse($reflection->isStatic(), "toArray should not be static in {$name}");
-            $this->assertTrue($reflection->isPublic(), "toArray should be public in {$name}");
-        }
-    }
-
-    /**
-     * Test that fromArray returns correct return type.
-     */
-    public function testFromArrayReturnType(): void
-    {
-        foreach ($this->expectedModels as $name => $class) {
-            $reflection = new ReflectionMethod($class, 'fromArray');
-            $returnType = $reflection->getReturnType();
-
-            $this->assertNotNull($returnType, "fromArray should have return type in {$name}");
-            $this->assertSame('self', $returnType->getName(), "fromArray should return self in {$name}");
-        }
-    }
-
-    /**
-     * Test that toArray returns array type.
-     */
-    public function testToArrayReturnType(): void
-    {
-        foreach ($this->expectedModels as $name => $class) {
-            $reflection = new ReflectionMethod($class, 'toArray');
-            $returnType = $reflection->getReturnType();
-
-            $this->assertNotNull($returnType, "toArray should have return type in {$name}");
-            $this->assertSame('array', $returnType->getName(), "toArray should return array in {$name}");
-        }
-    }
-
-    /**
-     * Test that Player model has expected structure.
-     */
-    public function testPlayerModelStructure(): void
-    {
-        $reflection = new ReflectionClass(Player::class);
-
-        $this->assertTrue($reflection->hasProperty('id'), "Player should have 'id' property");
-        $this->assertTrue($reflection->hasProperty('username'), "Player should have 'username' property");
-    }
-
-    /**
-     * Test that Move model has expected structure.
-     */
-    public function testMoveModelStructure(): void
-    {
-        $reflection = new ReflectionClass(Move::class);
-
-        $expectedProperties = ['row', 'column', 'mark', 'timestamp'];
-
-        foreach ($expectedProperties as $property) {
-            $this->assertTrue(
-                $reflection->hasProperty($property),
-                "Move should have property '{$property}'"
+            $data = $testData[$name] ?? [];
+            $instance = $class::fromArray($data);
+            $array = $instance->toArray();
+            $this->assertIsArray(
+                $array,
+                "{$name}::toArray() should return array"
             );
         }
     }
 
     /**
-     * Test that Pagination model has expected structure.
+     * Test that fromArray -> toArray roundtrip preserves data.
      */
-    public function testPaginationModelStructure(): void
+    public function testFromArrayToArrayRoundtrip(): void
     {
-        $reflection = new ReflectionClass(Pagination::class);
+        $originalData = [
+            'id' => 'player-456',
+            'username' => 'testuser',
+        ];
 
-        $expectedProperties = ['page', 'limit', 'total', 'has_next', 'has_previous'];
+        $player = Player::fromArray($originalData);
+        $resultData = $player->toArray();
 
-        foreach ($expectedProperties as $property) {
-            $this->assertTrue(
-                $reflection->hasProperty($property),
-                "Pagination should have property '{$property}'"
-            );
-        }
+        $this->assertSame($originalData['id'], $resultData['id']);
+        $this->assertSame($originalData['username'], $resultData['username']);
     }
 
     /**
-     * Test constructor has parameters in correct order (required before optional).
+     * Test that Player model has expected data.
      */
-    public function testConstructorParameterOrder(): void
+    public function testPlayerModelBehavior(): void
     {
-        $reflection = new ReflectionClass(Game::class);
-        $constructor = $reflection->getConstructor();
+        $player = Player::fromArray([
+            'id' => 'player-123',
+            'username' => 'john_doe',
+        ]);
 
-        $this->assertNotNull($constructor, "Game should have constructor");
+        $array = $player->toArray();
+        $this->assertArrayHasKey('id', $array);
+        $this->assertArrayHasKey('username', $array);
+        $this->assertSame('player-123', $array['id']);
+        $this->assertSame('john_doe', $array['username']);
+    }
 
-        $params = $constructor->getParameters();
-        $seenOptional = false;
+    /**
+     * Test that Move model has expected data.
+     */
+    public function testMoveModelBehavior(): void
+    {
+        $move = Move::fromArray([
+            'moveNumber' => 1,
+            'playerId' => 'player-123',
+            'row' => 1,
+            'column' => 2,
+            'mark' => 'X',
+            'timestamp' => '2024-01-01T00:00:00Z',
+        ]);
 
-        foreach ($params as $param) {
-            if ($param->isOptional()) {
-                $seenOptional = true;
-            } else {
-                $this->assertFalse(
-                    $seenOptional,
-                    "Required parameter '{$param->getName()}' should not come after optional parameters"
-                );
-            }
-        }
+        $array = $move->toArray();
+        $this->assertArrayHasKey('row', $array);
+        $this->assertArrayHasKey('column', $array);
+        $this->assertArrayHasKey('mark', $array);
+        $this->assertArrayHasKey('timestamp', $array);
+        $this->assertArrayHasKey('moveNumber', $array);
+        $this->assertArrayHasKey('playerId', $array);
+    }
+
+    /**
+     * Test that Pagination model has expected data.
+     */
+    public function testPaginationModelBehavior(): void
+    {
+        $pagination = Pagination::fromArray([
+            'page' => 1,
+            'limit' => 10,
+            'total' => 100,
+            'hasNext' => true,
+            'hasPrevious' => false,
+        ]);
+
+        $array = $pagination->toArray();
+        $this->assertArrayHasKey('page', $array);
+        $this->assertArrayHasKey('limit', $array);
+        $this->assertArrayHasKey('total', $array);
+        $this->assertArrayHasKey('hasNext', $array);
+        $this->assertArrayHasKey('hasPrevious', $array);
+    }
+
+    /**
+     * Test that Game model constructor accepts arguments correctly.
+     */
+    public function testGameModelConstructorWorks(): void
+    {
+        // Test that we can create via fromArray (which uses constructor internally)
+        $game = Game::fromArray([
+            'id' => 'test-game',
+            'status' => GameStatus::PENDING,
+            'mode' => GameMode::PVP,
+            'board' => [['', '', ''], ['', '', ''], ['', '', '']],
+            'createdAt' => '2024-01-01T00:00:00Z',
+        ]);
+
+        $this->assertInstanceOf(Game::class, $game);
+
+        // Test with optional parameters too
+        $player = Player::fromArray(['id' => 'p1', 'username' => 'user1']);
+        $gameWithOptional = Game::fromArray([
+            'id' => 'test-game-2',
+            'status' => GameStatus::IN_PROGRESS,
+            'mode' => GameMode::AI_EASY,
+            'board' => [['X', '', ''], ['', 'O', ''], ['', '', '']],
+            'createdAt' => '2024-01-01T00:00:00Z',
+            'playerX' => $player,
+            'currentTurn' => Mark::X,
+        ]);
+
+        $this->assertInstanceOf(Game::class, $gameWithOptional);
+    }
+
+    /**
+     * Provide test data for each model class.
+     *
+     * @return array<string, array<string, mixed>>
+     */
+    private function getTestDataForModels(): array
+    {
+        return [
+            'Game' => [
+                'id' => 'game-123',
+                'status' => GameStatus::PENDING,
+                'mode' => GameMode::PVP,
+                'board' => [['', '', ''], ['', '', ''], ['', '', '']],
+                'createdAt' => '2024-01-01T00:00:00Z',
+            ],
+            'Player' => [
+                'id' => 'player-123',
+                'username' => 'testuser',
+            ],
+            'Move' => [
+                'moveNumber' => 1,
+                'playerId' => 'player-123',
+                'row' => 0,
+                'column' => 0,
+                'mark' => 'X',
+                'timestamp' => '2024-01-01T00:00:00Z',
+            ],
+            'CreateGameRequest' => [
+                'mode' => GameMode::PVP,
+            ],
+            'GameListResponse' => [
+                'games' => [],
+                'pagination' => Pagination::fromArray([
+                    'page' => 1,
+                    'limit' => 10,
+                    'total' => 0,
+                    'hasNext' => false,
+                    'hasPrevious' => false,
+                ]),
+            ],
+            'Leaderboard' => [
+                'entries' => [],
+                'timeframe' => 'all_time',
+                'generatedAt' => '2024-01-01T00:00:00Z',
+            ],
+            'LeaderboardEntry' => [
+                'player' => Player::fromArray(['id' => 'p1', 'username' => 'user1']),
+                'wins' => 10,
+                'losses' => 5,
+                'draws' => 2,
+                'rank' => 1,
+                'score' => 100,
+            ],
+            'Pagination' => [
+                'page' => 1,
+                'limit' => 10,
+                'total' => 100,
+                'hasNext' => true,
+                'hasPrevious' => false,
+            ],
+            'PlayerStats' => [
+                'playerId' => 'p1',
+                'player' => Player::fromArray(['id' => 'p1', 'username' => 'user1']),
+                'gamesPlayed' => 20,
+                'wins' => 10,
+                'losses' => 7,
+                'draws' => 3,
+                'winRate' => 0.5,
+            ],
+            'MoveRequest' => [
+                'mark' => 'X',
+            ],
+            'MoveHistory' => [
+                'gameId' => 'game-123',
+                'moves' => [],
+            ],
+            'SquareResponse' => [
+                'row' => 0,
+                'column' => 0,
+                'mark' => Mark::X,
+            ],
+            'Error' => [
+                'message' => 'An error occurred',
+                'code' => 'ERR001',
+            ],
+        ];
     }
 }

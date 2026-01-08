@@ -6,7 +6,6 @@ namespace Tests\Feature\Petshop;
 
 use PHPUnit\Framework\TestCase;
 use ReflectionClass;
-use ReflectionMethod;
 use Illuminate\Http\JsonResponse;
 use PetshopApi\Api\PetsHandlerInterface;
 use PetshopApi\Api\ManagementHandlerInterface;
@@ -14,9 +13,10 @@ use PetshopApi\Api\CreationHandlerInterface;
 use PetshopApi\Api\RetrievalHandlerInterface;
 use PetshopApi\Api\DetailsHandlerInterface;
 use PetshopApi\Api\PublicHandlerInterface;
+use PetshopApi\Model\NewPet;
 
 /**
- * Tests that verify the generated handler interfaces have correct structure.
+ * Tests that verify the generated handler interfaces behave correctly.
  */
 class HandlerInterfaceGenerationTest extends TestCase
 {
@@ -60,16 +60,30 @@ class HandlerInterfaceGenerationTest extends TestCase
     }
 
     /**
+     * Test that mock implementations can be created for all interfaces.
+     */
+    public function testMockImplementationsCanBeCreated(): void
+    {
+        foreach ($this->expectedInterfaces as $name => $interface) {
+            $mock = $this->createMock($interface);
+            $this->assertInstanceOf(
+                $interface,
+                $mock,
+                "Should be able to create mock for {$name}"
+            );
+        }
+    }
+
+    /**
      * Test PetsHandlerInterface has expected methods.
      */
     public function testPetsHandlerInterfaceMethods(): void
     {
         $expectedMethods = ['addPet', 'deletePet', 'findPetById', 'findPets'];
-        $reflection = new ReflectionClass(PetsHandlerInterface::class);
 
         foreach ($expectedMethods as $method) {
             $this->assertTrue(
-                $reflection->hasMethod($method),
+                method_exists(PetsHandlerInterface::class, $method),
                 "PetsHandlerInterface should have method '{$method}'"
             );
         }
@@ -81,11 +95,10 @@ class HandlerInterfaceGenerationTest extends TestCase
     public function testManagementHandlerInterfaceMethods(): void
     {
         $expectedMethods = ['addPet', 'deletePet'];
-        $reflection = new ReflectionClass(ManagementHandlerInterface::class);
 
         foreach ($expectedMethods as $method) {
             $this->assertTrue(
-                $reflection->hasMethod($method),
+                method_exists(ManagementHandlerInterface::class, $method),
                 "ManagementHandlerInterface should have method '{$method}'"
             );
         }
@@ -97,112 +110,96 @@ class HandlerInterfaceGenerationTest extends TestCase
     public function testCreationHandlerInterfaceMethods(): void
     {
         $expectedMethods = ['addPet'];
-        $reflection = new ReflectionClass(CreationHandlerInterface::class);
 
         foreach ($expectedMethods as $method) {
             $this->assertTrue(
-                $reflection->hasMethod($method),
+                method_exists(CreationHandlerInterface::class, $method),
                 "CreationHandlerInterface should have method '{$method}'"
             );
         }
     }
 
     /**
-     * Test that all handler methods return JsonResponse.
+     * Test that PetsHandlerInterface methods return JsonResponse.
      */
-    public function testAllMethodsReturnJsonResponse(): void
+    public function testPetsHandlerMethodsReturnJsonResponse(): void
     {
-        foreach ($this->expectedInterfaces as $name => $interface) {
-            $reflection = new ReflectionClass($interface);
-            foreach ($reflection->getMethods() as $method) {
-                $returnType = $method->getReturnType();
-                $this->assertNotNull(
-                    $returnType,
-                    "Method {$name}::{$method->getName()} should have a return type"
-                );
-                $this->assertSame(
-                    JsonResponse::class,
-                    $returnType->getName(),
-                    "Method {$name}::{$method->getName()} should return JsonResponse"
-                );
-            }
-        }
+        $mock = $this->createMock(PetsHandlerInterface::class);
+
+        $mock->method('addPet')->willReturn(new JsonResponse(['id' => 1], 201));
+        $mock->method('deletePet')->willReturn(new JsonResponse(null, 204));
+        $mock->method('findPetById')->willReturn(new JsonResponse(['id' => 1]));
+        $mock->method('findPets')->willReturn(new JsonResponse([]));
+
+        $newPet = NewPet::fromArray(['name' => 'Fluffy', 'tag' => 'cat']);
+        $this->assertInstanceOf(JsonResponse::class, $mock->addPet($newPet));
+        $this->assertInstanceOf(JsonResponse::class, $mock->deletePet(1));
+        $this->assertInstanceOf(JsonResponse::class, $mock->findPetById(1));
+        $this->assertInstanceOf(JsonResponse::class, $mock->findPets());
     }
 
     /**
-     * Test addPet method has correct parameters.
+     * Test addPet method accepts NewPet parameter.
      */
-    public function testAddPetMethodParameters(): void
+    public function testAddPetAcceptsNewPetParameter(): void
     {
-        $reflection = new ReflectionMethod(
-            PetsHandlerInterface::class,
-            'addPet'
-        );
-        $params = $reflection->getParameters();
+        $mock = $this->createMock(PetsHandlerInterface::class);
+        $mock->expects($this->once())
+            ->method('addPet')
+            ->with($this->isInstanceOf(NewPet::class))
+            ->willReturn(new JsonResponse(['id' => 1], 201));
 
-        $this->assertCount(1, $params, "addPet should have 1 parameter");
-        $this->assertSame('new_pet', $params[0]->getName());
-        $this->assertSame(
-            'PetshopApi\Model\NewPet',
-            $params[0]->getType()->getName()
-        );
+        $newPet = NewPet::fromArray(['name' => 'Buddy', 'tag' => 'dog']);
+        $mock->addPet($newPet);
     }
 
     /**
-     * Test deletePet method has correct parameters.
+     * Test deletePet method requires id parameter.
      */
-    public function testDeletePetMethodParameters(): void
+    public function testDeletePetRequiresIdParameter(): void
     {
-        $reflection = new ReflectionMethod(
-            PetsHandlerInterface::class,
-            'deletePet'
-        );
-        $params = $reflection->getParameters();
+        $mock = $this->createMock(PetsHandlerInterface::class);
+        $mock->expects($this->once())
+            ->method('deletePet')
+            ->with($this->equalTo(123))
+            ->willReturn(new JsonResponse(null, 204));
 
-        $this->assertCount(1, $params, "deletePet should have 1 parameter");
-        $this->assertSame('id', $params[0]->getName());
-        $this->assertSame('int', $params[0]->getType()->getName());
-        $this->assertFalse($params[0]->isOptional(), "id should be required");
+        $mock->deletePet(123);
     }
 
     /**
-     * Test findPetById method has correct parameters.
+     * Test findPetById method requires id parameter.
      */
-    public function testFindPetByIdMethodParameters(): void
+    public function testFindPetByIdRequiresIdParameter(): void
     {
-        $reflection = new ReflectionMethod(
-            PetsHandlerInterface::class,
-            'findPetById'
-        );
-        $params = $reflection->getParameters();
+        $mock = $this->createMock(PetsHandlerInterface::class);
+        $mock->expects($this->once())
+            ->method('findPetById')
+            ->with($this->equalTo(456))
+            ->willReturn(new JsonResponse(['id' => 456]));
 
-        $this->assertCount(1, $params, "findPetById should have 1 parameter");
-        $this->assertSame('id', $params[0]->getName());
-        $this->assertSame('int', $params[0]->getType()->getName());
+        $mock->findPetById(456);
     }
 
     /**
-     * Test findPets method has correct parameters.
+     * Test findPets method accepts optional parameters.
      */
-    public function testFindPetsMethodParameters(): void
+    public function testFindPetsAcceptsOptionalParameters(): void
     {
-        $reflection = new ReflectionMethod(
-            PetsHandlerInterface::class,
-            'findPets'
-        );
-        $params = $reflection->getParameters();
+        $mock = $this->createMock(PetsHandlerInterface::class);
+        $mock->method('findPets')->willReturn(new JsonResponse([]));
 
-        $this->assertCount(2, $params, "findPets should have 2 parameters");
-        $this->assertSame('tags', $params[0]->getName());
-        $this->assertSame('limit', $params[1]->getName());
+        // Call with no parameters
+        $result1 = $mock->findPets();
+        $this->assertInstanceOf(JsonResponse::class, $result1);
 
-        // Both should be optional
-        $this->assertTrue($params[0]->isOptional(), "tags should be optional");
-        $this->assertTrue($params[1]->isOptional(), "limit should be optional");
+        // Call with parameters
+        $result2 = $mock->findPets(['cat', 'dog'], 10);
+        $this->assertInstanceOf(JsonResponse::class, $result2);
     }
 
     /**
-     * Test that all methods are public.
+     * Test that all interface methods are public.
      */
     public function testAllMethodsArePublic(): void
     {

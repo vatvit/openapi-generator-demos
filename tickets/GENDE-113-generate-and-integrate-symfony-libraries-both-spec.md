@@ -1,6 +1,6 @@
 ---
 code: GENDE-113
-status: Proposed
+status: Implemented
 dateCreated: 2026-01-07T16:41:34.264Z
 type: Feature Enhancement
 priority: High

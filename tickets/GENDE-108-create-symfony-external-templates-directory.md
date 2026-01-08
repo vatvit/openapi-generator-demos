@@ -1,6 +1,6 @@
 ---
 code: GENDE-108
-status: Proposed
+status: Implemented
 dateCreated: 2026-01-07T16:41:33.475Z
 type: Feature Enhancement
 priority: High

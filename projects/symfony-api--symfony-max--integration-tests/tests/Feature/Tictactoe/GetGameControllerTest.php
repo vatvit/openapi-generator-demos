@@ -58,6 +58,7 @@ class GetGameControllerTest extends TestCase
         );
         $type = $gameIdParam->getType();
         $this->assertNotNull($type, 'Path parameter should be typed');
+        $this->assertInstanceOf(\ReflectionNamedType::class, $type);
         $this->assertEquals('string', $type->getName());
     }
 

@@ -87,7 +87,7 @@ class ControllerTest extends TestCase
 
         foreach ($params as $param) {
             $type = $param->getType();
-            if ($type && $type->getName() === AddPetApiHandlerInterface::class) {
+            if ($type instanceof \ReflectionNamedType && $type->getName() === AddPetApiHandlerInterface::class) {
                 $hasHandlerParam = true;
                 break;
             }

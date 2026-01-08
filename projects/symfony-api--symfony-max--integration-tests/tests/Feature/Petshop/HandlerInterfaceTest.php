@@ -109,7 +109,9 @@ class HandlerInterfaceTest extends TestCase
         foreach ($params as $param) {
             if ($param->getName() === 'id') {
                 $hasIdParam = true;
-                $this->assertEquals('int', $param->getType()->getName(), 'id parameter should be int');
+                $type = $param->getType();
+                $this->assertInstanceOf(\ReflectionNamedType::class, $type);
+                $this->assertEquals('int', $type->getName(), 'id parameter should be int');
                 break;
             }
         }

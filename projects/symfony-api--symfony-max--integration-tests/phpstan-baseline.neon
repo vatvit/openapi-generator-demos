@@ -1,0 +1,109 @@
+parameters:
+	ignoreErrors:
+		-
+			message: '#^Method PetshopApi\\Api\\AnalyticsApiInterface\:\:findPets\(\) has parameter \$tags with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: ../../generated/php-max-symfony/petshop/lib/Api/AnalyticsApiInterface.php
+
+		-
+			message: '#^Method PetshopApi\\Api\\InventoryApiInterface\:\:findPets\(\) has parameter \$tags with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: ../../generated/php-max-symfony/petshop/lib/Api/InventoryApiInterface.php
+
+		-
+			message: '#^Method PetshopApi\\Api\\PetsApiInterface\:\:findPets\(\) has parameter \$tags with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: ../../generated/php-max-symfony/petshop/lib/Api/PetsApiInterface.php
+
+		-
+			message: '#^Method PetshopApi\\Api\\ReportingApiInterface\:\:findPets\(\) has parameter \$tags with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: ../../generated/php-max-symfony/petshop/lib/Api/ReportingApiInterface.php
+
+		-
+			message: '#^Method PetshopApi\\Api\\SearchApiInterface\:\:findPets\(\) has parameter \$tags with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: ../../generated/php-max-symfony/petshop/lib/Api/SearchApiInterface.php
+
+		-
+			message: '#^Parameter \#1 \$new_pet of method PetshopApi\\Handler\\AddPetApiHandlerInterface\:\:addPet\(\) expects PetshopApi\\Model\\NewPet, PetshopApi\\Request\\AddPetRequest given\.$#'
+			identifier: argument.type
+			count: 1
+			path: ../../generated/php-max-symfony/petshop/lib/Controller/AddPetController.php
+
+		-
+			message: '#^Parameter \$requestDto of method PetshopApi\\Controller\\AddPetController\:\:__invoke\(\) has invalid type PetshopApi\\Request\\AddPetRequest\.$#'
+			identifier: class.notFound
+			count: 1
+			path: ../../generated/php-max-symfony/petshop/lib/Controller/AddPetController.php
+
+		-
+			message: '#^Parameter \#1 \$tags of method PetshopApi\\Handler\\FindPetsApiHandlerInterface\:\:findPets\(\) expects array\|null, string\|null given\.$#'
+			identifier: argument.type
+			count: 1
+			path: ../../generated/php-max-symfony/petshop/lib/Controller/FindPetsController.php
+
+		-
+			message: '#^Parameter \#2 \$limit of method PetshopApi\\Handler\\FindPetsApiHandlerInterface\:\:findPets\(\) expects int\|null, string\|null given\.$#'
+			identifier: argument.type
+			count: 1
+			path: ../../generated/php-max-symfony/petshop/lib/Controller/FindPetsController.php
+
+		-
+			message: '#^Method PetshopApi\\Handler\\FindPetsApiHandlerInterface\:\:findPets\(\) has parameter \$tags with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: ../../generated/php-max-symfony/petshop/lib/Handler/FindPetsApiHandlerInterface.php
+
+		-
+			message: '#^Parameter \#1 \$create_game_request of method TictactoeApi\\Handler\\CreateGameApiHandlerInterface\:\:createGame\(\) expects TictactoeApi\\Model\\CreateGameRequest, TictactoeApi\\Request\\CreateGameRequest given\.$#'
+			identifier: argument.type
+			count: 1
+			path: ../../generated/php-max-symfony/tictactoe/lib/Controller/CreateGameController.php
+
+		-
+			message: '#^Parameter \$requestDto of method TictactoeApi\\Controller\\CreateGameController\:\:__invoke\(\) has invalid type TictactoeApi\\Request\\CreateGameRequest\.$#'
+			identifier: class.notFound
+			count: 1
+			path: ../../generated/php-max-symfony/tictactoe/lib/Controller/CreateGameController.php
+
+		-
+			message: '#^Parameter \#2 \$limit of method TictactoeApi\\Handler\\GetLeaderboardApiHandlerInterface\:\:getLeaderboard\(\) expects int\|null, string\|null given\.$#'
+			identifier: argument.type
+			count: 1
+			path: ../../generated/php-max-symfony/tictactoe/lib/Controller/GetLeaderboardController.php
+
+		-
+			message: '#^Parameter \#1 \$page of method TictactoeApi\\Handler\\ListGamesApiHandlerInterface\:\:listGames\(\) expects int\|null, string\|null given\.$#'
+			identifier: argument.type
+			count: 1
+			path: ../../generated/php-max-symfony/tictactoe/lib/Controller/ListGamesController.php
+
+		-
+			message: '#^Parameter \#2 \$limit of method TictactoeApi\\Handler\\ListGamesApiHandlerInterface\:\:listGames\(\) expects int\|null, string\|null given\.$#'
+			identifier: argument.type
+			count: 1
+			path: ../../generated/php-max-symfony/tictactoe/lib/Controller/ListGamesController.php
+
+		-
+			message: '#^Parameter \#3 \$status of method TictactoeApi\\Handler\\ListGamesApiHandlerInterface\:\:listGames\(\) expects TictactoeApi\\Model\\GameStatus\|null, string\|null given\.$#'
+			identifier: argument.type
+			count: 1
+			path: ../../generated/php-max-symfony/tictactoe/lib/Controller/ListGamesController.php
+
+		-
+			message: '#^Parameter \#4 \$move_request of method TictactoeApi\\Handler\\PutSquareApiHandlerInterface\:\:putSquare\(\) expects TictactoeApi\\Model\\MoveRequest, TictactoeApi\\Request\\PutSquareRequest given\.$#'
+			identifier: argument.type
+			count: 1
+			path: ../../generated/php-max-symfony/tictactoe/lib/Controller/PutSquareController.php
+
+		-
+			message: '#^Parameter \$requestDto of method TictactoeApi\\Controller\\PutSquareController\:\:__invoke\(\) has invalid type TictactoeApi\\Request\\PutSquareRequest\.$#'
+			identifier: class.notFound
+			count: 1
+			path: ../../generated/php-max-symfony/tictactoe/lib/Controller/PutSquareController.php

@@ -1,6 +1,6 @@
 ---
 code: GENDE-121
-status: Proposed
+status: Implemented
 dateCreated: 2026-01-07T16:42:24.714Z
 type: Feature Enhancement
 priority: High

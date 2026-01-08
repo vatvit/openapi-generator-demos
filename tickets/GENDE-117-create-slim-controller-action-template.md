@@ -1,6 +1,6 @@
 ---
 code: GENDE-117
-status: Proposed
+status: Implemented
 dateCreated: 2026-01-07T16:42:24.051Z
 type: Feature Enhancement
 priority: High

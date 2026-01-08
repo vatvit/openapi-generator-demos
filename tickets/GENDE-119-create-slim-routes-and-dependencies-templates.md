@@ -1,6 +1,6 @@
 ---
 code: GENDE-119
-status: Proposed
+status: Implemented
 dateCreated: 2026-01-07T16:42:24.376Z
 type: Feature Enhancement
 priority: High

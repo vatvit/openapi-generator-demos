@@ -1,0 +1,547 @@
+parameters:
+	ignoreErrors:
+		-
+			message: '#^Method PetshopApi\\Api\\AnalyticsApiInterface\:\:findPets\(\) has parameter \$tags with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: ../../generated/php-max-slim/petshop/lib/Api/AnalyticsApiInterface.php
+
+		-
+			message: '#^Method PetshopApi\\Api\\InventoryApiInterface\:\:findPets\(\) has parameter \$tags with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: ../../generated/php-max-slim/petshop/lib/Api/InventoryApiInterface.php
+
+		-
+			message: '#^Method PetshopApi\\Api\\PetsApiInterface\:\:findPets\(\) has parameter \$tags with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: ../../generated/php-max-slim/petshop/lib/Api/PetsApiInterface.php
+
+		-
+			message: '#^Method PetshopApi\\Api\\ReportingApiInterface\:\:findPets\(\) has parameter \$tags with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: ../../generated/php-max-slim/petshop/lib/Api/ReportingApiInterface.php
+
+		-
+			message: '#^Method PetshopApi\\Api\\SearchApiInterface\:\:findPets\(\) has parameter \$tags with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: ../../generated/php-max-slim/petshop/lib/Api/SearchApiInterface.php
+
+		-
+			message: '#^Call to method addPet\(\) on an unknown class PetshopApi\\Api\\AddPetHandlerServiceInterface\.$#'
+			identifier: class.notFound
+			count: 1
+			path: ../../generated/php-max-slim/petshop/lib/Handler/AddPetHandler.php
+
+		-
+			message: '#^Call to method validate\(\) on an unknown class PetshopApi\\Handler\\AddPetValidator\.$#'
+			identifier: class.notFound
+			count: 1
+			path: ../../generated/php-max-slim/petshop/lib/Handler/AddPetHandler.php
+
+		-
+			message: '#^Parameter \$service of method PetshopApi\\Handler\\AddPetHandler\:\:__construct\(\) has invalid type PetshopApi\\Api\\AddPetHandlerServiceInterface\.$#'
+			identifier: class.notFound
+			count: 1
+			path: ../../generated/php-max-slim/petshop/lib/Handler/AddPetHandler.php
+
+		-
+			message: '#^Parameter \$validator of method PetshopApi\\Handler\\AddPetHandler\:\:__construct\(\) has invalid type PetshopApi\\Handler\\AddPetValidator\.$#'
+			identifier: class.notFound
+			count: 1
+			path: ../../generated/php-max-slim/petshop/lib/Handler/AddPetHandler.php
+
+		-
+			message: '#^Property PetshopApi\\Handler\\AddPetHandler\:\:\$service has unknown class PetshopApi\\Api\\AddPetHandlerServiceInterface as its type\.$#'
+			identifier: class.notFound
+			count: 1
+			path: ../../generated/php-max-slim/petshop/lib/Handler/AddPetHandler.php
+
+		-
+			message: '#^Property PetshopApi\\Handler\\AddPetHandler\:\:\$validator has unknown class PetshopApi\\Handler\\AddPetValidator as its type\.$#'
+			identifier: class.notFound
+			count: 1
+			path: ../../generated/php-max-slim/petshop/lib/Handler/AddPetHandler.php
+
+		-
+			message: '#^Call to method deletePet\(\) on an unknown class PetshopApi\\Api\\DeletePetHandlerServiceInterface\.$#'
+			identifier: class.notFound
+			count: 1
+			path: ../../generated/php-max-slim/petshop/lib/Handler/DeletePetHandler.php
+
+		-
+			message: '#^Call to method validate\(\) on an unknown class PetshopApi\\Handler\\DeletePetValidator\.$#'
+			identifier: class.notFound
+			count: 1
+			path: ../../generated/php-max-slim/petshop/lib/Handler/DeletePetHandler.php
+
+		-
+			message: '#^Parameter \$service of method PetshopApi\\Handler\\DeletePetHandler\:\:__construct\(\) has invalid type PetshopApi\\Api\\DeletePetHandlerServiceInterface\.$#'
+			identifier: class.notFound
+			count: 1
+			path: ../../generated/php-max-slim/petshop/lib/Handler/DeletePetHandler.php
+
+		-
+			message: '#^Parameter \$validator of method PetshopApi\\Handler\\DeletePetHandler\:\:__construct\(\) has invalid type PetshopApi\\Handler\\DeletePetValidator\.$#'
+			identifier: class.notFound
+			count: 1
+			path: ../../generated/php-max-slim/petshop/lib/Handler/DeletePetHandler.php
+
+		-
+			message: '#^Property PetshopApi\\Handler\\DeletePetHandler\:\:\$service has unknown class PetshopApi\\Api\\DeletePetHandlerServiceInterface as its type\.$#'
+			identifier: class.notFound
+			count: 1
+			path: ../../generated/php-max-slim/petshop/lib/Handler/DeletePetHandler.php
+
+		-
+			message: '#^Property PetshopApi\\Handler\\DeletePetHandler\:\:\$validator has unknown class PetshopApi\\Handler\\DeletePetValidator as its type\.$#'
+			identifier: class.notFound
+			count: 1
+			path: ../../generated/php-max-slim/petshop/lib/Handler/DeletePetHandler.php
+
+		-
+			message: '#^Call to method findPetById\(\) on an unknown class PetshopApi\\Api\\FindPetByIdHandlerServiceInterface\.$#'
+			identifier: class.notFound
+			count: 1
+			path: ../../generated/php-max-slim/petshop/lib/Handler/FindPetByIdHandler.php
+
+		-
+			message: '#^Call to method validate\(\) on an unknown class PetshopApi\\Handler\\FindPetByIdValidator\.$#'
+			identifier: class.notFound
+			count: 1
+			path: ../../generated/php-max-slim/petshop/lib/Handler/FindPetByIdHandler.php
+
+		-
+			message: '#^Parameter \$service of method PetshopApi\\Handler\\FindPetByIdHandler\:\:__construct\(\) has invalid type PetshopApi\\Api\\FindPetByIdHandlerServiceInterface\.$#'
+			identifier: class.notFound
+			count: 1
+			path: ../../generated/php-max-slim/petshop/lib/Handler/FindPetByIdHandler.php
+
+		-
+			message: '#^Parameter \$validator of method PetshopApi\\Handler\\FindPetByIdHandler\:\:__construct\(\) has invalid type PetshopApi\\Handler\\FindPetByIdValidator\.$#'
+			identifier: class.notFound
+			count: 1
+			path: ../../generated/php-max-slim/petshop/lib/Handler/FindPetByIdHandler.php
+
+		-
+			message: '#^Property PetshopApi\\Handler\\FindPetByIdHandler\:\:\$service has unknown class PetshopApi\\Api\\FindPetByIdHandlerServiceInterface as its type\.$#'
+			identifier: class.notFound
+			count: 1
+			path: ../../generated/php-max-slim/petshop/lib/Handler/FindPetByIdHandler.php
+
+		-
+			message: '#^Property PetshopApi\\Handler\\FindPetByIdHandler\:\:\$validator has unknown class PetshopApi\\Handler\\FindPetByIdValidator as its type\.$#'
+			identifier: class.notFound
+			count: 1
+			path: ../../generated/php-max-slim/petshop/lib/Handler/FindPetByIdHandler.php
+
+		-
+			message: '#^Call to method findPets\(\) on an unknown class PetshopApi\\Api\\FindPetsHandlerServiceInterface\.$#'
+			identifier: class.notFound
+			count: 1
+			path: ../../generated/php-max-slim/petshop/lib/Handler/FindPetsHandler.php
+
+		-
+			message: '#^Call to method validate\(\) on an unknown class PetshopApi\\Handler\\FindPetsValidator\.$#'
+			identifier: class.notFound
+			count: 1
+			path: ../../generated/php-max-slim/petshop/lib/Handler/FindPetsHandler.php
+
+		-
+			message: '#^Parameter \$service of method PetshopApi\\Handler\\FindPetsHandler\:\:__construct\(\) has invalid type PetshopApi\\Api\\FindPetsHandlerServiceInterface\.$#'
+			identifier: class.notFound
+			count: 1
+			path: ../../generated/php-max-slim/petshop/lib/Handler/FindPetsHandler.php
+
+		-
+			message: '#^Parameter \$validator of method PetshopApi\\Handler\\FindPetsHandler\:\:__construct\(\) has invalid type PetshopApi\\Handler\\FindPetsValidator\.$#'
+			identifier: class.notFound
+			count: 1
+			path: ../../generated/php-max-slim/petshop/lib/Handler/FindPetsHandler.php
+
+		-
+			message: '#^Property PetshopApi\\Handler\\FindPetsHandler\:\:\$service has unknown class PetshopApi\\Api\\FindPetsHandlerServiceInterface as its type\.$#'
+			identifier: class.notFound
+			count: 1
+			path: ../../generated/php-max-slim/petshop/lib/Handler/FindPetsHandler.php
+
+		-
+			message: '#^Property PetshopApi\\Handler\\FindPetsHandler\:\:\$validator has unknown class PetshopApi\\Handler\\FindPetsValidator as its type\.$#'
+			identifier: class.notFound
+			count: 1
+			path: ../../generated/php-max-slim/petshop/lib/Handler/FindPetsHandler.php
+
+		-
+			message: '#^Call to method createGame\(\) on an unknown class TictactoeApi\\Api\\CreateGameHandlerServiceInterface\.$#'
+			identifier: class.notFound
+			count: 1
+			path: ../../generated/php-max-slim/tictactoe/lib/Handler/CreateGameHandler.php
+
+		-
+			message: '#^Call to method validate\(\) on an unknown class TictactoeApi\\Handler\\CreateGameValidator\.$#'
+			identifier: class.notFound
+			count: 1
+			path: ../../generated/php-max-slim/tictactoe/lib/Handler/CreateGameHandler.php
+
+		-
+			message: '#^Parameter \$service of method TictactoeApi\\Handler\\CreateGameHandler\:\:__construct\(\) has invalid type TictactoeApi\\Api\\CreateGameHandlerServiceInterface\.$#'
+			identifier: class.notFound
+			count: 1
+			path: ../../generated/php-max-slim/tictactoe/lib/Handler/CreateGameHandler.php
+
+		-
+			message: '#^Parameter \$validator of method TictactoeApi\\Handler\\CreateGameHandler\:\:__construct\(\) has invalid type TictactoeApi\\Handler\\CreateGameValidator\.$#'
+			identifier: class.notFound
+			count: 1
+			path: ../../generated/php-max-slim/tictactoe/lib/Handler/CreateGameHandler.php
+
+		-
+			message: '#^Property TictactoeApi\\Handler\\CreateGameHandler\:\:\$service has unknown class TictactoeApi\\Api\\CreateGameHandlerServiceInterface as its type\.$#'
+			identifier: class.notFound
+			count: 1
+			path: ../../generated/php-max-slim/tictactoe/lib/Handler/CreateGameHandler.php
+
+		-
+			message: '#^Property TictactoeApi\\Handler\\CreateGameHandler\:\:\$validator has unknown class TictactoeApi\\Handler\\CreateGameValidator as its type\.$#'
+			identifier: class.notFound
+			count: 1
+			path: ../../generated/php-max-slim/tictactoe/lib/Handler/CreateGameHandler.php
+
+		-
+			message: '#^Call to method deleteGame\(\) on an unknown class TictactoeApi\\Api\\DeleteGameHandlerServiceInterface\.$#'
+			identifier: class.notFound
+			count: 1
+			path: ../../generated/php-max-slim/tictactoe/lib/Handler/DeleteGameHandler.php
+
+		-
+			message: '#^Call to method validate\(\) on an unknown class TictactoeApi\\Handler\\DeleteGameValidator\.$#'
+			identifier: class.notFound
+			count: 1
+			path: ../../generated/php-max-slim/tictactoe/lib/Handler/DeleteGameHandler.php
+
+		-
+			message: '#^Parameter \$service of method TictactoeApi\\Handler\\DeleteGameHandler\:\:__construct\(\) has invalid type TictactoeApi\\Api\\DeleteGameHandlerServiceInterface\.$#'
+			identifier: class.notFound
+			count: 1
+			path: ../../generated/php-max-slim/tictactoe/lib/Handler/DeleteGameHandler.php
+
+		-
+			message: '#^Parameter \$validator of method TictactoeApi\\Handler\\DeleteGameHandler\:\:__construct\(\) has invalid type TictactoeApi\\Handler\\DeleteGameValidator\.$#'
+			identifier: class.notFound
+			count: 1
+			path: ../../generated/php-max-slim/tictactoe/lib/Handler/DeleteGameHandler.php
+
+		-
+			message: '#^Property TictactoeApi\\Handler\\DeleteGameHandler\:\:\$service has unknown class TictactoeApi\\Api\\DeleteGameHandlerServiceInterface as its type\.$#'
+			identifier: class.notFound
+			count: 1
+			path: ../../generated/php-max-slim/tictactoe/lib/Handler/DeleteGameHandler.php
+
+		-
+			message: '#^Property TictactoeApi\\Handler\\DeleteGameHandler\:\:\$validator has unknown class TictactoeApi\\Handler\\DeleteGameValidator as its type\.$#'
+			identifier: class.notFound
+			count: 1
+			path: ../../generated/php-max-slim/tictactoe/lib/Handler/DeleteGameHandler.php
+
+		-
+			message: '#^Call to method getBoard\(\) on an unknown class TictactoeApi\\Api\\GetBoardHandlerServiceInterface\.$#'
+			identifier: class.notFound
+			count: 1
+			path: ../../generated/php-max-slim/tictactoe/lib/Handler/GetBoardHandler.php
+
+		-
+			message: '#^Call to method validate\(\) on an unknown class TictactoeApi\\Handler\\GetBoardValidator\.$#'
+			identifier: class.notFound
+			count: 1
+			path: ../../generated/php-max-slim/tictactoe/lib/Handler/GetBoardHandler.php
+
+		-
+			message: '#^Parameter \$service of method TictactoeApi\\Handler\\GetBoardHandler\:\:__construct\(\) has invalid type TictactoeApi\\Api\\GetBoardHandlerServiceInterface\.$#'
+			identifier: class.notFound
+			count: 1
+			path: ../../generated/php-max-slim/tictactoe/lib/Handler/GetBoardHandler.php
+
+		-
+			message: '#^Parameter \$validator of method TictactoeApi\\Handler\\GetBoardHandler\:\:__construct\(\) has invalid type TictactoeApi\\Handler\\GetBoardValidator\.$#'
+			identifier: class.notFound
+			count: 1
+			path: ../../generated/php-max-slim/tictactoe/lib/Handler/GetBoardHandler.php
+
+		-
+			message: '#^Property TictactoeApi\\Handler\\GetBoardHandler\:\:\$service has unknown class TictactoeApi\\Api\\GetBoardHandlerServiceInterface as its type\.$#'
+			identifier: class.notFound
+			count: 1
+			path: ../../generated/php-max-slim/tictactoe/lib/Handler/GetBoardHandler.php
+
+		-
+			message: '#^Property TictactoeApi\\Handler\\GetBoardHandler\:\:\$validator has unknown class TictactoeApi\\Handler\\GetBoardValidator as its type\.$#'
+			identifier: class.notFound
+			count: 1
+			path: ../../generated/php-max-slim/tictactoe/lib/Handler/GetBoardHandler.php
+
+		-
+			message: '#^Call to method getGame\(\) on an unknown class TictactoeApi\\Api\\GetGameHandlerServiceInterface\.$#'
+			identifier: class.notFound
+			count: 1
+			path: ../../generated/php-max-slim/tictactoe/lib/Handler/GetGameHandler.php
+
+		-
+			message: '#^Call to method validate\(\) on an unknown class TictactoeApi\\Handler\\GetGameValidator\.$#'
+			identifier: class.notFound
+			count: 1
+			path: ../../generated/php-max-slim/tictactoe/lib/Handler/GetGameHandler.php
+
+		-
+			message: '#^Parameter \$service of method TictactoeApi\\Handler\\GetGameHandler\:\:__construct\(\) has invalid type TictactoeApi\\Api\\GetGameHandlerServiceInterface\.$#'
+			identifier: class.notFound
+			count: 1
+			path: ../../generated/php-max-slim/tictactoe/lib/Handler/GetGameHandler.php
+
+		-
+			message: '#^Parameter \$validator of method TictactoeApi\\Handler\\GetGameHandler\:\:__construct\(\) has invalid type TictactoeApi\\Handler\\GetGameValidator\.$#'
+			identifier: class.notFound
+			count: 1
+			path: ../../generated/php-max-slim/tictactoe/lib/Handler/GetGameHandler.php
+
+		-
+			message: '#^Property TictactoeApi\\Handler\\GetGameHandler\:\:\$service has unknown class TictactoeApi\\Api\\GetGameHandlerServiceInterface as its type\.$#'
+			identifier: class.notFound
+			count: 1
+			path: ../../generated/php-max-slim/tictactoe/lib/Handler/GetGameHandler.php
+
+		-
+			message: '#^Property TictactoeApi\\Handler\\GetGameHandler\:\:\$validator has unknown class TictactoeApi\\Handler\\GetGameValidator as its type\.$#'
+			identifier: class.notFound
+			count: 1
+			path: ../../generated/php-max-slim/tictactoe/lib/Handler/GetGameHandler.php
+
+		-
+			message: '#^Call to method getLeaderboard\(\) on an unknown class TictactoeApi\\Api\\GetLeaderboardHandlerServiceInterface\.$#'
+			identifier: class.notFound
+			count: 1
+			path: ../../generated/php-max-slim/tictactoe/lib/Handler/GetLeaderboardHandler.php
+
+		-
+			message: '#^Call to method validate\(\) on an unknown class TictactoeApi\\Handler\\GetLeaderboardValidator\.$#'
+			identifier: class.notFound
+			count: 1
+			path: ../../generated/php-max-slim/tictactoe/lib/Handler/GetLeaderboardHandler.php
+
+		-
+			message: '#^Parameter \$service of method TictactoeApi\\Handler\\GetLeaderboardHandler\:\:__construct\(\) has invalid type TictactoeApi\\Api\\GetLeaderboardHandlerServiceInterface\.$#'
+			identifier: class.notFound
+			count: 1
+			path: ../../generated/php-max-slim/tictactoe/lib/Handler/GetLeaderboardHandler.php
+
+		-
+			message: '#^Parameter \$validator of method TictactoeApi\\Handler\\GetLeaderboardHandler\:\:__construct\(\) has invalid type TictactoeApi\\Handler\\GetLeaderboardValidator\.$#'
+			identifier: class.notFound
+			count: 1
+			path: ../../generated/php-max-slim/tictactoe/lib/Handler/GetLeaderboardHandler.php
+
+		-
+			message: '#^Property TictactoeApi\\Handler\\GetLeaderboardHandler\:\:\$service has unknown class TictactoeApi\\Api\\GetLeaderboardHandlerServiceInterface as its type\.$#'
+			identifier: class.notFound
+			count: 1
+			path: ../../generated/php-max-slim/tictactoe/lib/Handler/GetLeaderboardHandler.php
+
+		-
+			message: '#^Property TictactoeApi\\Handler\\GetLeaderboardHandler\:\:\$validator has unknown class TictactoeApi\\Handler\\GetLeaderboardValidator as its type\.$#'
+			identifier: class.notFound
+			count: 1
+			path: ../../generated/php-max-slim/tictactoe/lib/Handler/GetLeaderboardHandler.php
+
+		-
+			message: '#^Strict comparison using \!\=\= between mixed and null will always evaluate to true\.$#'
+			identifier: notIdentical.alwaysTrue
+			count: 1
+			path: ../../generated/php-max-slim/tictactoe/lib/Handler/GetLeaderboardHandler.php
+
+		-
+			message: '#^Call to method getMoves\(\) on an unknown class TictactoeApi\\Api\\GetMovesHandlerServiceInterface\.$#'
+			identifier: class.notFound
+			count: 1
+			path: ../../generated/php-max-slim/tictactoe/lib/Handler/GetMovesHandler.php
+
+		-
+			message: '#^Call to method validate\(\) on an unknown class TictactoeApi\\Handler\\GetMovesValidator\.$#'
+			identifier: class.notFound
+			count: 1
+			path: ../../generated/php-max-slim/tictactoe/lib/Handler/GetMovesHandler.php
+
+		-
+			message: '#^Parameter \$service of method TictactoeApi\\Handler\\GetMovesHandler\:\:__construct\(\) has invalid type TictactoeApi\\Api\\GetMovesHandlerServiceInterface\.$#'
+			identifier: class.notFound
+			count: 1
+			path: ../../generated/php-max-slim/tictactoe/lib/Handler/GetMovesHandler.php
+
+		-
+			message: '#^Parameter \$validator of method TictactoeApi\\Handler\\GetMovesHandler\:\:__construct\(\) has invalid type TictactoeApi\\Handler\\GetMovesValidator\.$#'
+			identifier: class.notFound
+			count: 1
+			path: ../../generated/php-max-slim/tictactoe/lib/Handler/GetMovesHandler.php
+
+		-
+			message: '#^Property TictactoeApi\\Handler\\GetMovesHandler\:\:\$service has unknown class TictactoeApi\\Api\\GetMovesHandlerServiceInterface as its type\.$#'
+			identifier: class.notFound
+			count: 1
+			path: ../../generated/php-max-slim/tictactoe/lib/Handler/GetMovesHandler.php
+
+		-
+			message: '#^Property TictactoeApi\\Handler\\GetMovesHandler\:\:\$validator has unknown class TictactoeApi\\Handler\\GetMovesValidator as its type\.$#'
+			identifier: class.notFound
+			count: 1
+			path: ../../generated/php-max-slim/tictactoe/lib/Handler/GetMovesHandler.php
+
+		-
+			message: '#^Call to method getPlayerStats\(\) on an unknown class TictactoeApi\\Api\\GetPlayerStatsHandlerServiceInterface\.$#'
+			identifier: class.notFound
+			count: 1
+			path: ../../generated/php-max-slim/tictactoe/lib/Handler/GetPlayerStatsHandler.php
+
+		-
+			message: '#^Call to method validate\(\) on an unknown class TictactoeApi\\Handler\\GetPlayerStatsValidator\.$#'
+			identifier: class.notFound
+			count: 1
+			path: ../../generated/php-max-slim/tictactoe/lib/Handler/GetPlayerStatsHandler.php
+
+		-
+			message: '#^Parameter \$service of method TictactoeApi\\Handler\\GetPlayerStatsHandler\:\:__construct\(\) has invalid type TictactoeApi\\Api\\GetPlayerStatsHandlerServiceInterface\.$#'
+			identifier: class.notFound
+			count: 1
+			path: ../../generated/php-max-slim/tictactoe/lib/Handler/GetPlayerStatsHandler.php
+
+		-
+			message: '#^Parameter \$validator of method TictactoeApi\\Handler\\GetPlayerStatsHandler\:\:__construct\(\) has invalid type TictactoeApi\\Handler\\GetPlayerStatsValidator\.$#'
+			identifier: class.notFound
+			count: 1
+			path: ../../generated/php-max-slim/tictactoe/lib/Handler/GetPlayerStatsHandler.php
+
+		-
+			message: '#^Property TictactoeApi\\Handler\\GetPlayerStatsHandler\:\:\$service has unknown class TictactoeApi\\Api\\GetPlayerStatsHandlerServiceInterface as its type\.$#'
+			identifier: class.notFound
+			count: 1
+			path: ../../generated/php-max-slim/tictactoe/lib/Handler/GetPlayerStatsHandler.php
+
+		-
+			message: '#^Property TictactoeApi\\Handler\\GetPlayerStatsHandler\:\:\$validator has unknown class TictactoeApi\\Handler\\GetPlayerStatsValidator as its type\.$#'
+			identifier: class.notFound
+			count: 1
+			path: ../../generated/php-max-slim/tictactoe/lib/Handler/GetPlayerStatsHandler.php
+
+		-
+			message: '#^Call to method getSquare\(\) on an unknown class TictactoeApi\\Api\\GetSquareHandlerServiceInterface\.$#'
+			identifier: class.notFound
+			count: 1
+			path: ../../generated/php-max-slim/tictactoe/lib/Handler/GetSquareHandler.php
+
+		-
+			message: '#^Call to method validate\(\) on an unknown class TictactoeApi\\Handler\\GetSquareValidator\.$#'
+			identifier: class.notFound
+			count: 1
+			path: ../../generated/php-max-slim/tictactoe/lib/Handler/GetSquareHandler.php
+
+		-
+			message: '#^Parameter \$service of method TictactoeApi\\Handler\\GetSquareHandler\:\:__construct\(\) has invalid type TictactoeApi\\Api\\GetSquareHandlerServiceInterface\.$#'
+			identifier: class.notFound
+			count: 1
+			path: ../../generated/php-max-slim/tictactoe/lib/Handler/GetSquareHandler.php
+
+		-
+			message: '#^Parameter \$validator of method TictactoeApi\\Handler\\GetSquareHandler\:\:__construct\(\) has invalid type TictactoeApi\\Handler\\GetSquareValidator\.$#'
+			identifier: class.notFound
+			count: 1
+			path: ../../generated/php-max-slim/tictactoe/lib/Handler/GetSquareHandler.php
+
+		-
+			message: '#^Property TictactoeApi\\Handler\\GetSquareHandler\:\:\$service has unknown class TictactoeApi\\Api\\GetSquareHandlerServiceInterface as its type\.$#'
+			identifier: class.notFound
+			count: 1
+			path: ../../generated/php-max-slim/tictactoe/lib/Handler/GetSquareHandler.php
+
+		-
+			message: '#^Property TictactoeApi\\Handler\\GetSquareHandler\:\:\$validator has unknown class TictactoeApi\\Handler\\GetSquareValidator as its type\.$#'
+			identifier: class.notFound
+			count: 1
+			path: ../../generated/php-max-slim/tictactoe/lib/Handler/GetSquareHandler.php
+
+		-
+			message: '#^Call to method listGames\(\) on an unknown class TictactoeApi\\Api\\ListGamesHandlerServiceInterface\.$#'
+			identifier: class.notFound
+			count: 1
+			path: ../../generated/php-max-slim/tictactoe/lib/Handler/ListGamesHandler.php
+
+		-
+			message: '#^Call to method validate\(\) on an unknown class TictactoeApi\\Handler\\ListGamesValidator\.$#'
+			identifier: class.notFound
+			count: 1
+			path: ../../generated/php-max-slim/tictactoe/lib/Handler/ListGamesHandler.php
+
+		-
+			message: '#^Parameter \$service of method TictactoeApi\\Handler\\ListGamesHandler\:\:__construct\(\) has invalid type TictactoeApi\\Api\\ListGamesHandlerServiceInterface\.$#'
+			identifier: class.notFound
+			count: 1
+			path: ../../generated/php-max-slim/tictactoe/lib/Handler/ListGamesHandler.php
+
+		-
+			message: '#^Parameter \$validator of method TictactoeApi\\Handler\\ListGamesHandler\:\:__construct\(\) has invalid type TictactoeApi\\Handler\\ListGamesValidator\.$#'
+			identifier: class.notFound
+			count: 1
+			path: ../../generated/php-max-slim/tictactoe/lib/Handler/ListGamesHandler.php
+
+		-
+			message: '#^Property TictactoeApi\\Handler\\ListGamesHandler\:\:\$service has unknown class TictactoeApi\\Api\\ListGamesHandlerServiceInterface as its type\.$#'
+			identifier: class.notFound
+			count: 1
+			path: ../../generated/php-max-slim/tictactoe/lib/Handler/ListGamesHandler.php
+
+		-
+			message: '#^Property TictactoeApi\\Handler\\ListGamesHandler\:\:\$validator has unknown class TictactoeApi\\Handler\\ListGamesValidator as its type\.$#'
+			identifier: class.notFound
+			count: 1
+			path: ../../generated/php-max-slim/tictactoe/lib/Handler/ListGamesHandler.php
+
+		-
+			message: '#^Strict comparison using \!\=\= between mixed and null will always evaluate to true\.$#'
+			identifier: notIdentical.alwaysTrue
+			count: 2
+			path: ../../generated/php-max-slim/tictactoe/lib/Handler/ListGamesHandler.php
+
+		-
+			message: '#^Call to method putSquare\(\) on an unknown class TictactoeApi\\Api\\PutSquareHandlerServiceInterface\.$#'
+			identifier: class.notFound
+			count: 1
+			path: ../../generated/php-max-slim/tictactoe/lib/Handler/PutSquareHandler.php
+
+		-
+			message: '#^Call to method validate\(\) on an unknown class TictactoeApi\\Handler\\PutSquareValidator\.$#'
+			identifier: class.notFound
+			count: 1
+			path: ../../generated/php-max-slim/tictactoe/lib/Handler/PutSquareHandler.php
+
+		-
+			message: '#^Parameter \$service of method TictactoeApi\\Handler\\PutSquareHandler\:\:__construct\(\) has invalid type TictactoeApi\\Api\\PutSquareHandlerServiceInterface\.$#'
+			identifier: class.notFound
+			count: 1
+			path: ../../generated/php-max-slim/tictactoe/lib/Handler/PutSquareHandler.php
+
+		-
+			message: '#^Parameter \$validator of method TictactoeApi\\Handler\\PutSquareHandler\:\:__construct\(\) has invalid type TictactoeApi\\Handler\\PutSquareValidator\.$#'
+			identifier: class.notFound
+			count: 1
+			path: ../../generated/php-max-slim/tictactoe/lib/Handler/PutSquareHandler.php
+
+		-
+			message: '#^Property TictactoeApi\\Handler\\PutSquareHandler\:\:\$service has unknown class TictactoeApi\\Api\\PutSquareHandlerServiceInterface as its type\.$#'
+			identifier: class.notFound
+			count: 1
+			path: ../../generated/php-max-slim/tictactoe/lib/Handler/PutSquareHandler.php
+
+		-
+			message: '#^Property TictactoeApi\\Handler\\PutSquareHandler\:\:\$validator has unknown class TictactoeApi\\Handler\\PutSquareValidator as its type\.$#'
+			identifier: class.notFound
+			count: 1
+			path: ../../generated/php-max-slim/tictactoe/lib/Handler/PutSquareHandler.php

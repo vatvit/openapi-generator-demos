@@ -1,0 +1,13 @@
+includes:
+    - phpstan-baseline.neon
+
+parameters:
+    level: 6
+
+    paths:
+        - tests
+        - ../../generated/php-max-slim/tictactoe/lib
+        - ../../generated/php-max-slim/petshop/lib
+
+    excludePaths:
+        - vendor

@@ -3,88 +3,60 @@
 declare(strict_types=1);
 
 /**
- * GENERATED API ROUTES
+ * API Routes
  *
- * This file is generated from OpenAPI specification.
+ * Generated from OpenAPI specification.
  * Include this file from your Laravel routes/api.php within a Route::group.
  *
- * Routes will use middleware groups with 'api.security.' prefix if they are defined.
- * Define these groups in bootstrap/app.php when you need security for an operation.
- *
- * Usage in routes/api.php:
+ * Usage:
  * ```php
  * Route::group(['prefix' => 'v1', 'middleware' => ['api']], function ($router) {
- *     require base_path('vendor/petshopapi/routes/api.php');
+ *     require base_path('path/to/generated/routes/api.php');
  * });
  * ```
  *
- * MIDDLEWARE USAGE:
- *
- * Routes will automatically use middleware groups named 'api.security.{operationId}'
- * if they are defined in your application. Define middleware groups in bootstrap/app.php:
- *
- * ```php
- * ->withMiddleware(function (Middleware $middleware): void {
- *     $middleware->group('api.security.createGame', [
- *         \PetshopApi\Api\Http\Controllers\Middleware\AuthenticateBearerHttpAuthentication::class,
- *     ]);
- * })
- * ```
- *
- * Routes will only have middleware attached if their corresponding group is defined.
- * Operations without defined middleware groups will have no middleware applied.
+ * @generated
  */
 
-// Use $router variable passed from Route::group closure
-// This file expects $router to be available from the including context
+use Illuminate\Support\Facades\Route;
 
 /**
  * DELETE /pets/{id}
+ * 
+ *
  * deletes a single pet based on the ID supplied
+ *
  */
-$route = $router->DELETE('/pets/{id}', \PetshopApi\Api\Http\Controllers\DeletePetController::class)
+Route::delete('/pets/{id}', \PetshopApi\Api\Http\Controllers\DeletePetController::class)
     ->name('api.deletePet');
-
 
 /**
  * GET /pets
+ * 
+ *
  * Returns all pets from the system that the user has access to Nam sed condimentum est. Maecenas tempor sagittis sapien, nec rhoncus sem sagittis sit amet. Aenean at gravida augue, ac iaculis sem. Curabitur odio lorem, ornare eget elementum nec, cursus id lectus. Duis mi turpis, pulvinar ac eros ac, tincidunt varius justo. In hac habitasse platea dictumst. Integer at adipiscing ante, a sagittis ligula. Aenean pharetra tempor ante molestie imperdiet. Vivamus id aliquam diam. Cras quis velit non tortor eleifend sagittis. Praesent at enim pharetra urna volutpat venenatis eget eget mauris. In eleifend fermentum facilisis. Praesent enim enim, gravida ac sodales sed, placerat id erat. Suspendisse lacus dolor, consectetur non augue vel, vehicula interdum libero. Morbi euismod sagittis libero sed lacinia.  Sed tempus felis lobortis leo pulvinar rutrum. Nam mattis velit nisl, eu condimentum ligula luctus nec. Phasellus semper velit eget aliquet faucibus. In a mattis elit. Phasellus vel urna viverra, condimentum lorem id, rhoncus nibh. Ut pellentesque posuere elementum. Sed a varius odio. Morbi rhoncus ligula libero, vel eleifend nunc tristique vitae. Fusce et sem dui. Aenean nec scelerisque tortor. Fusce malesuada accumsan magna vel tempus. Quisque mollis felis eu dolor tristique, sit amet auctor felis gravida. Sed libero lorem, molestie sed nisl in, accumsan tempor nisi. Fusce sollicitudin massa ut lacinia mattis. Sed vel eleifend lorem. Pellentesque vitae felis pretium, pulvinar elit eu, euismod sapien.
+ *
  */
-$route = $router->GET('/pets', \PetshopApi\Api\Http\Controllers\FindPetsController::class)
+Route::get('/pets', \PetshopApi\Api\Http\Controllers\FindPetsController::class)
     ->name('api.findPets');
-
 
 /**
  * POST /pets
+ * 
+ *
  * Creates a new pet in the store. Duplicates are allowed
+ *
  */
-$route = $router->POST('/pets', \PetshopApi\Api\Http\Controllers\AddPetController::class)
+Route::post('/pets', \PetshopApi\Api\Http\Controllers\AddPetController::class)
     ->name('api.addPet');
-
 
 /**
  * GET /pets/{id}
+ * 
+ *
  * Returns a user based on a single ID, if the user does not have access to the pet
+ *
  */
-$route = $router->GET('/pets/{id}', \PetshopApi\Api\Http\Controllers\FindPetByIdController::class)
+Route::get('/pets/{id}', \PetshopApi\Api\Http\Controllers\FindPetByIdController::class)
     ->name('api.findPetById');
 
-
-
-// ============================================================================
-// Security Middleware Validation (Auto-generated)
-// ============================================================================
-// Validates that all required security middleware is properly configured
-// Only runs when APP_DEBUG=true (development mode)
-// ============================================================================
-
-if (config('app.debug', false)) {
-    // Validate security middleware configuration
-    try {
-        \PetshopApi\Api\Security\SecurityValidator::validateMiddleware($router);
-    } catch (\RuntimeException $e) {
-        // Log validation errors but don't break the application
-        error_log("Security middleware validation failed:");
-        error_log($e->getMessage());
-    }
-}

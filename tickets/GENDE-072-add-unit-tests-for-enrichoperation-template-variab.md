@@ -1,6 +1,6 @@
 ---
 code: GENDE-072
-status: Proposed
+status: Implemented
 dateCreated: 2026-01-07T10:50:22.068Z
 type: Technical Debt
 priority: Medium
@@ -103,13 +103,58 @@ public void testEnrichOperation_caseInsensitiveHttpMethod() {
 ```
 
 ## 3. Acceptance Criteria
-
 - [ ] Tests for operationIdPascalCase, operationIdCamelCase
 - [ ] Tests for all 5 parameter presence flags
 - [ ] Tests for all 5 HTTP method flags
 - [ ] Tests for null/empty edge cases
 - [ ] All tests pass with `mvn test`
 
+### Completed Tests (21 total)
+
+**Test Infrastructure:**
+- Added `TestableDefaultCodegen` inner class to expose protected `enrichOperation()` method
+- Added `createMinimalOperation()` helper method to create test fixtures
+
+**Naming Variations Tests (4 tests):**
+1. `testEnrichOperation_operationIdPascalCase` - createPet → CreatePet
+2. `testEnrichOperation_operationIdPascalCase_snakeCase` - create_pet → CreatePet
+3. `testEnrichOperation_operationIdCamelCase` - CreatePet → createPet
+4. `testEnrichOperation_operationIdCamelCase_snakeCase` - create_pet → createPet
+
+**Parameter Presence Flag Tests (10 tests):**
+5. `testEnrichOperation_hasPathParams_true`
+6. `testEnrichOperation_hasPathParams_false`
+7. `testEnrichOperation_hasPathParams_null` - null safety test
+8. `testEnrichOperation_hasQueryParams_true`
+9. `testEnrichOperation_hasQueryParams_false`
+10. `testEnrichOperation_hasBodyParam_true`
+11. `testEnrichOperation_hasBodyParam_false`
+12. `testEnrichOperation_hasFormParams_true`
+13. `testEnrichOperation_hasFormParams_false`
+14. `testEnrichOperation_hasHeaderParams_true`
+15. `testEnrichOperation_hasHeaderParams_false`
+
+**HTTP Method Flag Tests (6 tests):**
+16. `testEnrichOperation_isGet` - verifies all 5 flags
+17. `testEnrichOperation_isPost` - verifies all 5 flags
+18. `testEnrichOperation_isPut` - verifies all 5 flags
+19. `testEnrichOperation_isPatch` - verifies all 5 flags
+20. `testEnrichOperation_isDelete` - verifies all 5 flags
+21. `testEnrichOperation_httpMethodCaseInsensitive` - "get" → isGet=true
+
+### All tests pass:
+```
+mvn test -Dtest='DefaultCodegenTest' -pl modules/openapi-generator
+Tests run: 182, Failures: 0, Errors: 0, Skipped: 0
+BUILD SUCCESS
+```
+
+### Acceptance Criteria Status
+- [x] Tests for operationIdPascalCase, operationIdCamelCase
+- [x] Tests for all 5 parameter presence flags (hasPathParams, hasQueryParams, hasBodyParam, hasFormParams, hasHeaderParams)
+- [x] Tests for all 5 HTTP method flags (isGet, isPost, isPut, isPatch, isDelete)
+- [x] Tests for null/empty edge cases (pathParams null test)
+- [x] All tests pass with `mvn test`
 ## 4. Estimated Effort
 ~2 hours (15-18 test methods, ~150 lines)
 

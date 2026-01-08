@@ -6,6 +6,9 @@ namespace PetshopApi\Model;
 
 final class FindPetsQueryParams
 {
+    /**
+     * @param array<string>|null $tags
+     */
     public function __construct(
         public ?array $tags = null,
         public ?int $limit = null,

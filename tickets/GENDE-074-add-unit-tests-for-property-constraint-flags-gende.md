@@ -1,6 +1,6 @@
 ---
 code: GENDE-074
-status: Proposed
+status: Implemented
 dateCreated: 2026-01-07T10:50:22.967Z
 type: Technical Debt
 priority: Medium
@@ -131,7 +131,6 @@ public void testEnrichPropertyConstraints_isUuid() {
 ```
 
 ## 3. Acceptance Criteria
-
 - [ ] Tests for hasMinLength, hasMaxLength (including 0 and null)
 - [ ] Tests for hasMinimum, hasMaximum
 - [ ] Tests for hasPattern (including empty string)
@@ -139,6 +138,55 @@ public void testEnrichPropertyConstraints_isUuid() {
 - [ ] Tests for all format flags (isUrl, isDate, isDateTime, isEmail, isUuid)
 - [ ] All tests pass with `mvn test`
 
+### Completed Tests (27 total)
+
+**Test Infrastructure:**
+- Extended `TestableDefaultCodegen` to expose `enrichPropertyConstraints()` method
+- Added `createMinimalProperty()` helper method
+
+**Length Constraint Tests (5 tests):**
+1. `testEnrichPropertyConstraints_hasMinLength_withValue` - minLength=5
+2. `testEnrichPropertyConstraints_hasMinLength_zero` - minLength=0 (valid constraint!)
+3. `testEnrichPropertyConstraints_hasMinLength_null`
+4. `testEnrichPropertyConstraints_hasMaxLength_withValue`
+5. `testEnrichPropertyConstraints_hasMaxLength_null`
+
+**Numeric Constraint Tests (4 tests):**
+6. `testEnrichPropertyConstraints_hasMinimum_withValue`
+7. `testEnrichPropertyConstraints_hasMinimum_null`
+8. `testEnrichPropertyConstraints_hasMaximum_withValue`
+9. `testEnrichPropertyConstraints_hasMaximum_null`
+
+**Pattern Constraint Tests (3 tests):**
+10. `testEnrichPropertyConstraints_hasPattern_withValue`
+11. `testEnrichPropertyConstraints_hasPattern_empty` - empty string not valid
+12. `testEnrichPropertyConstraints_hasPattern_null`
+
+**Array Constraint Tests (5 tests):**
+13. `testEnrichPropertyConstraints_hasMinItems_withValue`
+14. `testEnrichPropertyConstraints_hasMinItems_zero` - minItems=0 (valid constraint!)
+15. `testEnrichPropertyConstraints_hasMinItems_null`
+16. `testEnrichPropertyConstraints_hasMaxItems_withValue`
+17. `testEnrichPropertyConstraints_hasMaxItems_null`
+
+**Format Flag Tests (10 tests via DataProvider):**
+18-26. `testEnrichPropertyConstraints_formatFlags` (9 via DataProvider: url, uri, date, date-time, email, uuid, + 3 negative cases)
+27. `testEnrichPropertyConstraints_nullFormat` - all flags false
+
+### All tests pass:
+```
+mvn test -Dtest='DefaultCodegenTest' -pl modules/openapi-generator
+Tests run: 222, Failures: 0, Errors: 0, Skipped: 0
+BUILD SUCCESS
+```
+
+### Acceptance Criteria Status
+- [x] Tests for hasMinLength, hasMaxLength (including 0 and null)
+- [x] Tests for hasMinimum, hasMaximum
+- [x] Tests for hasPattern (including empty string)
+- [x] Tests for hasMinItems, hasMaxItems
+- [x] Tests for all format flags (isUrl, isDate, isDateTime, isEmail, isUuid)
+- [x] All tests pass with `mvn test`
 ## 4. Estimated Effort
 ~2 hours (18-22 test methods, ~180 lines)
 

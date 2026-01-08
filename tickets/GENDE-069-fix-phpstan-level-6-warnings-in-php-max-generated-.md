@@ -1,6 +1,6 @@
 ---
 code: GENDE-069
-status: Proposed
+status: Implemented
 dateCreated: 2026-01-07T10:32:05.034Z
 type: Technical Debt
 priority: Low

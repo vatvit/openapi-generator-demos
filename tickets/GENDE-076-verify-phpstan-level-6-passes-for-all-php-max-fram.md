@@ -1,6 +1,6 @@
 ---
 code: GENDE-076
-status: Proposed
+status: Implemented
 dateCreated: 2026-01-07T15:57:10.171Z
 type: Technical Debt
 priority: Medium

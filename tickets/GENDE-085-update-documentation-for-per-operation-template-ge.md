@@ -1,6 +1,6 @@
 ---
 code: GENDE-085
-status: Proposed
+status: Implemented
 dateCreated: 2026-01-07T16:06:26.651Z
 type: Documentation
 priority: Medium

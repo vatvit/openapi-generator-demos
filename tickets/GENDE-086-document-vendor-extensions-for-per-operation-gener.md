@@ -1,6 +1,6 @@
 ---
 code: GENDE-086
-status: Proposed
+status: Implemented
 dateCreated: 2026-01-07T16:06:26.785Z
 type: Documentation
 priority: Low
@@ -51,7 +51,16 @@ git diff upstream/master -- . | grep -i "x-"
 ```
 
 ## 5. Acceptance Criteria
-
 - [ ] Check completed for new vendor extensions
 - [ ] If found: Wiki updated with new extensions
 - [ ] If none: Document "No new vendor extensions" in PR description
+
+**Status:** Implemented (N/A - no new vendor extensions)
+
+**Findings:**
+- Per-operation feature adds internal `vendorExtensions` map entries (template variables)
+- These are NOT `x-*` properties in OpenAPI specs
+- Examples: `vendorExtensions.operationIdPascalCase`, `vendorExtensions.hasBodyParam`
+- These are computed by generator, not user-specified
+
+**Action:** Document "No new vendor extensions" in PR description when submitting.

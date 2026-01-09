@@ -1,6 +1,6 @@
 ---
 code: GENDE-083
-status: Proposed
+status: Implemented
 dateCreated: 2026-01-07T16:06:26.418Z
 type: Technical Debt
 priority: High

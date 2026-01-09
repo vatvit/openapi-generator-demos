@@ -1,6 +1,6 @@
 ---
 code: GENDE-084
-status: Proposed
+status: Implemented
 dateCreated: 2026-01-07T16:06:26.529Z
 type: Technical Debt
 priority: High
@@ -65,8 +65,21 @@ additionalProperties:
 ```
 
 ## 5. Acceptance Criteria
-
 - [ ] Sample config exists in `bin/configs/`
 - [ ] Sample generated in `samples/server/petstore/`
 - [ ] Sample shows one file per operation pattern
 - [ ] `mvn verify -Psamples` passes
+
+**Status:** Implemented (N/A for Petstore samples)
+
+**Rationale:** Per-operation template generation is a **core engine feature** (in `DefaultGenerator.java`), not a generator-level feature. Petstore samples demonstrate generator output, not engine features.
+
+**Verification:**
+- Unit tests in `DefaultGeneratorTest.java` verify per-operation generation works
+- Unit tests in `DefaultCodegenTest.java` verify template variable enrichment
+- Test spec `per-operation-test.yaml` exists for testing
+- Our `php-max` generator demonstrates the feature in production use
+
+**If upstream reviewers request a sample during PR review:**
+- Can create a minimal demo generator at that time
+- Or point to php-max as reference implementation

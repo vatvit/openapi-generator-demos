@@ -1,6 +1,6 @@
 ---
 code: GENDE-124
-status: Proposed
+status: Implemented
 dateCreated: 2026-01-07T16:47:10.280Z
 type: Documentation
 priority: Medium

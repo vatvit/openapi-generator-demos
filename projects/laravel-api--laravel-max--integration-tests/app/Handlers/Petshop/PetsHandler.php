@@ -88,6 +88,9 @@ class PetsHandler implements PetsApiHandlerInterface, RetrievalApiHandlerInterfa
         return new FindPetById200Resource(self::$pets[$id]);
     }
 
+    /**
+     * @param string[]|null $tags
+     */
     public function findPets(
         array|null $tags = null,
         int|null $limit = null

@@ -4,19 +4,31 @@ declare(strict_types=1);
 
 namespace TictactoeApi\Model;
 
+/**
+ * ValidationErrorAllOfErrors
+ *
+ * 
+ *
+ * @generated
+ */
 class ValidationErrorAllOfErrors
 {
     /**
      * Field that failed validation
      */
     public string $field;
+
     /**
      * Validation error message
      */
     public string $message;
+
+    /**
+     */
     public ?mixed $value = null;
 
     /**
+     * Constructor
      */
     public function __construct(
         string $field,
@@ -28,17 +40,25 @@ class ValidationErrorAllOfErrors
         $this->value = $value;
     }
 
-    /** @param array<string, mixed> $data */
+    /**
+     * Create from array
+     *
+     * @param array<string, mixed> $data
+     */
     public static function fromArray(array $data): self
     {
         return new self(
-            field: $data['field'],
-            message: $data['message'],
+            field: $data['field'] ?? null,
+            message: $data['message'] ?? null,
             value: $data['value'] ?? null,
         );
     }
 
-    /** @return array<string, mixed> */
+    /**
+     * Convert to array
+     *
+     * @return array<string, mixed>
+     */
     public function toArray(): array
     {
         return [

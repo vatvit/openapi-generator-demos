@@ -4,37 +4,57 @@ declare(strict_types=1);
 
 namespace TictactoeApi\Model;
 
+/**
+ * MoveHistory
+ *
+ * 
+ *
+ * @generated
+ */
 class MoveHistory
 {
-    public string $gameId;
-    /** @var array<mixed> */
-    public \TictactoeApi\Model\Move[] $moves;
+    /**
+     */
+    public string $game_id;
 
     /**
-     * @param array<mixed> $moves
+     * @var array<mixed>
+     */
+    public array $moves;
+
+    /**
+     * Constructor
      */
     public function __construct(
-        string $gameId,
-        \TictactoeApi\Model\Move[] $moves,
+        string $game_id,
+        array $moves,
     ) {
-        $this->gameId = $gameId;
+        $this->game_id = $game_id;
         $this->moves = $moves;
     }
 
-    /** @param array<string, mixed> $data */
+    /**
+     * Create from array
+     *
+     * @param array<string, mixed> $data
+     */
     public static function fromArray(array $data): self
     {
         return new self(
-            gameId: $data['gameId'],
-            moves: $data['moves'],
+            game_id: $data['gameId'] ?? null,
+            moves: $data['moves'] ?? null,
         );
     }
 
-    /** @return array<string, mixed> */
+    /**
+     * Convert to array
+     *
+     * @return array<string, mixed>
+     */
     public function toArray(): array
     {
         return [
-            'gameId' => $this->gameId,
+            'gameId' => $this->game_id,
             'moves' => $this->moves,
         ];
     }

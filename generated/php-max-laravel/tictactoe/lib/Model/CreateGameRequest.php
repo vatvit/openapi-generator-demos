@@ -4,56 +4,75 @@ declare(strict_types=1);
 
 namespace TictactoeApi\Model;
 
+/**
+ * CreateGameRequest
+ *
+ * 
+ *
+ * @generated
+ */
 class CreateGameRequest
 {
+    /**
+     */
     public \TictactoeApi\Model\GameMode $mode;
+
     /**
      * Opponent player ID (required for PvP mode)
      */
-    public ?string $opponentId = null;
+    public ?string $opponent_id = null;
+
     /**
      * Whether the game is private
      */
-    public bool $isPrivate = false;
-    /**
-     * Additional game metadata
-     * @var array<string, mixed>|null
-     */
-    public ?array<string,mixed> $metadata = null;
+    public ?bool $is_private = false;
 
     /**
-     * @param array<string, mixed>|null $metadata
+     * Additional game metadata
+     */
+    public ?array $metadata = null;
+
+    /**
+     * Constructor
      */
     public function __construct(
         \TictactoeApi\Model\GameMode $mode,
-        ?string $opponentId = null,
-        bool $isPrivate = false,
-        ?array<string,mixed> $metadata = null,
+        ?string $opponent_id = null,
+        ?bool $is_private = false,
+        ?array $metadata = null,
     ) {
         $this->mode = $mode;
-        $this->opponentId = $opponentId;
-        $this->isPrivate = $isPrivate;
+        $this->opponent_id = $opponent_id;
+        $this->is_private = $is_private;
         $this->metadata = $metadata;
     }
 
-    /** @param array<string, mixed> $data */
+    /**
+     * Create from array
+     *
+     * @param array<string, mixed> $data
+     */
     public static function fromArray(array $data): self
     {
         return new self(
-            mode: \TictactoeApi\Model\GameMode::from($data['mode']),
-            opponentId: $data['opponentId'] ?? null,
-            isPrivate: $data['isPrivate'] ?? false,
+            mode: $data['mode'] ?? null,
+            opponent_id: $data['opponentId'] ?? null,
+            is_private: $data['isPrivate'] ?? false,
             metadata: $data['metadata'] ?? null,
         );
     }
 
-    /** @return array<string, mixed> */
+    /**
+     * Convert to array
+     *
+     * @return array<string, mixed>
+     */
     public function toArray(): array
     {
         return [
             'mode' => $this->mode,
-            'opponentId' => $this->opponentId,
-            'isPrivate' => $this->isPrivate,
+            'opponentId' => $this->opponent_id,
+            'isPrivate' => $this->is_private,
             'metadata' => $this->metadata,
         ];
     }

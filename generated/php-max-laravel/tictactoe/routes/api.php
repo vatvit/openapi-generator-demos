@@ -3,212 +3,129 @@
 declare(strict_types=1);
 
 /**
- * GENERATED API ROUTES
+ * API Routes
  *
- * This file is generated from OpenAPI specification.
+ * Generated from OpenAPI specification.
  * Include this file from your Laravel routes/api.php within a Route::group.
  *
- * Routes will use middleware groups with 'api.security.' prefix if they are defined.
- * Define these groups in bootstrap/app.php when you need security for an operation.
- *
- * Usage in routes/api.php:
+ * Usage:
  * ```php
  * Route::group(['prefix' => 'v1', 'middleware' => ['api']], function ($router) {
- *     require base_path('vendor/tictactoeapi/routes/api.php');
+ *     require base_path('path/to/generated/routes/api.php');
  * });
  * ```
  *
- * MIDDLEWARE USAGE:
- *
- * Routes will automatically use middleware groups named 'api.security.{operationId}'
- * if they are defined in your application. Define middleware groups in bootstrap/app.php:
- *
- * ```php
- * ->withMiddleware(function (Middleware $middleware): void {
- *     $middleware->group('api.security.createGame', [
- *         \TictactoeApi\Api\Http\Controllers\Middleware\AuthenticateBearerHttpAuthentication::class,
- *     ]);
- * })
- * ```
- *
- * Routes will only have middleware attached if their corresponding group is defined.
- * Operations without defined middleware groups will have no middleware applied.
+ * @generated
  */
 
-// Use $router variable passed from Route::group closure
-// This file expects $router to be available from the including context
+use Illuminate\Support\Facades\Route;
 
 /**
  * POST /games
  * Create a new game
+ *
  * Creates a new TicTacToe game with specified configuration.
  *
- * Security Requirements:
- * - bearerHttpAuthentication (http)
+ * Security: bearerHttpAuthentication
  */
-$route = $router->POST('/games', \TictactoeApi\Api\Http\Controllers\CreateGameController::class)
+Route::post('/games', \TictactoeApi\Api\Http\Controllers\CreateGameController::class)
     ->name('api.createGame');
-
-// Attach middleware group if defined (conditional security)
-if ($router->hasMiddlewareGroup('api.security.createGame')) {
-    $route->middleware('api.security.createGame');
-}
 
 /**
  * DELETE /games/{gameId}
  * Delete a game
+ *
  * Deletes a game. Only allowed for game creators or admins.
  *
- * Security Requirements:
- * - bearerHttpAuthentication (http)
+ * Security: bearerHttpAuthentication
  */
-$route = $router->DELETE('/games/{gameId}', \TictactoeApi\Api\Http\Controllers\DeleteGameController::class)
+Route::delete('/games/{gameId}', \TictactoeApi\Api\Http\Controllers\DeleteGameController::class)
     ->name('api.deleteGame');
-
-// Attach middleware group if defined (conditional security)
-if ($router->hasMiddlewareGroup('api.security.deleteGame')) {
-    $route->middleware('api.security.deleteGame');
-}
-
-/**
- * GET /games/{gameId}/board
- * Get the game board
- * Retrieves the current state of the board and the winner.
- *
- * Security Requirements:
- * - defaultApiKey (apiKey)
- * - app2AppOauth (oauth2)
- */
-$route = $router->GET('/games/{gameId}/board', \TictactoeApi\Api\Http\Controllers\GetBoardController::class)
-    ->name('api.getBoard');
-
-// Attach middleware group if defined (conditional security)
-if ($router->hasMiddlewareGroup('api.security.getBoard')) {
-    $route->middleware('api.security.getBoard');
-}
 
 /**
  * GET /games/{gameId}
  * Get game details
+ *
  * Retrieves detailed information about a specific game.
  *
- * Security Requirements:
- * - bearerHttpAuthentication (http)
+ * Security: bearerHttpAuthentication
  */
-$route = $router->GET('/games/{gameId}', \TictactoeApi\Api\Http\Controllers\GetGameController::class)
+Route::get('/games/{gameId}', \TictactoeApi\Api\Http\Controllers\GetGameController::class)
     ->name('api.getGame');
-
-// Attach middleware group if defined (conditional security)
-if ($router->hasMiddlewareGroup('api.security.getGame')) {
-    $route->middleware('api.security.getGame');
-}
-
-/**
- * GET /leaderboard
- * Get leaderboard
- * Retrieves the global leaderboard with top players.
- */
-$route = $router->GET('/leaderboard', \TictactoeApi\Api\Http\Controllers\GetLeaderboardController::class)
-    ->name('api.getLeaderboard');
-
-
-/**
- * GET /games/{gameId}/moves
- * Get move history
- * Retrieves the complete move history for a game.
- *
- * Security Requirements:
- * - bearerHttpAuthentication (http)
- */
-$route = $router->GET('/games/{gameId}/moves', \TictactoeApi\Api\Http\Controllers\GetMovesController::class)
-    ->name('api.getMoves');
-
-// Attach middleware group if defined (conditional security)
-if ($router->hasMiddlewareGroup('api.security.getMoves')) {
-    $route->middleware('api.security.getMoves');
-}
-
-/**
- * GET /players/{playerId}/stats
- * Get player statistics
- * Retrieves comprehensive statistics for a player.
- *
- * Security Requirements:
- * - bearerHttpAuthentication (http)
- */
-$route = $router->GET('/players/{playerId}/stats', \TictactoeApi\Api\Http\Controllers\GetPlayerStatsController::class)
-    ->name('api.getPlayerStats');
-
-// Attach middleware group if defined (conditional security)
-if ($router->hasMiddlewareGroup('api.security.getPlayerStats')) {
-    $route->middleware('api.security.getPlayerStats');
-}
-
-/**
- * GET /games/{gameId}/board/{row}/{column}
- * Get a single board square
- * Retrieves the requested square.
- *
- * Security Requirements:
- * - bearerHttpAuthentication (http)
- * - user2AppOauth (oauth2)
- */
-$route = $router->GET('/games/{gameId}/board/{row}/{column}', \TictactoeApi\Api\Http\Controllers\GetSquareController::class)
-    ->name('api.getSquare');
-
-// Attach middleware group if defined (conditional security)
-if ($router->hasMiddlewareGroup('api.security.getSquare')) {
-    $route->middleware('api.security.getSquare');
-}
 
 /**
  * GET /games
  * List all games
+ *
  * Retrieves a paginated list of games with optional filtering.
  *
- * Security Requirements:
- * - bearerHttpAuthentication (http)
+ * Security: bearerHttpAuthentication
  */
-$route = $router->GET('/games', \TictactoeApi\Api\Http\Controllers\ListGamesController::class)
+Route::get('/games', \TictactoeApi\Api\Http\Controllers\ListGamesController::class)
     ->name('api.listGames');
 
-// Attach middleware group if defined (conditional security)
-if ($router->hasMiddlewareGroup('api.security.listGames')) {
-    $route->middleware('api.security.listGames');
-}
+/**
+ * GET /games/{gameId}/board
+ * Get the game board
+ *
+ * Retrieves the current state of the board and the winner.
+ *
+ * Security: defaultApiKey, app2AppOauth
+ */
+Route::get('/games/{gameId}/board', \TictactoeApi\Api\Http\Controllers\GetBoardController::class)
+    ->name('api.getBoard');
+
+/**
+ * GET /games/{gameId}/moves
+ * Get move history
+ *
+ * Retrieves the complete move history for a game.
+ *
+ * Security: bearerHttpAuthentication
+ */
+Route::get('/games/{gameId}/moves', \TictactoeApi\Api\Http\Controllers\GetMovesController::class)
+    ->name('api.getMoves');
+
+/**
+ * GET /games/{gameId}/board/{row}/{column}
+ * Get a single board square
+ *
+ * Retrieves the requested square.
+ *
+ * Security: bearerHttpAuthentication, user2AppOauth
+ */
+Route::get('/games/{gameId}/board/{row}/{column}', \TictactoeApi\Api\Http\Controllers\GetSquareController::class)
+    ->name('api.getSquare');
 
 /**
  * PUT /games/{gameId}/board/{row}/{column}
  * Set a single board square
+ *
  * Places a mark on the board and retrieves the whole board and the winner (if any).
  *
- * Security Requirements:
- * - bearerHttpAuthentication (http)
- * - user2AppOauth (oauth2)
+ * Security: bearerHttpAuthentication, user2AppOauth
  */
-$route = $router->PUT('/games/{gameId}/board/{row}/{column}', \TictactoeApi\Api\Http\Controllers\PutSquareController::class)
+Route::put('/games/{gameId}/board/{row}/{column}', \TictactoeApi\Api\Http\Controllers\PutSquareController::class)
     ->name('api.putSquare');
 
-// Attach middleware group if defined (conditional security)
-if ($router->hasMiddlewareGroup('api.security.putSquare')) {
-    $route->middleware('api.security.putSquare');
-}
+/**
+ * GET /leaderboard
+ * Get leaderboard
+ *
+ * Retrieves the global leaderboard with top players.
+ *
+ */
+Route::get('/leaderboard', \TictactoeApi\Api\Http\Controllers\GetLeaderboardController::class)
+    ->name('api.getLeaderboard');
 
+/**
+ * GET /players/{playerId}/stats
+ * Get player statistics
+ *
+ * Retrieves comprehensive statistics for a player.
+ *
+ * Security: bearerHttpAuthentication
+ */
+Route::get('/players/{playerId}/stats', \TictactoeApi\Api\Http\Controllers\GetPlayerStatsController::class)
+    ->name('api.getPlayerStats');
 
-// ============================================================================
-// Security Middleware Validation (Auto-generated)
-// ============================================================================
-// Validates that all required security middleware is properly configured
-// Only runs when APP_DEBUG=true (development mode)
-// ============================================================================
-
-if (config('app.debug', false)) {
-    // Validate security middleware configuration
-    try {
-        \TictactoeApi\Api\Security\SecurityValidator::validateMiddleware($router);
-    } catch (\RuntimeException $e) {
-        // Log validation errors but don't break the application
-        error_log("Security middleware validation failed:");
-        error_log($e->getMessage());
-    }
-}

@@ -5,7 +5,11 @@ declare(strict_types=1);
 namespace TictactoeApi\Model;
 
 /**
+ * ForbiddenError
+ *
  * Forbidden error - insufficient permissions
+ *
+ * @generated
  */
 class ForbiddenError
 {
@@ -13,54 +17,64 @@ class ForbiddenError
      * Error code
      */
     public string $code;
+
     /**
      * Human-readable error message
      */
     public string $message;
+
     /**
      * Additional error details
-     * @var array<string, mixed>|null
      */
-    public ?array<string,mixed> $details = null;
+    public ?array $details = null;
+
     /**
      * Error type identifier
      */
-    public ?string $errorType = null;
+    public ?string $error_type = null;
 
     /**
-     * @param array<string, mixed>|null $details
+     * Constructor
      */
     public function __construct(
         string $code,
         string $message,
-        ?array<string,mixed> $details = null,
-        ?string $errorType = null,
+        ?array $details = null,
+        ?string $error_type = null,
     ) {
         $this->code = $code;
         $this->message = $message;
         $this->details = $details;
-        $this->errorType = $errorType;
+        $this->error_type = $error_type;
     }
 
-    /** @param array<string, mixed> $data */
+    /**
+     * Create from array
+     *
+     * @param array<string, mixed> $data
+     */
     public static function fromArray(array $data): self
     {
         return new self(
-            code: $data['code'],
-            message: $data['message'],
+            code: $data['code'] ?? null,
+            message: $data['message'] ?? null,
             details: $data['details'] ?? null,
-            errorType: $data['errorType'] ?? null,
+            error_type: $data['errorType'] ?? null,
         );
     }
 
-    /** @return array<string, mixed> */
+    /**
+     * Convert to array
+     *
+     * @return array<string, mixed>
+     */
     public function toArray(): array
     {
         return [
             'code' => $this->code,
             'message' => $this->message,
             'details' => $this->details,
-            'errorType' => $this->errorType,
+            'errorType' => $this->error_type,
         ];
     }
 }

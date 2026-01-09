@@ -40,6 +40,7 @@ class FindPetByIdControllerTest extends TestCase
         $requestParam = $params[0];
         $type = $requestParam->getType();
         $this->assertNotNull($type);
+        $this->assertInstanceOf(\ReflectionNamedType::class, $type);
         $this->assertEquals('Illuminate\Http\Request', $type->getName());
 
         // Second param should be id (int)
@@ -47,6 +48,7 @@ class FindPetByIdControllerTest extends TestCase
         $this->assertEquals('id', $idParam->getName());
         $type = $idParam->getType();
         $this->assertNotNull($type);
+        $this->assertInstanceOf(\ReflectionNamedType::class, $type);
         $this->assertEquals('int', $type->getName());
     }
 

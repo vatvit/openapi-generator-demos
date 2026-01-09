@@ -4,66 +4,86 @@ declare(strict_types=1);
 
 namespace TictactoeApi\Model;
 
+/**
+ * Pagination
+ *
+ * 
+ *
+ * @generated
+ */
 class Pagination
 {
     /**
      * Current page number
      */
     public int $page;
+
     /**
      * Items per page
      */
     public int $limit;
+
     /**
      * Total number of items
      */
     public int $total;
+
     /**
      * Whether there is a next page
      */
-    public ?bool $hasNext = null;
+    public ?bool $has_next = null;
+
     /**
      * Whether there is a previous page
      */
-    public ?bool $hasPrevious = null;
+    public ?bool $has_previous = null;
 
     /**
+     * Constructor
      */
     public function __construct(
         int $page,
         int $limit,
         int $total,
-        ?bool $hasNext = null,
-        ?bool $hasPrevious = null,
+        ?bool $has_next = null,
+        ?bool $has_previous = null,
     ) {
         $this->page = $page;
         $this->limit = $limit;
         $this->total = $total;
-        $this->hasNext = $hasNext;
-        $this->hasPrevious = $hasPrevious;
+        $this->has_next = $has_next;
+        $this->has_previous = $has_previous;
     }
 
-    /** @param array<string, mixed> $data */
+    /**
+     * Create from array
+     *
+     * @param array<string, mixed> $data
+     */
     public static function fromArray(array $data): self
     {
         return new self(
-            page: $data['page'],
-            limit: $data['limit'],
-            total: $data['total'],
-            hasNext: $data['hasNext'] ?? null,
-            hasPrevious: $data['hasPrevious'] ?? null,
+            page: $data['page'] ?? null,
+            limit: $data['limit'] ?? null,
+            total: $data['total'] ?? null,
+            has_next: $data['hasNext'] ?? null,
+            has_previous: $data['hasPrevious'] ?? null,
         );
     }
 
-    /** @return array<string, mixed> */
+    /**
+     * Convert to array
+     *
+     * @return array<string, mixed>
+     */
     public function toArray(): array
     {
         return [
             'page' => $this->page,
             'limit' => $this->limit,
             'total' => $this->total,
-            'hasNext' => $this->hasNext,
-            'hasPrevious' => $this->hasPrevious,
+            'hasNext' => $this->has_next,
+            'hasPrevious' => $this->has_previous,
         ];
     }
 }

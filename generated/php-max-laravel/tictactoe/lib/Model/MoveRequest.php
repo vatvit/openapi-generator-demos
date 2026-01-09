@@ -4,6 +4,13 @@ declare(strict_types=1);
 
 namespace TictactoeApi\Model;
 
+/**
+ * MoveRequest
+ *
+ * 
+ *
+ * @generated
+ */
 class MoveRequest
 {
     /**
@@ -12,6 +19,7 @@ class MoveRequest
     public string $mark;
 
     /**
+     * Constructor
      */
     public function __construct(
         string $mark,
@@ -19,15 +27,23 @@ class MoveRequest
         $this->mark = $mark;
     }
 
-    /** @param array<string, mixed> $data */
+    /**
+     * Create from array
+     *
+     * @param array<string, mixed> $data
+     */
     public static function fromArray(array $data): self
     {
         return new self(
-            mark: $data['mark'],
+            mark: $data['mark'] ?? null,
         );
     }
 
-    /** @return array<string, mixed> */
+    /**
+     * Convert to array
+     *
+     * @return array<string, mixed>
+     */
     public function toArray(): array
     {
         return [

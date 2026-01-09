@@ -1,6 +1,6 @@
 ---
 code: GENDE-105
-status: Proposed
+status: Implemented
 dateCreated: 2026-01-07T16:40:39.950Z
 type: Feature Enhancement
 priority: High

@@ -5,7 +5,11 @@ declare(strict_types=1);
 namespace TictactoeApi\Model;
 
 /**
+ * GameStatus
+ *
  * Current status of the game
+ *
+ * @generated
  */
 enum GameStatus: string
 {

@@ -4,13 +4,29 @@ declare(strict_types=1);
 
 namespace PetshopApi\Model;
 
+/**
+ * Pet
+ *
+ * 
+ *
+ * @generated
+ */
 class Pet
 {
+    /**
+     */
     public string $name;
+
+    /**
+     */
     public int $id;
+
+    /**
+     */
     public ?string $tag = null;
 
     /**
+     * Constructor
      */
     public function __construct(
         string $name,
@@ -22,17 +38,25 @@ class Pet
         $this->tag = $tag;
     }
 
-    /** @param array<string, mixed> $data */
+    /**
+     * Create from array
+     *
+     * @param array<string, mixed> $data
+     */
     public static function fromArray(array $data): self
     {
         return new self(
-            name: $data['name'],
-            id: $data['id'],
+            name: $data['name'] ?? null,
+            id: $data['id'] ?? null,
             tag: $data['tag'] ?? null,
         );
     }
 
-    /** @return array<string, mixed> */
+    /**
+     * Convert to array
+     *
+     * @return array<string, mixed>
+     */
     public function toArray(): array
     {
         return [

@@ -4,19 +4,31 @@ declare(strict_types=1);
 
 namespace TictactoeApi\Model;
 
+/**
+ * SquareResponse
+ *
+ * 
+ *
+ * @generated
+ */
 class SquareResponse
 {
     /**
      * Board coordinate (1-3)
      */
     public int $row;
+
     /**
      * Board coordinate (1-3)
      */
     public int $column;
+
+    /**
+     */
     public \TictactoeApi\Model\Mark $mark;
 
     /**
+     * Constructor
      */
     public function __construct(
         int $row,
@@ -28,17 +40,25 @@ class SquareResponse
         $this->mark = $mark;
     }
 
-    /** @param array<string, mixed> $data */
+    /**
+     * Create from array
+     *
+     * @param array<string, mixed> $data
+     */
     public static function fromArray(array $data): self
     {
         return new self(
-            row: $data['row'],
-            column: $data['column'],
-            mark: \TictactoeApi\Model\Mark::from($data['mark']),
+            row: $data['row'] ?? null,
+            column: $data['column'] ?? null,
+            mark: $data['mark'] ?? null,
         );
     }
 
-    /** @return array<string, mixed> */
+    /**
+     * Convert to array
+     *
+     * @return array<string, mixed>
+     */
     public function toArray(): array
     {
         return [

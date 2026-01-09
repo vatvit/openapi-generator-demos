@@ -1,6 +1,6 @@
 ---
 code: GENDE-104
-status: Proposed
+status: Implemented
 dateCreated: 2026-01-07T16:40:39.788Z
 type: Feature Enhancement
 priority: High

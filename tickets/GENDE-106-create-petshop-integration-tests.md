@@ -1,6 +1,6 @@
 ---
 code: GENDE-106
-status: Proposed
+status: Implemented
 dateCreated: 2026-01-07T16:40:40.121Z
 type: Feature Enhancement
 priority: High

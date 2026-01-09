@@ -4,33 +4,43 @@ declare(strict_types=1);
 
 namespace TictactoeApi\Model;
 
+/**
+ * ValidationError
+ *
+ * 
+ *
+ * @generated
+ */
 class ValidationError
 {
     /**
      * Error code
      */
     public string $code;
+
     /**
      * Human-readable error message
      */
     public string $message;
-    /** @var array<mixed> */
-    public \TictactoeApi\Model\ValidationErrorAllOfErrors[] $errors;
-    /**
-     * Additional error details
-     * @var array<string, mixed>|null
-     */
-    public ?array<string,mixed> $details = null;
 
     /**
-     * @param array<mixed> $errors
-     * @param array<string, mixed>|null $details
+     * @var array<mixed>
+     */
+    public array $errors;
+
+    /**
+     * Additional error details
+     */
+    public ?array $details = null;
+
+    /**
+     * Constructor
      */
     public function __construct(
         string $code,
         string $message,
-        \TictactoeApi\Model\ValidationErrorAllOfErrors[] $errors,
-        ?array<string,mixed> $details = null,
+        array $errors,
+        ?array $details = null,
     ) {
         $this->code = $code;
         $this->message = $message;
@@ -38,18 +48,26 @@ class ValidationError
         $this->details = $details;
     }
 
-    /** @param array<string, mixed> $data */
+    /**
+     * Create from array
+     *
+     * @param array<string, mixed> $data
+     */
     public static function fromArray(array $data): self
     {
         return new self(
-            code: $data['code'],
-            message: $data['message'],
-            errors: $data['errors'],
+            code: $data['code'] ?? null,
+            message: $data['message'] ?? null,
+            errors: $data['errors'] ?? null,
             details: $data['details'] ?? null,
         );
     }
 
-    /** @return array<string, mixed> */
+    /**
+     * Convert to array
+     *
+     * @return array<string, mixed>
+     */
     public function toArray(): array
     {
         return [

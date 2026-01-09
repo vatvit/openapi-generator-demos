@@ -5,38 +5,53 @@ declare(strict_types=1);
 namespace TictactoeApi\Model;
 
 /**
+ * Status
+ *
  * Current game status including board state and winner
+ *
+ * @generated
  */
 class Status
 {
+    /**
+     */
     public \TictactoeApi\Model\Winner $winner;
+
     /**
      * 3x3 game board represented as nested arrays
      * @var array<mixed>
      */
-    public \TictactoeApi\Model\Mark[][] $board;
+    public array $board;
 
     /**
-     * @param array<mixed> $board
+     * Constructor
      */
     public function __construct(
         \TictactoeApi\Model\Winner $winner,
-        \TictactoeApi\Model\Mark[][] $board,
+        array $board,
     ) {
         $this->winner = $winner;
         $this->board = $board;
     }
 
-    /** @param array<string, mixed> $data */
+    /**
+     * Create from array
+     *
+     * @param array<string, mixed> $data
+     */
     public static function fromArray(array $data): self
     {
         return new self(
-            winner: \TictactoeApi\Model\Winner::from($data['winner']),
-            board: $data['board'],
+            winner: $data['winner'] ?? null,
+            board: $data['board'] ?? null,
         );
     }
 
-    /** @return array<string, mixed> */
+    /**
+     * Convert to array
+     *
+     * @return array<string, mixed>
+     */
     public function toArray(): array
     {
         return [

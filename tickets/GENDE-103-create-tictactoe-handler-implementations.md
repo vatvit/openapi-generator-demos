@@ -1,6 +1,6 @@
 ---
 code: GENDE-103
-status: Proposed
+status: Implemented
 dateCreated: 2026-01-07T16:40:39.628Z
 type: Feature Enhancement
 priority: High

@@ -1,0 +1,13 @@
+{
+    "name": "GIT_USER_ID/GIT_REPO_ID",
+    "description": "This API allows writing down marks on a Tic Tac Toe board and requesting the state of the board or of individual squares.",
+    "type": "library",
+    "autoload": {
+        "psr-4": {
+            "TicTacToeApi\\": "lib/"
+        }
+    },
+    "require": {
+        "php": "^8.1"
+    }
+}

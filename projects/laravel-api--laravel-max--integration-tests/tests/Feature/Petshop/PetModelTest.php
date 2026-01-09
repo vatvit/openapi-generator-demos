@@ -131,7 +131,7 @@ class PetModelTest extends TestCase
         $pet = new Pet(name: 'Luna', id: 10, tag: 'cat');
         $array = $pet->toArray();
 
-        $this->assertIsArray($array);
+        // Verify array contents (assertIsArray redundant - toArray() return type is array)
         $this->assertEquals('Luna', $array['name']);
         $this->assertEquals(10, $array['id']);
         $this->assertEquals('cat', $array['tag']);

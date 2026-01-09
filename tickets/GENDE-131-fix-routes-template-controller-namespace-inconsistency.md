@@ -1,6 +1,6 @@
 ---
 code: GENDE-131
-status: Proposed
+status: Implemented
 dateCreated: 2026-01-09T00:00:00.000Z
 type: Bug Fix
 priority: High
@@ -48,12 +48,27 @@ The routes template (`api.mustache` or similar) is using the wrong namespace pat
 Update the routes template to use the correct controller namespace pattern that matches the generated controller files.
 
 ## 6. Acceptance Criteria
+- [x] Routes file references correct controller namespace `\{invokerPackage}\Api\Http\Controllers\*`
+- [x] Generated routes work without "class not found" errors
+- [x] PHPStan passes on routes file
+- [x] All integration tests pass after fix (92 tests, 158 assertions)
 
-- [ ] Routes file references correct controller namespace `\{invokerPackage}\Api\Http\Controllers\*`
-- [ ] Generated routes work without "class not found" errors
-- [ ] PHPStan passes on routes file
-- [ ] All integration tests pass after fix
+**Fixed:** 2026-01-09
 
+**Root cause:** The `routes.mustache` template used `{{controllerPackage}}` which defaults to `{invokerPackage}\Controller`, but the PSR-4 autoload maps controllers to `{invokerPackage}\Api\Http\Controllers`.
+
+**Solution:** Updated `openapi-generator-server-templates/openapi-generator-server-php-max-default/routes.mustache` line 34 to use hardcoded namespace pattern:
+```mustache
+# Before:
+\{{controllerPackage}}\{{vendorExtensions.operationIdPascalCase}}Controller::class
+
+# After:
+\{{invokerPackage}}\Api\Http\Controllers\{{vendorExtensions.operationIdPascalCase}}Controller::class
+```
+
+**Verification:**
+- PHPStan level 6: ✅ 0 errors
+- Integration tests: ✅ 92 tests, 158 assertions
 ## 7. Impact
 
 **High** - This bug causes runtime errors when trying to access any API endpoint because Laravel cannot find the controller classes.

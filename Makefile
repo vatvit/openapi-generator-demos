@@ -4,6 +4,8 @@
 .PHONY: setup-lumen start-lumen stop-lumen logs-lumen test-lumen test-lumen-phpunit dumpautoload-lumen
 .PHONY: extract-templates extract-laravel-templates check-version update-generator-version
 .PHONY: test-max-all test-max-laravel test-max-symfony test-max-slim
+.PHONY: phpstan-max-all phpstan-max-laravel phpstan-max-symfony phpstan-max-slim
+.PHONY: generate-max-all generate-max-laravel generate-max-symfony generate-max-slim
 .PHONY: test-fork validate-fork
 
 # OpenAPI Generator version (using latest to get 7.18.0-SNAPSHOT)
@@ -58,6 +60,18 @@ help: ## Show this help message
 	@echo "  \033[36mtest-max-laravel\033[0m         Run Laravel php-max tests"
 	@echo "  \033[36mtest-max-symfony\033[0m         Run Symfony php-max tests"
 	@echo "  \033[36mtest-max-slim\033[0m            Run Slim php-max tests"
+	@echo ""
+	@echo "🔍 php-max PHPStan Static Analysis (GENDE-076):"
+	@echo "  \033[36mphpstan-max-all\033[0m          Run PHPStan level 6 on all frameworks"
+	@echo "  \033[36mphpstan-max-laravel\033[0m      Run PHPStan on Laravel php-max"
+	@echo "  \033[36mphpstan-max-symfony\033[0m      Run PHPStan on Symfony php-max"
+	@echo "  \033[36mphpstan-max-slim\033[0m         Run PHPStan on Slim php-max"
+	@echo ""
+	@echo "🔄 php-max Code Generation (GENDE-077):"
+	@echo "  \033[36mgenerate-max-all\033[0m         Regenerate all php-max libraries (all frameworks)"
+	@echo "  \033[36mgenerate-max-laravel\033[0m     Regenerate Laravel php-max libraries"
+	@echo "  \033[36mgenerate-max-symfony\033[0m     Regenerate Symfony php-max libraries"
+	@echo "  \033[36mgenerate-max-slim\033[0m        Regenerate Slim php-max libraries"
 	@echo ""
 	@echo "🔍 Fork Validation:"
 	@echo "  \033[36mvalidate-fork\033[0m            Validate OpenAPI Generator fork (3600+ tests)"
@@ -281,6 +295,128 @@ test-max-symfony: ## Run Symfony php-max integration tests
 test-max-slim: ## Run Slim php-max integration tests
 	@echo "🧪 Running Slim php-max tests..."
 	@$(MAKE) -C projects/slim-api--slim-max--integration-tests test
+
+# =============================================================================
+# php-max PHPStan Static Analysis
+# =============================================================================
+
+phpstan-max-all: ## Run PHPStan level 6 on all php-max frameworks
+	@echo "🔍 Running PHPStan on All php-max Frameworks"
+	@echo "============================================="
+	@echo ""
+	@echo "📋 Analyzing Laravel (laravel-max)..."
+	@$(MAKE) phpstan-max-laravel
+	@echo ""
+	@echo "📋 Analyzing Symfony (symfony-max)..."
+	@$(MAKE) phpstan-max-symfony
+	@echo ""
+	@echo "📋 Analyzing Slim (slim-max)..."
+	@$(MAKE) phpstan-max-slim
+	@echo ""
+	@echo "🎉 All php-max PHPStan checks completed!"
+
+phpstan-max-laravel: ## Run PHPStan level 6 on Laravel php-max
+	@echo "🔍 Running PHPStan on Laravel php-max..."
+	@$(MAKE) -C projects/laravel-api--laravel-max--integration-tests phpstan
+
+phpstan-max-symfony: ## Run PHPStan level 6 on Symfony php-max
+	@echo "🔍 Running PHPStan on Symfony php-max..."
+	@$(MAKE) -C projects/symfony-api--symfony-max--integration-tests phpstan
+
+phpstan-max-slim: ## Run PHPStan level 6 on Slim php-max
+	@echo "🔍 Running PHPStan on Slim php-max..."
+	@$(MAKE) -C projects/slim-api--slim-max--integration-tests phpstan
+
+# =============================================================================
+# php-max Code Generation (GENDE-077)
+# =============================================================================
+
+generate-max-all: generate-max-laravel generate-max-symfony generate-max-slim ## Regenerate all php-max libraries
+	@echo "🎉 All php-max libraries regenerated!"
+
+generate-max-laravel: ## Regenerate Laravel php-max libraries (tictactoe + petshop)
+	@echo "🔄 Regenerating Laravel php-max libraries..."
+	@docker run --rm \
+		-v $$(pwd)/openapi-generator-generators/php-max:/generator \
+		-v $$(pwd):/local \
+		-w /local \
+		eclipse-temurin:17-jdk \
+		java -cp /generator/target/openapi-generator-cli-7.18.0.jar:/generator/target/php-max-openapi-generator-1.0.0.jar \
+			org.openapitools.codegen.OpenAPIGenerator generate \
+			-g php-max \
+			-i /local/openapi-generator-specs/tictactoe/tictactoe.json \
+			-o /local/generated/php-max-laravel/tictactoe \
+			--additional-properties=invokerPackage=TictactoeApi \
+			-t /local/openapi-generator-server-templates/openapi-generator-server-php-max-default
+	@docker run --rm \
+		-v $$(pwd)/openapi-generator-generators/php-max:/generator \
+		-v $$(pwd):/local \
+		-w /local \
+		eclipse-temurin:17-jdk \
+		java -cp /generator/target/openapi-generator-cli-7.18.0.jar:/generator/target/php-max-openapi-generator-1.0.0.jar \
+			org.openapitools.codegen.OpenAPIGenerator generate \
+			-g php-max \
+			-i /local/openapi-generator-specs/petshop/petshop-extended.yaml \
+			-o /local/generated/php-max-laravel/petshop \
+			--additional-properties=invokerPackage=PetshopApi \
+			-t /local/openapi-generator-server-templates/openapi-generator-server-php-max-default
+	@echo "✅ Laravel php-max libraries regenerated!"
+
+generate-max-symfony: ## Regenerate Symfony php-max libraries (tictactoe + petshop)
+	@echo "🔄 Regenerating Symfony php-max libraries..."
+	@docker run --rm \
+		-v $$(pwd)/openapi-generator-generators/php-max:/generator \
+		-v $$(pwd):/local \
+		-w /local \
+		eclipse-temurin:17-jdk \
+		java -cp /generator/target/openapi-generator-cli-7.18.0.jar:/generator/target/php-max-openapi-generator-1.0.0.jar \
+			org.openapitools.codegen.OpenAPIGenerator generate \
+			-g php-max \
+			-i /local/openapi-generator-specs/tictactoe/tictactoe.json \
+			-o /local/generated/php-max-symfony/tictactoe \
+			--additional-properties=invokerPackage=TictactoeApi \
+			-t /local/openapi-generator-server-templates/openapi-generator-server-php-max-symfony
+	@docker run --rm \
+		-v $$(pwd)/openapi-generator-generators/php-max:/generator \
+		-v $$(pwd):/local \
+		-w /local \
+		eclipse-temurin:17-jdk \
+		java -cp /generator/target/openapi-generator-cli-7.18.0.jar:/generator/target/php-max-openapi-generator-1.0.0.jar \
+			org.openapitools.codegen.OpenAPIGenerator generate \
+			-g php-max \
+			-i /local/openapi-generator-specs/petshop/petshop-extended.yaml \
+			-o /local/generated/php-max-symfony/petshop \
+			--additional-properties=invokerPackage=PetshopApi \
+			-t /local/openapi-generator-server-templates/openapi-generator-server-php-max-symfony
+	@echo "✅ Symfony php-max libraries regenerated!"
+
+generate-max-slim: ## Regenerate Slim php-max libraries (tictactoe + petshop)
+	@echo "🔄 Regenerating Slim php-max libraries..."
+	@docker run --rm \
+		-v $$(pwd)/openapi-generator-generators/php-max:/generator \
+		-v $$(pwd):/local \
+		-w /local \
+		eclipse-temurin:17-jdk \
+		java -cp /generator/target/openapi-generator-cli-7.18.0.jar:/generator/target/php-max-openapi-generator-1.0.0.jar \
+			org.openapitools.codegen.OpenAPIGenerator generate \
+			-g php-max \
+			-i /local/openapi-generator-specs/tictactoe/tictactoe.json \
+			-o /local/generated/php-max-slim/tictactoe \
+			--additional-properties=invokerPackage=TictactoeApi \
+			-t /local/openapi-generator-server-templates/openapi-generator-server-php-max-slim
+	@docker run --rm \
+		-v $$(pwd)/openapi-generator-generators/php-max:/generator \
+		-v $$(pwd):/local \
+		-w /local \
+		eclipse-temurin:17-jdk \
+		java -cp /generator/target/openapi-generator-cli-7.18.0.jar:/generator/target/php-max-openapi-generator-1.0.0.jar \
+			org.openapitools.codegen.OpenAPIGenerator generate \
+			-g php-max \
+			-i /local/openapi-generator-specs/petshop/petshop-extended.yaml \
+			-o /local/generated/php-max-slim/petshop \
+			--additional-properties=invokerPackage=PetshopApi \
+			-t /local/openapi-generator-server-templates/openapi-generator-server-php-max-slim
+	@echo "✅ Slim php-max libraries regenerated!"
 
 # =============================================================================
 # Fork Validation

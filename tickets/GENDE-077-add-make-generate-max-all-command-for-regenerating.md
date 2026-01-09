@@ -1,6 +1,6 @@
 ---
 code: GENDE-077
-status: Proposed
+status: Implemented
 dateCreated: 2026-01-07T15:57:10.287Z
 type: Feature Enhancement
 priority: Low
@@ -47,8 +47,22 @@ generate-max-slim:
 
 ## 5. Acceptance Criteria
 
-- [ ] `make generate-max-all` regenerates all 6 libraries
-- [ ] `make generate-max-laravel` regenerates Laravel libraries only
-- [ ] `make generate-max-symfony` regenerates Symfony libraries only
-- [ ] `make generate-max-slim` regenerates Slim libraries only
-- [ ] Help section updated with new commands
+- [x] `make generate-max-all` regenerates all 6 libraries
+- [x] `make generate-max-laravel` regenerates Laravel libraries only
+- [x] `make generate-max-symfony` regenerates Symfony libraries only
+- [x] `make generate-max-slim` regenerates Slim libraries only
+- [x] Help section updated with new commands
+
+## 6. Implementation Notes
+
+**Implemented:** 2026-01-09
+
+Added to root Makefile:
+- `generate-max-all` - Regenerates all 6 libraries
+- `generate-max-laravel` - Regenerates tictactoe + petshop for Laravel
+- `generate-max-symfony` - Regenerates tictactoe + petshop for Symfony
+- `generate-max-slim` - Regenerates tictactoe + petshop for Slim
+
+Also added PHPStan analysis targets:
+- `phpstan-max-all` - Run PHPStan on all frameworks
+- `phpstan-max-laravel/symfony/slim` - Framework-specific PHPStan
